@@ -1,0 +1,17 @@
+{
+  "name": "AEM Switch",
+  "description": "Switch between AEM servers and pages (Editor, Preview, Sites, Editor, Package Manager, and more)",
+  "version": "0.1.0",
+  "permissions": [
+    "activeTab",
+    "tabs"
+  ],
+  "background": {
+    "scripts": ["main.js"],
+    "persistent": false
+  },
+  "browser_action": {
+    "default_title": "AEM Switch"
+  },
+  "manifest_version": 2
+}
