@@ -1,111 +1,127 @@
-// Copyright (c) 2011 The Chromium Authors. All rights reserved.
-// Use of this source code is governed by a BSD-style license that can be
-// found in the LICENSE file.
+var navigateTo = function(url) {
+  chrome.tabs.query({ active: true, currentWindow: true }, function(tabs) {
+    chrome.tabs.update(tabs[0].id, { url: url });
+  });
+};
 
-// Called when the user clicks on the browser action.
-chrome.browserAction.onClicked.addListener(function(tab) {
-  var code = `(function() {
-    // alert("hello");
-    // alert(\`The window's location is ${window.location}\`)
-    // alert(\`The window's location is ${tab.url}\`)
-    // console.log(window.location);
-    // console.log(tab.url);
-  })();`
+var getSelectionDivs = function(page) {
+  return [
+    getSelectionDiv('Editor', page.editorPage.toString()),
+    getSelectionDiv('Preview', page.previewPage.toString())
+  ];
+};
 
-  chrome.tabs.executeScript({ code: code }, function() {
-    // alert("bye");
-    // alert(`The window's location is ${tab.url}`)
-    alert(tab.id);
+var getSelectionDiv = function(name, url) {
+  var result = document.createElement('div');
+  result.className = 'url';
+  result.textContent = name;
+  result.onclick = function() {
+    navigateTo(url);
+  };
+
+  return result;
+};
+
+var appendError = function(exception) {
+  var newError = document.createElement('div');
+  newError.className = 'error';
+  newError.textContent = exception.toString();
+
+  var errorsDiv = document.getElementById('errors');
+  errorsDiv.appendChild(newError);
+
+  return;
+};
+
+// Initalize the popup window.
+document.addEventListener('DOMContentLoaded', function() {
+  chrome.tabs.query({ active: true, currentWindow: true }, tabs => {
+    var tab = tabs[0];
     var url = tab.url;
 
-    alert(`URL: ${url.toString()} (type: ${typeof(url)})`);
-    alert(`The PreviewUrl is ${new EditorUrl(url).toPreviewUrl()}`);
+    var page = null;
+    try {
+      page = AemPage.getPage(url);
+    } catch (exception) {
+      appendError(exception);
 
-    chrome.tabs.update({ url: new EditorUrl(url).toPreviewUrl()} );
+      return;
+    }
 
-    // chrome.tabs.getCurrent(function(tab) {
-    //   chrome.tabs.update(tab.id, { url: new EditorUrl(url).toPreviewUrl() });
-    // });
-    // alert(`Valid: ${url.isAemValidUrl()}`);
+    var urls = document.getElementById("urls")
+
+    getSelectionDivs(page).forEach(function(div) {
+      urls.appendChild(div);
+    });
   });
 });
 
-class AemUrl {
-  // constructor(url) {
-  //   this.url = url;
-  //
-  //   if (!this.isValid) {
-  //     throw `Sorry the url (${this.url}) is not valid`;
-  //   }
-  // }
+class AemPage {
+  static getPage(url) {
+    url = new URL(url);
 
-  // static create(url) {
-  //   var value = new URL(url);
-  //
-  //   if (EditorUrl.isValid(value)) {
-  //     return new EditorUrl(value);
-  //   }
-  //   // } else if (PreviewUrl.isValid(value)) {
-  //   //   return new PreviewUrl(value);
-  //   // }
-  //
-  //   throw `Sorry the url (${url}) is not valid`;
-  // }
-  //
-  //
-  // get isValid() {
-  //   if (typeof(this.url) !== 'string') {
-  //     return false;
-  //   }
-  //
-  //   if (!this.isAemValidUrl) {
-  //     return false;
-  //   }
-  //
-  //   return true;
-  // }
+    if (EditorPage.isPage(url)) return new EditorPage(url);
+    if (PreviewPage.isPage(url)) return new PreviewPage(url);
 
-  // get isAemValidUrl() {
-  //   var regex = /http(s):\/\/.*\/editor\.html\/(.*)\.html/
-  //
-  //   return regex.test(this.url);
-  // }
-
-  // get previewUrl() {
-  //   var regex = /(http(s)):\/\/([^\.]*)?([^\.]*)([^\.]*)\/(editor\.html)\/(.*)(\.html)/
-  //   // https://www.google.com/test/me.html
-  //   (this.url.match(regex) || [])[]
-  // }
-
-  // get toString() {
-  //   return this.url;
-  // }
+    throw `Sorry the url (${url}) is not an AEM page`;
+  }
 
   constructor(url) {
     this.url = url;
   }
+
+  toString() {
+    return this.url.toString();
+  }
 }
 
-class EditorUrl extends AemUrl {
+class EditorPage extends AemPage {
   static pathRegex = /^\/editor\.html(\/.*)$/
 
-  static isUrl(url) {
-    return EditorUrl.pathRegex.test(url.pathname);
+  static isPage(url) {
+    url = new URL(url);
+
+    return EditorPage.pathRegex.test(new URL(url).pathname);
   }
 
   constructor(url) {
     super(new URL(url));
   }
 
-  toPreviewUrl() {
-    // alert(`The url is ${this.url} (type: ${this.url})`);
-    return `${this.url.origin}${this.url.pathname.match(EditorUrl.pathRegex)[1]}\.html?wcmmode=disabled`;
+  get editorPage() {
+    return this;
+  }
+
+  get previewPage() {
+    var url = `${this.url.origin}${this.url.pathname.match(EditorPage.pathRegex)[1]}?wcmmode=disabled`;
+
+    return new PreviewPage(url);
   }
 }
 
-// Dr. David Smith
-// 1333 Sheppard Avenue East
-// Unit 228
-// Monday to Thursday 9 to 4 (break 12 to 1)
-// Friday 9 to 12
-// 416-783-3375
+class PreviewPage extends AemPage {
+  static pathRegex = /\?(.*)wcmmode=disabled(.*)/
+
+  static isPage(url) {
+    url = new URL(url);
+
+    return url.searchParams.get('wcmmode') === 'disabled'
+  }
+
+  constructor(url) {
+    super(new URL(url));
+  }
+
+  get editorPage() {
+    var searchParams = new URLSearchParams(this.url.searchParams);
+    searchParams.delete('wcmmode');
+
+    var url = `${this.url.origin}editor.html/${this.url.pathname}?${searchParams.toString()}`;
+
+    return new EditorPage(url);
+  }
+
+  get previewPage() {
+    return this;
+  }
+}
