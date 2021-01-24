@@ -1,3 +1,68 @@
+class State {
+  static INITIALIZED = {
+    errors: {
+      className: 'hidden'
+    },
+    urls: {
+      className: 'hidden'
+    }
+  }
+
+  static AemPage = {
+    errors: {
+      className: 'hidden'
+    },
+    urls: {
+      className: 'displayed'
+    }
+  }
+
+  static NotAemPage = {
+    errors: {
+      className: 'displayed'
+    },
+    urls: {
+      className: 'hidden'
+    }
+  }
+
+  static Errors = {
+    errors: {
+      className: 'displayed'
+    },
+    urls: {
+      className: 'hidden'
+    }
+  }
+
+  constructor(state) {
+    this.state = state;
+
+    _apply();
+  }
+
+  change(newState) {
+    this.state = newState;
+
+    _apply();
+  }
+
+  _apply() {
+
+    var ids = Object.keys(this.state);
+    ids.forEach(function(idName) {
+      var element = document.getElementById(idName)
+      var properties = Object.keys(ids[idName]);
+
+      properties.forEach(function(key) {
+        var value = properties[key];
+
+        element[key] = value;
+      });
+    });
+  }
+}
+
 var navigateTo = function(url) {
   chrome.tabs.query({ active: true, currentWindow: true }, function(tabs) {
     chrome.tabs.update(tabs[0].id, { url: url });
