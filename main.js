@@ -3,7 +3,7 @@ class State {
     errors: {
       className: 'hidden'
     },
-    urls: {
+    pages: {
       className: 'hidden'
     }
   }
@@ -12,7 +12,7 @@ class State {
     errors: {
       className: 'hidden'
     },
-    urls: {
+    pages: {
       className: 'displayed'
     }
   }
@@ -21,7 +21,7 @@ class State {
     errors: {
       className: 'displayed'
     },
-    urls: {
+    pages: {
       className: 'hidden'
     }
   }
@@ -30,7 +30,7 @@ class State {
     errors: {
       className: 'displayed'
     },
-    urls: {
+    pages: {
       className: 'hidden'
     }
   }
@@ -113,10 +113,10 @@ document.addEventListener('DOMContentLoaded', function() {
       return;
     }
 
-    var urls = document.getElementById("urls")
+    var pages = document.getElementById("pages")
 
     getSelectionDivs(page).forEach(function(div) {
-      urls.appendChild(div);
+      pages.appendChild(div);
     });
   });
 });
