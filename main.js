@@ -8,6 +8,29 @@ var getClassNames(className) {
   return className.split(' ');
 }
 
+const serverUrls = [
+  {
+    name: 'Localhost',
+    url: 'http://localhost:4502'
+  },
+  {
+    name: 'QA',
+    url: ''
+  },
+  {
+    name: 'Author UAT',
+    url: ''
+  },
+  {
+    name: 'Author PPE',
+    url: ''
+  },
+  {
+    name: 'Author Production',
+    url: ''
+  }
+];
+
 class State {
   static INITIALIZED = {
     errors: {
@@ -29,22 +52,19 @@ class State {
   //   }
   // }
 
-  static NotAemPage = {
-    errors: {
-      className: 'displayed'
-    },
-    pages: {
-      className: 'hidden'
-    }
-  }
+  static AemServers = new AemServersState();
 
-  static Errors = {
-    errors: {
-      className: 'displayed'
-    },
-    pages: {
-      className: 'hidden'
-    }
+  // static Errors = {
+  //   errors: {
+  //     className: 'displayed'
+  //   },
+  //   pages: {
+  //     className: 'hidden'
+  //   }
+  // }
+
+  get selectedQuery() {
+    return null;
   }
 
   constructor(state) {
@@ -88,6 +108,28 @@ class State {
       var otherClassNames = classNames
         .filter(function(item) { return !/selected/.test(item); });
     });
+  }
+}
+
+class AemServersState extends State {
+  static initial = {
+    errors: {
+      className: 'hidden'
+    },
+    pages: {
+      className: 'displayed'
+      selectedIndex: 0,
+      pageSelectors: [
+      ]
+    }
+  }
+
+  constructor() {
+    super(AemServersState.initial);
+  }
+
+  appendPage(name, querySelector) {
+    this.pages.
   }
 }
 
