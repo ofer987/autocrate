@@ -1,3 +1,13 @@
+var getClassNames(className) {
+  className = (className || '').trim();
+
+  if (className.length === 0) {
+    return [];
+  }
+
+  return className.split(' ');
+}
+
 class State {
   static INITIALIZED = {
     errors: {
@@ -8,14 +18,16 @@ class State {
     }
   }
 
-  static AemPage = {
-    errors: {
-      className: 'hidden'
-    },
-    pages: {
-      className: 'displayed'
-    }
-  }
+  static AemPage = new AemPageState();
+  // static AemPage = {
+  //   errors: {
+  //     className: 'hidden'
+  //   },
+  //   pages: {
+  //     className: 'displayed'
+  //     selection: null
+  //   }
+  // }
 
   static NotAemPage = {
     errors: {
@@ -38,28 +50,82 @@ class State {
   constructor(state) {
     this.state = state;
 
-    _apply();
+    this._apply();
   }
 
   change(newState) {
     this.state = newState;
 
-    _apply();
+    this._apply();
   }
 
   _apply() {
-
     var ids = Object.keys(this.state);
     ids.forEach(function(idName) {
       var element = document.getElementById(idName)
-      var properties = Object.keys(ids[idName]);
+      var properties = ids[idName];
+      element.className = properties['className'];
 
-      properties.forEach(function(key) {
-        var value = properties[key];
-
-        element[key] = value;
-      });
+      if (this.selectedQuery) {
+        this._clearSelection(element);
+        this._applySelection(element, properties['selection']);
+      }
     });
+  }
+
+  _applySelection(element, selectionQuery) {
+    var selectedElement = element.querySelector(selectionQuery)
+    var classNames = getClassNames(selectedElement.className);
+
+    classNames.append("selected");
+    selectedElement.className = classNames.join(' ');
+  }
+
+  _clearSelection(element) {
+    element.children.forEach(function(child) {
+      var classNames = getClassNames(child.className);
+
+      var otherClassNames = classNames
+        .filter(function(item) { return !/selected/.test(item); });
+    });
+  }
+}
+
+class AemPageState extends State {
+  static initial = {
+    errors: {
+      className: 'hidden'
+    },
+    pages: {
+      className: 'displayed'
+      selectedIndex: 0,
+      pageSelectors: [
+      ]
+    }
+  }
+
+  get pages() {
+    return this.state.pages;
+  }
+
+  get selectedQuery() {
+    return this.pages.pageQuerySelectors[this.pages.selectedIndex];
+  }
+
+  constructor() {
+    super(AemPageState.initial)
+  }
+
+  moveDown() {
+    var currentIndex = this.pages.selectedIndex;
+    var pageLength = this.pages.pageSelectors.length;
+    if (currentIndex + 1 === pageLength) {
+      this.pages.selectedIndex = 0;
+    }
+
+    this.pages.selectedIndex += 1;
+
+    this._apply();
   }
 }
 
