@@ -1,5 +1,5 @@
 {
-  "name": "AEM Switch",
+  "name": "Autocrate",
   "description": "Switch between AEM servers and pages (Editor, Preview, Sites, Editor, Package Manager, and more)",
   "version": "0.1.0",
   "permissions": [
@@ -7,7 +7,7 @@
     "tabs"
   ],
   "browser_action": {
-    "default_title": "AEM Switch",
+    "default_title": "Autocrate",
     "default_popup": "main.html"
   },
   "manifest_version": 2
