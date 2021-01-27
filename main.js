@@ -1,4 +1,4 @@
-var getClassNames(className) {
+var getClassNames = function(className) {
   className = (className || '').trim();
 
   if (className.length === 0) {
@@ -6,7 +6,7 @@ var getClassNames(className) {
   }
 
   return className.split(' ');
-}
+};
 
 const serverUrls = [
   {
@@ -31,29 +31,18 @@ const serverUrls = [
   }
 ];
 
-class State {
-  static INITIALIZED = {
-    errors: {
-      className: 'hidden'
-    },
-    pages: {
-      className: 'hidden'
-    }
-  }
-
-  static AemPage = new AemPageState();
-  // static AemPage = {
+class Menu {
+  // static INITIALIZED = {
   //   errors: {
   //     className: 'hidden'
   //   },
   //   pages: {
-  //     className: 'displayed'
-  //     selection: null
+  //     className: 'hidden'
   //   }
   // }
 
-  static AemServers = new AemServersState();
-
+  // static INITIAL_STATE = new AemPageState();
+  // static AemServers = new AemServersState();
   // static Errors = {
   //   errors: {
   //     className: 'displayed'
@@ -63,111 +52,145 @@ class State {
   //   }
   // }
 
-  get selectedQuery() {
-    return null;
+  setSelectedPage(pageName) {
+    var selectedPage = this.pageElements.querySelector(`#${pageName}`);
+    var className = selectedPage.className;
+    var classNames = getClassNames(className);
+
+    classNames.push('selected');
+    selectedPage.className = classNames.join(' ');
   }
 
-  constructor(state) {
-    this.state = state;
-
-    this._apply();
+  get pageElements() {
+    return this.menuElement.querySelectorAll('.page');
   }
 
-  change(newState) {
-    this.state = newState;
-
-    this._apply();
+  get menuElement() {
+    return document.getElementById('pages');
   }
 
-  _apply() {
-    var ids = Object.keys(this.state);
-    ids.forEach(function(idName) {
-      var element = document.getElementById(idName)
-      var properties = ids[idName];
-      element.className = properties['className'];
+  // get selectedElement() {
+  //   var pagesElement = document.getElementById('pages');
+  //   var query = `#${this.selectedPage.name}`;
+  //
+  //   return pagesElement.querySelector(query);
+  // }
 
-      if (this.selectedQuery) {
-        this._clearSelection(element);
-        this._applySelection(element, properties['selection']);
-      }
+  constructor(selectedIndex, pages) {
+    this.pages = pages;
+    this.selectedIndex = selectedIndex;
+  }
+
+  clear() {
+    this.pageElements.forEach(function(page) { 
+      page.remove();
     });
   }
 
-  _applySelection(element, selectionQuery) {
-    var selectedElement = element.querySelector(selectionQuery)
-    var classNames = getClassNames(selectedElement.className);
+  render() {
+    this.clear();
 
-    classNames.append("selected");
-    selectedElement.className = classNames.join(' ');
-  }
+    var menuElement = this.menuElement;
+    this.pages.forEach(function(page) {
+      var pageElement = getSelectionDiv(page.name, page.toString());
 
-  _clearSelection(element) {
-    element.children.forEach(function(child) {
-      var classNames = getClassNames(child.className);
-
-      var otherClassNames = classNames
-        .filter(function(item) { return !/selected/.test(item); });
+      menuElement.appendChild(pageElement);
     });
   }
+
+  // apply() {
+  //   var ids = Object.keys(this.state);
+  //   ids.forEach(function(idName) {
+  //     var element = document.getElementById(idName)
+  //     var properties = ids[idName];
+  //     element.className = properties['className'];
+  //
+  //     if (this.selectedQuery) {
+  //       this._clearSelection(element);
+  //       this._applySelection(element, properties['selection']);
+  //     }
+  //   });
+  // }
+  //
+  // _applySelection(element, selectionQuery) {
+  //   var selectedElement = element.querySelector(selectionQuery)
+  //   var classNames = getClassNames(selectedElement.className);
+  //
+  //   classNames.append("selected");
+  //   selectedElement.className = classNames.join(' ');
+  // }
+  //
+  // _clearSelection(element) {
+  //   element.children.forEach(function(child) {
+  //     var classNames = getClassNames(child.className);
+  //
+  //     var otherClassNames = classNames
+  //       .filter(function(item) { return !/selected/.test(item); });
+  //   });
+  // }
 }
 
-class AemServersState extends State {
+// class AemServersState extends State {
+//   static initial = {
+//     errors: {
+//       className: 'hidden'
+//     },
+//     pages: {
+//       className: 'displayed'
+//       selectedIndex: 0,
+//       pageSelectors: [
+//       ]
+//     }
+//   }
+//
+//   constructor() {
+//     super(AemServersState.initial);
+//   }
+//
+//   appendPage(name, querySelector) {
+//     this.pages.
+//   }
+// }
+
+class AemPageState {
   static initial = {
     errors: {
       className: 'hidden'
     },
     pages: {
-      className: 'displayed'
+      className: 'displayed',
       selectedIndex: 0,
-      pageSelectors: [
-      ]
-    }
-  }
-
-  constructor() {
-    super(AemServersState.initial);
-  }
-
-  appendPage(name, querySelector) {
-    this.pages.
-  }
-}
-
-class AemPageState extends State {
-  static initial = {
-    errors: {
-      className: 'hidden'
-    },
-    pages: {
-      className: 'displayed'
-      selectedIndex: 0,
-      pageSelectors: [
+      items: [
       ]
     }
   }
 
   get pages() {
-    return this.state.pages;
+    return this.state.pages.items;
   }
 
-  get selectedQuery() {
-    return this.pages.pageQuerySelectors[this.pages.selectedIndex];
+  // get selectedQuery() {
+  //   return this.pages.pageQuerySelectors[this.pages.selectedIndex];
+  // }
+
+  appendPage(page) {
+    this.pages.push(page);
   }
 
   constructor() {
-    super(AemPageState.initial)
+    this.state = AemPageState.initial
   }
 
   moveDown() {
     var currentIndex = this.pages.selectedIndex;
-    var pageLength = this.pages.pageSelectors.length;
+    var pageLength = this.pages.length;
     if (currentIndex + 1 === pageLength) {
-      this.pages.selectedIndex = 0;
+      this.state.pages.selectedIndex = 0;
     }
 
-    this.pages.selectedIndex += 1;
+    this.state.pages.selectedIndex += 1;
 
-    this._apply();
+    this.apply();
   }
 }
 
@@ -177,10 +200,10 @@ var navigateTo = function(url) {
   });
 };
 
-var getSelectionDivs = function(page) {
+var getPages = function(page) {
   return [
-    getSelectionDiv('Editor', page.editorPage.toString()),
-    getSelectionDiv('Preview', page.previewPage.toString())
+    page.editorPage,
+    page.previewPage
   ];
 };
 
@@ -212,20 +235,24 @@ document.addEventListener('DOMContentLoaded', function() {
     var tab = tabs[0];
     var url = tab.url;
 
-    var page = null;
+    var currentPage = null;
     try {
-      page = AemPage.getPage(url);
+      currentPage = AemPage.getPage(url);
+
+      var pages = document.getElementById("pages")
+
+      var state = new AemPageState();
+      getPages(currentPage).forEach(function(page) {
+        state.appendPage(page);
+      });
+
+      var menu = new Menu(0, state.pages);
+      menu.render();
     } catch (exception) {
       appendError(exception);
 
-      return;
+      throw exception;
     }
-
-    var pages = document.getElementById("pages")
-
-    getSelectionDivs(page).forEach(function(div) {
-      pages.appendChild(div);
-    });
   });
 });
 
@@ -257,6 +284,10 @@ class EditorPage extends AemPage {
     return EditorPage.pathRegex.test(new URL(url).pathname);
   }
 
+  get name() {
+    return 'Editor';
+  }
+
   constructor(url) {
     super(new URL(url));
   }
@@ -279,6 +310,10 @@ class PreviewPage extends AemPage {
     url = new URL(url);
 
     return url.searchParams.get('wcmmode') === 'disabled'
+  }
+
+  get name() {
+    return 'Preview';
   }
 
   constructor(url) {
