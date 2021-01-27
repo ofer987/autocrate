@@ -203,13 +203,14 @@ var navigateTo = function(url) {
 var getPages = function(page) {
   return [
     page.editorPage,
-    page.previewPage
+    page.previewPage,
+    page.crxDePage
   ];
 };
 
 var getSelectionDiv = function(name, url) {
   var result = document.createElement('div');
-  result.className = 'url';
+  result.className = 'page';
   result.textContent = name;
   result.onclick = function() {
     navigateTo(url);
@@ -262,6 +263,7 @@ class AemPage {
 
     if (EditorPage.isPage(url)) return new EditorPage(url);
     if (PreviewPage.isPage(url)) return new PreviewPage(url);
+    if (CrxDePage.isPage(url)) return new CrxDePage(url);
 
     throw `Sorry the url (${url}) is not an AEM page`;
   }
@@ -275,8 +277,42 @@ class AemPage {
   }
 }
 
+class CrxDePage extends AemPage {
+  static pathRegex = /^\/crx\/de\/index\.jsp#?(.*)$/;
+
+  static isPage(url) {
+    url = new URL(url);
+
+    return CrxDePage.pathRegex.test(new URL(url).pathname);
+  }
+
+  get name() {
+    return "CRX/DE";
+  }
+
+  constructor(url) {
+    super(new URL(url));
+  }
+
+  get editorPage() {
+    var url = `${this.url.origin}/editor.html${this.url.hash.substr(1)}\.html`;
+
+    return new EditorPage(url);
+  }
+
+  get previewPage() {
+    var url = `${this.url.origin}${this.url.hash.substr(1)}\.html?wcmmode=disabled`;
+
+    return new PreviewPage(url);
+  }
+
+  get crxDePage() {
+    return this;
+  }
+}
+
 class EditorPage extends AemPage {
-  static pathRegex = /^\/editor\.html(\/.*)$/
+  static pathRegex = /^\/editor\.html(\/.*)\.html/
 
   static isPage(url) {
     url = new URL(url);
@@ -297,9 +333,13 @@ class EditorPage extends AemPage {
   }
 
   get previewPage() {
-    var url = `${this.url.origin}${this.url.pathname.match(EditorPage.pathRegex)[1]}?wcmmode=disabled`;
+    var url = `${this.url.origin}${this.url.pathname.match(EditorPage.pathRegex)[1]}\.html?wcmmode=disabled`;
 
     return new PreviewPage(url);
+  }
+
+  get crxDePage() {
+    return `${this.url.origin}/crx/de/index.jsp#${this.url.pathname.match(EditorPage.pathRegex)[1]}`;
   }
 }
 
@@ -324,12 +364,19 @@ class PreviewPage extends AemPage {
     var searchParams = new URLSearchParams(this.url.searchParams);
     searchParams.delete('wcmmode');
 
-    var url = `${this.url.origin}editor.html/${this.url.pathname}?${searchParams.toString()}`;
+    var url = `${this.url.origin}/editor.html/${this.url.pathname}?${searchParams.toString()}`;
 
     return new EditorPage(url);
   }
 
   get previewPage() {
     return this;
+  }
+
+  get crxDePage() {
+    var regex = /(\/.*)\.html/;
+
+    var jcrPath = this.url.pathname.match(regex)[1] || this.url.pathname;
+    return `${this.url.origin}/crx/de/index.jsp#${jcrPath}`;
   }
 }
