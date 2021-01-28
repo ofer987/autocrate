@@ -32,26 +32,6 @@ const serverUrls = [
 ];
 
 class Menu {
-  // static INITIALIZED = {
-  //   errors: {
-  //     className: 'hidden'
-  //   },
-  //   pages: {
-  //     className: 'hidden'
-  //   }
-  // }
-
-  // static INITIAL_STATE = new AemPageState();
-  // static AemServers = new AemServersState();
-  // static Errors = {
-  //   errors: {
-  //     className: 'displayed'
-  //   },
-  //   pages: {
-  //     className: 'hidden'
-  //   }
-  // }
-
   setSelectedPage(pageName) {
     var selectedPage = this.pageElements.querySelector(`#${pageName}`);
     var className = selectedPage.className;
@@ -68,13 +48,6 @@ class Menu {
   get menuElement() {
     return document.getElementById('pages');
   }
-
-  // get selectedElement() {
-  //   var pagesElement = document.getElementById('pages');
-  //   var query = `#${this.selectedPage.name}`;
-  //
-  //   return pagesElement.querySelector(query);
-  // }
 
   constructor(selectedIndex, pages) {
     this.pages = pages;
@@ -97,60 +70,7 @@ class Menu {
       menuElement.appendChild(pageElement);
     });
   }
-
-  // apply() {
-  //   var ids = Object.keys(this.state);
-  //   ids.forEach(function(idName) {
-  //     var element = document.getElementById(idName)
-  //     var properties = ids[idName];
-  //     element.className = properties['className'];
-  //
-  //     if (this.selectedQuery) {
-  //       this._clearSelection(element);
-  //       this._applySelection(element, properties['selection']);
-  //     }
-  //   });
-  // }
-  //
-  // _applySelection(element, selectionQuery) {
-  //   var selectedElement = element.querySelector(selectionQuery)
-  //   var classNames = getClassNames(selectedElement.className);
-  //
-  //   classNames.append("selected");
-  //   selectedElement.className = classNames.join(' ');
-  // }
-  //
-  // _clearSelection(element) {
-  //   element.children.forEach(function(child) {
-  //     var classNames = getClassNames(child.className);
-  //
-  //     var otherClassNames = classNames
-  //       .filter(function(item) { return !/selected/.test(item); });
-  //   });
-  // }
 }
-
-// class AemServersState extends State {
-//   static initial = {
-//     errors: {
-//       className: 'hidden'
-//     },
-//     pages: {
-//       className: 'displayed'
-//       selectedIndex: 0,
-//       pageSelectors: [
-//       ]
-//     }
-//   }
-//
-//   constructor() {
-//     super(AemServersState.initial);
-//   }
-//
-//   appendPage(name, querySelector) {
-//     this.pages.
-//   }
-// }
 
 class AemPageState {
   static initial = {
@@ -168,10 +88,6 @@ class AemPageState {
   get pages() {
     return this.state.pages.items;
   }
-
-  // get selectedQuery() {
-  //   return this.pages.pageQuerySelectors[this.pages.selectedIndex];
-  // }
 
   appendPage(page) {
     this.pages.push(page);
