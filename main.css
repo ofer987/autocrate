@@ -1,3 +1,15 @@
 body {
-  width: 100px;
+  width: 200px;
+}
+
+.hidden {
+  display: none;
+}
+
+.displayed {
+  display: block;
+}
+
+.page.selected {
+  color: chocolate;
 }
