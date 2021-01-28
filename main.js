@@ -417,10 +417,10 @@ class PreviewPage extends AemPage {
   }
 
   get editorPage() {
-    var searchParams = new URLSearchParams(this.url.searchParams);
-    searchParams.delete('wcmmode');
+    var url = new URL(this.url);
 
-    var url = `${this.url.origin}/editor.html/${this.url.pathname}?${searchParams.toString()}`;
+    url.pathname =`/editor.html${url.pathname}`;
+    url.searchParams.delete('wcmmode');
 
     return new EditorPage(url);
   }
