@@ -217,11 +217,17 @@ document.addEventListener('DOMContentLoaded', function() {
       var pages = document.getElementById("pages")
 
       var state = new AemPageState();
+      var i = 0;
       getPages(currentPage).forEach(function(page) {
+        if (currentPage.id === page.id) {
+          currentIndex = i;
+        } else {
+          i += 1;
+        }
         state.appendPage(page);
       });
 
-      var menu = new Menu(0, state.pages);
+      var menu = new Menu(currentIndex, state.pages);
       menu.render();
 
       var keyboard = new Keyboard();
