@@ -255,7 +255,9 @@ class EditorPage extends AemPage {
   }
 
   get crxDePage() {
-    return `${this.url.origin}/crx/de/index.jsp#${this.url.pathname.match(EditorPage.pathRegex)[1]}`;
+    var url = `${this.url.origin}/crx/de/index.jsp#${this.url.pathname.match(EditorPage.pathRegex)[1]}`;
+
+    return new CrxDePage(url);
   }
 }
 
@@ -293,6 +295,8 @@ class PreviewPage extends AemPage {
     var regex = /(\/.*)\.html/;
 
     var jcrPath = this.url.pathname.match(regex)[1] || this.url.pathname;
-    return `${this.url.origin}/crx/de/index.jsp#${jcrPath}`;
+    var url = `${this.url.origin}/crx/de/index.jsp#${jcrPath}`;
+
+    return new CrxDePage(url);
   }
 }
