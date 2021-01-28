@@ -9,3 +9,7 @@ body {
 .displayed {
   display: block;
 }
+
+.page.selected {
+  color: chocolate;
+}

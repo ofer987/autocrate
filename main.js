@@ -31,9 +31,41 @@ const serverUrls = [
   }
 ];
 
+class Keyboard {
+  addEventListeners(menu) {
+    this.addMoveUp(menu);
+    this.addMoveDown(menu);
+    this.addOpen(menu);
+  }
+
+  addMoveUp(menu) {
+    document.addEventListener('keydown', function(event) {
+      if (event.keyCode === 38 || event.keyCode === 75) {
+        menu.moveUp();
+      }
+    });
+  }
+
+  addMoveDown(menu) {
+    document.addEventListener('keydown', function(event) {
+      if (event.keyCode === 40 || event.keyCode === 74) {
+        menu.moveDown();
+      }
+    });
+  }
+
+  addOpen(menu) {
+    document.addEventListener('keydown', function(event) {
+      if (event.keyCode === 13 || event.keyCode == 79) {
+        menu.open();
+      }
+    })
+  }
+}
+
 class Menu {
-  setSelectedPage(pageName) {
-    var selectedPage = this.pageElements.querySelector(`#${pageName}`);
+  setSelectedPage(id) {
+    var selectedPage = this.menuElement.querySelector(`#${id}`);
     var className = selectedPage.className;
     var classNames = getClassNames(className);
 
@@ -54,8 +86,42 @@ class Menu {
     this.selectedIndex = selectedIndex;
   }
 
+  moveUp() {
+    var currentIndex = this.selectedIndex;
+    var pageLength = this.pages.length;
+
+    // rollover
+    if (currentIndex <= 0) {
+      this.selectedIndex = this.pages.length - 1;
+    } else {
+      this.selectedIndex -= 1;
+    }
+
+    this.render();
+  }
+
+  moveDown() {
+    var currentIndex = this.selectedIndex;
+    var pageLength = this.pages.length;
+
+    // rollover
+    if (currentIndex + 1 >= pageLength) {
+      this.selectedIndex = 0;
+    } else {
+      this.selectedIndex += 1;
+    }
+
+    this.render();
+  }
+
+  open() {
+    var selectedPage = this.pages[this.selectedIndex];
+
+    navigateTo(selectedPage.toString());
+  }
+
   clear() {
-    this.pageElements.forEach(function(page) { 
+    this.pageElements.forEach(function(page) {
       page.remove();
     });
   }
@@ -65,10 +131,12 @@ class Menu {
 
     var menuElement = this.menuElement;
     this.pages.forEach(function(page) {
-      var pageElement = getSelectionDiv(page.name, page.toString());
+      var pageElement = getSelectionDiv(page.id, page.name, page.toString());
 
       menuElement.appendChild(pageElement);
     });
+
+    this.setSelectedPage(this.pages[this.selectedIndex].id);
   }
 }
 
@@ -96,18 +164,6 @@ class AemPageState {
   constructor() {
     this.state = AemPageState.initial
   }
-
-  moveDown() {
-    var currentIndex = this.pages.selectedIndex;
-    var pageLength = this.pages.length;
-    if (currentIndex + 1 === pageLength) {
-      this.state.pages.selectedIndex = 0;
-    }
-
-    this.state.pages.selectedIndex += 1;
-
-    this.apply();
-  }
 }
 
 var navigateTo = function(url) {
@@ -125,8 +181,9 @@ var getPages = function(page) {
   ];
 };
 
-var getSelectionDiv = function(name, url) {
+var getSelectionDiv = function(id, name, url) {
   var result = document.createElement('div');
+  result.id = id;
   result.className = 'page';
   result.textContent = name;
   result.onclick = function() {
@@ -166,6 +223,9 @@ document.addEventListener('DOMContentLoaded', function() {
 
       var menu = new Menu(0, state.pages);
       menu.render();
+
+      var keyboard = new Keyboard();
+      keyboard.addEventListeners(menu);
     } catch (exception) {
       appendError(exception);
 
@@ -202,6 +262,10 @@ class CrxPackMgrPage extends AemPage {
     url = new URL(url);
 
     return CrxPackMgrPage.pathRegex.test(new URL(url).pathname);
+  }
+
+  get id() {
+    return 'crx-pack-mgr';
   }
 
   get name() {
@@ -245,6 +309,10 @@ class CrxDePage extends AemPage {
     return CrxDePage.pathRegex.test(new URL(url).pathname);
   }
 
+  get id() {
+    return 'crx-de';
+  }
+
   get name() {
     return "CRX / DE";
   }
@@ -286,6 +354,10 @@ class EditorPage extends AemPage {
     return EditorPage.pathRegex.test(new URL(url).pathname);
   }
 
+  get id() {
+    return 'editor-page';
+  }
+
   get name() {
     return 'Editor';
   }
@@ -324,6 +396,10 @@ class PreviewPage extends AemPage {
     url = new URL(url);
 
     return url.searchParams.get('wcmmode') === 'disabled'
+  }
+
+  get id() {
+    return 'preview-page';
   }
 
   get name() {
