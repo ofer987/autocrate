@@ -10,5 +10,14 @@
     "default_title": "Autocrate",
     "default_popup": "main.html"
   },
+  "commands": {
+    "select-page": {
+      "suggested_key": {
+        "default": "Alt+J",
+        "mac": "Alt+K"
+      },
+      "description": "Change page"
+    }
+  },
   "manifest_version": 2
 }

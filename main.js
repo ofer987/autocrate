@@ -1,3 +1,7 @@
+chrome.commands.onCommand.addListener(function(command) {
+  alert(command);
+});
+
 var getClassNames = function(className) {
   className = (className || '').trim();
 
@@ -23,7 +27,7 @@ const serverUrls = [
   },
   {
     name: 'Author PPE',
-    url: ''
+    origin: ''
   },
   {
     name: 'Author Production',
@@ -48,8 +52,31 @@ class Keyboard {
 
   addMoveDown(menu) {
     document.addEventListener('keydown', function(event) {
+      // chrome.commands.getAll(function(commands) {
+      //   alert(commands);
+      // });
       if (event.keyCode === 40 || event.keyCode === 74) {
         menu.moveDown();
+      }
+    });
+  }
+
+  addMovePreviousServer(menu) {
+    document.addEventListener('keydown', function(event) {
+      // TODO is 36 for left?
+      alert(event.keyCode);
+      if (event.keyCode === 36 || event.keyCode === 72) {
+        menu.movePreviousServer();
+      }
+    });
+  }
+
+  addMoveNextServer(menu) {
+    document.addEventListener('keydown', function(event) {
+      // TODO is 42 for left?
+      alert(event.keyCode);
+      if (event.keyCode === 42 || event.keyCode === 80) {
+        menu.moveNextServer();
       }
     });
   }
