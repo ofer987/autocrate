@@ -1,7 +1,3 @@
-chrome.commands.onCommand.addListener(function(command) {
-  alert(command);
-});
-
 var getClassNames = function(className) {
   className = (className || '').trim();
 
@@ -52,9 +48,6 @@ class Keyboard {
 
   addMoveDown(menu) {
     document.addEventListener('keydown', function(event) {
-      // chrome.commands.getAll(function(commands) {
-      //   alert(commands);
-      // });
       if (event.keyCode === 40 || event.keyCode === 74) {
         menu.moveDown();
       }
@@ -148,28 +141,14 @@ class Menu {
 }
 
 class AemPageState {
-  static initial = {
-    errors: {
-      className: 'hidden'
-    },
-    pages: {
-      className: 'displayed',
-      selectedIndex: 0,
-      items: [
-      ]
-    }
-  }
-
-  get pages() {
-    return this.state.pages.items;
+  constructor(mode) {
+    this.mode = mode;
+    this.selectedIndex = 0;
+    this.pages = [];
   }
 
   appendPage(page) {
     this.pages.push(page);
-  }
-
-  constructor() {
-    this.state = AemPageState.initial
   }
 }
 
@@ -211,6 +190,29 @@ var appendError = function(exception) {
   return;
 };
 
+var createPagesMenu = function(url) {
+  var currentPage = AemPage.getPage(url);
+  var state = new AemPageState("pages");
+
+  var i = 0;
+  var currentIndex = 0;
+  getPages(currentPage).forEach(function(page) {
+    if (currentPage.id === page.id) {
+      currentIndex = i;
+    } else {
+      i += 1;
+    }
+
+    state.appendPage(page);
+  });
+
+  var menu = new Menu(currentIndex, state.pages);
+  var keyboard = new Keyboard();
+  keyboard.addEventListeners(menu);
+
+  return menu;
+};
+
 // Initalize the popup window.
 document.addEventListener('DOMContentLoaded', function() {
   chrome.tabs.query({ active: true, currentWindow: true }, tabs => {
@@ -221,24 +223,30 @@ document.addEventListener('DOMContentLoaded', function() {
     try {
       currentPage = AemPage.getPage(url);
 
-      var pages = document.getElementById("pages")
+      var mode = "pages";
 
-      var state = new AemPageState();
-      var i = 0;
-      getPages(currentPage).forEach(function(page) {
-        if (currentPage.id === page.id) {
-          currentIndex = i;
-        } else {
-          i += 1;
-        }
-        state.appendPage(page);
-      });
-
-      var menu = new Menu(currentIndex, state.pages);
+      var menu = createPagesMenu(url);
       menu.render();
 
-      var keyboard = new Keyboard();
-      keyboard.addEventListeners(menu);
+      chrome.commands.onCommand.addListener(function(command) {
+        if (command === "select") {
+          if (mode === "pages") {
+            alert("changing to servers");
+
+            menu.clear();
+            menu.pages = [];
+            menu = createPagesMenu(url);
+            menu.render();
+          } else {
+            alert("changing to pages");
+
+            menu.clear();
+            menu.pages = [];
+            menu = createPagesMenu(url);
+            menu.render();
+          };
+        }
+      });
     } catch (exception) {
       appendError(exception);
 

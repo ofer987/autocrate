@@ -11,13 +11,20 @@
     "default_popup": "main.html"
   },
   "commands": {
-    "select-page": {
+    "select": {
       "suggested_key": {
-        "default": "Alt+J",
+        "default": "Alt+K",
         "mac": "Alt+K"
       },
-      "description": "Change page"
+      "description": "Change between servers/pages"
+    },
+    "_execute_browser_action": {
+      "suggested_key": {
+        "default": "Alt+1",
+        "mac": "Alt+1"
+      },
+      "description": "Change pages"
     }
-  },
+},
   "manifest_version": 2
 }
