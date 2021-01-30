@@ -10,26 +10,63 @@ var getClassNames = function(className) {
 
 const servers = [
   {
+    id: 'localhost',
     name: 'Localhost',
-    origin: 'http://localhost:4502'
+    protocol: 'http:',
+    host: 'localhost:4502'
   },
   {
+    id: 'qa',
     name: 'QA',
-    origin: ''
+    protocol: 'https:',
+    host: ''
   },
   {
+    id: "author-uat",
     name: 'Author UAT',
-    origin: ''
+    protocol: 'https:',
+    host: ''
   },
   {
+    id: "author-ppe",
     name: 'Author PPE',
-    origin: ''
+    protocol: 'https:',
+    host: ''
   },
   {
+    id: 'author-prod',
     name: 'Author Production',
-    origin: ''
+    protocol: 'https:',
+    host: ''
   }
 ];
+
+class Server {
+  constructor(id, name, url) {
+    this.id = id;
+    this.name = name;
+    this.url = new URL(url);
+  }
+
+  toString() {
+    return this.url.toString();
+  }
+}
+
+getServers = function(url) {
+  url = new URL(url);
+
+  var results = [];
+  servers.forEach(function(server) {
+    var serverUrl = new URL(url);
+    serverUrl.protocol = server.protocol;
+    serverUrl.host = server.host;
+
+    results.push(new Server(server.id, server.name, serverUrl));
+  });
+
+  return results;
+}
 
 class Keyboard {
   addEventListeners(menu) {
@@ -213,6 +250,29 @@ var createPagesMenu = function(url) {
   return menu;
 };
 
+var createServersMenu = function(url) {
+  var currentUrl = new URL(AemPage.getPage(url));
+  var state = new AemPageState("pages");
+
+  var i = 0;
+  var currentIndex = 0;
+  getServers(currentUrl).forEach(function(server) {
+    if (server.url.origin === currentUrl.origin) {
+      currentIndex = i;
+    } else {
+      i += 1;
+    }
+
+    state.appendPage(server);
+  });
+
+  var menu = new Menu(currentIndex, state.pages);
+  var keyboard = new Keyboard();
+  keyboard.addEventListeners(menu);
+
+  return menu;
+};
+
 // Initalize the popup window.
 document.addEventListener('DOMContentLoaded', function() {
   chrome.tabs.query({ active: true, currentWindow: true }, tabs => {
@@ -231,14 +291,14 @@ document.addEventListener('DOMContentLoaded', function() {
       chrome.commands.onCommand.addListener(function(command) {
         if (command === "select") {
           if (mode === "pages") {
-            alert("changing to servers");
+            mode = "servers";
 
             menu.clear();
             menu.pages = [];
-            menu = createPagesMenu(url);
+            menu = createServersMenu(url);
             menu.render();
           } else {
-            alert("changing to pages");
+            mode = "pages";
 
             menu.clear();
             menu.pages = [];
