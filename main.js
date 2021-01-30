@@ -61,26 +61,6 @@ class Keyboard {
     });
   }
 
-  addMovePreviousServer(menu) {
-    document.addEventListener('keydown', function(event) {
-      // TODO is 36 for left?
-      alert(event.keyCode);
-      if (event.keyCode === 36 || event.keyCode === 72) {
-        menu.movePreviousServer();
-      }
-    });
-  }
-
-  addMoveNextServer(menu) {
-    document.addEventListener('keydown', function(event) {
-      // TODO is 42 for left?
-      alert(event.keyCode);
-      if (event.keyCode === 42 || event.keyCode === 80) {
-        menu.moveNextServer();
-      }
-    });
-  }
-
   addOpen(menu) {
     document.addEventListener('keydown', function(event) {
       if (event.keyCode === 13 || event.keyCode == 79) {
