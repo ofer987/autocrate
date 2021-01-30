@@ -12,18 +12,18 @@ var getClassNames = function(className) {
   return className.split(' ');
 };
 
-const serverUrls = [
+const servers = [
   {
     name: 'Localhost',
-    url: 'http://localhost:4502'
+    origin: 'http://localhost:4502'
   },
   {
     name: 'QA',
-    url: ''
+    origin: ''
   },
   {
     name: 'Author UAT',
-    url: ''
+    origin: ''
   },
   {
     name: 'Author PPE',
@@ -31,7 +31,7 @@ const serverUrls = [
   },
   {
     name: 'Author Production',
-    url: ''
+    origin: ''
   }
 ];
 
