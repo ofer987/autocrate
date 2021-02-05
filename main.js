@@ -72,7 +72,7 @@ class Keyboard {
   addEventListeners(menu) {
     this.addMoveUp(menu);
     this.addMoveDown(menu);
-    this.addOpen(menu);
+    this.addLaunch(menu);
   }
 
   addMoveUp(menu) {
@@ -91,10 +91,11 @@ class Keyboard {
     });
   }
 
-  addOpen(menu) {
+  addLaunch(menu) {
     document.addEventListener('keydown', function(event) {
       if (event.keyCode === 13 || event.keyCode == 79) {
-        menu.open();
+        menu.launch();
+        menu.close();
       }
     })
   }
@@ -151,10 +152,14 @@ class Menu {
     this.render();
   }
 
-  open() {
+  launch() {
     var selectedPage = this.pages[this.selectedIndex];
 
     navigateTo(selectedPage.toString());
+  }
+
+  close() {
+    window.close();
   }
 
   clear() {
