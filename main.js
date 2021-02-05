@@ -53,7 +53,21 @@ class Server {
   }
 }
 
-getServers = function(url) {
+var getCrxDePages = function(servers) {
+  var results = [];
+
+  var i = 0;
+  servers.forEach(function(server) {
+    var serverUrl = new URL(`${server.protocol}//${server.host}/crx/de/index.jsp`);
+
+    results.push(new CrxDePage(i, server.name, serverUrl));
+    i += 1;
+  });
+
+  return results;
+}
+
+var getServers = function(url) {
   url = new URL(url);
 
   var results = [];
@@ -278,6 +292,21 @@ var createServersMenu = function(url) {
   return menu;
 };
 
+var createCrxDePagesMenu = function(url) {
+  var state = new AemPageState("pages");
+
+  getCrxDePages(servers).forEach(function(page) {
+    console.log(page.toString());
+    state.appendPage(page);
+  });
+
+  var menu = new Menu(0, state.pages);
+  var keyboard = new Keyboard();
+  keyboard.addEventListeners(menu);
+
+  return menu;
+};
+
 // Initalize the popup window.
 document.addEventListener('DOMContentLoaded', function() {
   chrome.tabs.query({ active: true, currentWindow: true }, tabs => {
@@ -289,7 +318,6 @@ document.addEventListener('DOMContentLoaded', function() {
       currentPage = AemPage.getPage(url);
 
       var mode = "pages";
-
       var menu = createPagesMenu(url);
       menu.render();
 
@@ -313,9 +341,10 @@ document.addEventListener('DOMContentLoaded', function() {
         }
       });
     } catch (exception) {
-      appendError(exception);
+      // appendError(exception);
 
-      throw exception;
+      var menu = createCrxDePagesMenu();
+      menu.render();
     }
   });
 });
@@ -326,7 +355,7 @@ class AemPage {
 
     if (EditorPage.isPage(url)) return new EditorPage(url);
     if (PreviewPage.isPage(url)) return new PreviewPage(url);
-    if (CrxDePage.isPage(url)) return new CrxDePage(url);
+    if (CrxDePage.isPage(url)) return new CrxDePage(0, 'CRX / DE', url);
     if (CrxPackMgrPage.isPage(url)) return new CrxPackMgrPage(url);
 
     throw `Sorry the url (${url}) is not an AEM page`;
@@ -378,7 +407,7 @@ class CrxPackMgrPage extends AemPage {
     var url = new URL(this.url);
     url.pathname = '/crx/de/index.jsp';
 
-    return new CrxDePage(url);
+    return new CrxDePage(0, 'CRX / DE', url);
   }
 
   get crxPackMgrPage() {
@@ -387,7 +416,7 @@ class CrxPackMgrPage extends AemPage {
 }
 
 class CrxDePage extends AemPage {
-  static pathRegex = /^\/crx\/de\/index\.jsp#?(.*)$/;
+  static pathRegex = /^\/crx\/de\/index\.jsp$/;
 
   static isPage(url) {
     url = new URL(url);
@@ -396,15 +425,14 @@ class CrxDePage extends AemPage {
   }
 
   get id() {
-    return 'crx-de';
+    return `crx-de-${this.i}`;
   }
 
-  get name() {
-    return "CRX / DE";
-  }
-
-  constructor(url) {
+  constructor(i, name, url) {
     super(new URL(url));
+
+    this.i = i;
+    this.name = name;
   }
 
   get editorPage() {
@@ -465,7 +493,7 @@ class EditorPage extends AemPage {
   get crxDePage() {
     var url = `${this.url.origin}/crx/de/index.jsp#${this.url.pathname.match(EditorPage.pathRegex)[1]}`;
 
-    return new CrxDePage(url);
+    return new CrxDePage(0, 'CRX / DE', url);
   }
 
   get crxPackMgrPage() {
@@ -515,7 +543,7 @@ class PreviewPage extends AemPage {
     var jcrPath = this.url.pathname.match(regex)[1] || this.url.pathname;
     var url = `${this.url.origin}/crx/de/index.jsp#${jcrPath}`;
 
-    return new CrxDePage(url);
+    return new CrxDePage(0, 'CRX / DE', url);
   }
 
   get crxPackMgrPage() {
