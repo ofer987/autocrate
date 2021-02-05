@@ -8,28 +8,65 @@ var getClassNames = function(className) {
   return className.split(' ');
 };
 
-const serverUrls = [
+const servers = [
   {
+    id: 'localhost',
     name: 'Localhost',
-    url: 'http://localhost:4502'
+    protocol: 'http:',
+    host: 'localhost:4502'
   },
   {
+    id: 'qa',
     name: 'QA',
-    url: ''
+    protocol: 'https:',
+    host: ''
   },
   {
+    id: "author-uat",
     name: 'Author UAT',
-    url: ''
+    protocol: 'https:',
+    host: ''
   },
   {
+    id: "author-ppe",
     name: 'Author PPE',
-    url: ''
+    protocol: 'https:',
+    host: ''
   },
   {
+    id: 'author-prod',
     name: 'Author Production',
-    url: ''
+    protocol: 'https:',
+    host: ''
   }
 ];
+
+class Server {
+  constructor(id, name, url) {
+    this.id = id;
+    this.name = name;
+    this.url = new URL(url);
+  }
+
+  toString() {
+    return this.url.toString();
+  }
+}
+
+getServers = function(url) {
+  url = new URL(url);
+
+  var results = [];
+  servers.forEach(function(server) {
+    var serverUrl = new URL(url);
+    serverUrl.protocol = server.protocol;
+    serverUrl.host = server.host;
+
+    results.push(new Server(server.id, server.name, serverUrl));
+  });
+
+  return results;
+}
 
 class Keyboard {
   addEventListeners(menu) {
@@ -141,28 +178,14 @@ class Menu {
 }
 
 class AemPageState {
-  static initial = {
-    errors: {
-      className: 'hidden'
-    },
-    pages: {
-      className: 'displayed',
-      selectedIndex: 0,
-      items: [
-      ]
-    }
-  }
-
-  get pages() {
-    return this.state.pages.items;
+  constructor(mode) {
+    this.mode = mode;
+    this.selectedIndex = 0;
+    this.pages = [];
   }
 
   appendPage(page) {
     this.pages.push(page);
-  }
-
-  constructor() {
-    this.state = AemPageState.initial
   }
 }
 
@@ -204,6 +227,52 @@ var appendError = function(exception) {
   return;
 };
 
+var createPagesMenu = function(url) {
+  var currentPage = AemPage.getPage(url);
+  var state = new AemPageState("pages");
+
+  var i = 0;
+  var currentIndex = 0;
+  getPages(currentPage).forEach(function(page) {
+    if (currentPage.id === page.id) {
+      currentIndex = i;
+    } else {
+      i += 1;
+    }
+
+    state.appendPage(page);
+  });
+
+  var menu = new Menu(currentIndex, state.pages);
+  var keyboard = new Keyboard();
+  keyboard.addEventListeners(menu);
+
+  return menu;
+};
+
+var createServersMenu = function(url) {
+  var currentUrl = new URL(AemPage.getPage(url));
+  var state = new AemPageState("pages");
+
+  var i = 0;
+  var currentIndex = 0;
+  getServers(currentUrl).forEach(function(server) {
+    if (server.url.origin === currentUrl.origin) {
+      currentIndex = i;
+    } else {
+      i += 1;
+    }
+
+    state.appendPage(server);
+  });
+
+  var menu = new Menu(currentIndex, state.pages);
+  var keyboard = new Keyboard();
+  keyboard.addEventListeners(menu);
+
+  return menu;
+};
+
 // Initalize the popup window.
 document.addEventListener('DOMContentLoaded', function() {
   chrome.tabs.query({ active: true, currentWindow: true }, tabs => {
@@ -214,24 +283,30 @@ document.addEventListener('DOMContentLoaded', function() {
     try {
       currentPage = AemPage.getPage(url);
 
-      var pages = document.getElementById("pages")
+      var mode = "pages";
 
-      var state = new AemPageState();
-      var i = 0;
-      getPages(currentPage).forEach(function(page) {
-        if (currentPage.id === page.id) {
-          currentIndex = i;
-        } else {
-          i += 1;
-        }
-        state.appendPage(page);
-      });
-
-      var menu = new Menu(currentIndex, state.pages);
+      var menu = createPagesMenu(url);
       menu.render();
 
-      var keyboard = new Keyboard();
-      keyboard.addEventListeners(menu);
+      chrome.commands.onCommand.addListener(function(command) {
+        if (command === "select") {
+          if (mode === "pages") {
+            mode = "servers";
+
+            menu.clear();
+            menu.pages = [];
+            menu = createServersMenu(url);
+            menu.render();
+          } else {
+            mode = "pages";
+
+            menu.clear();
+            menu.pages = [];
+            menu = createPagesMenu(url);
+            menu.render();
+          };
+        }
+      });
     } catch (exception) {
       appendError(exception);
 
