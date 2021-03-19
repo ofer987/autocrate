@@ -8,38 +8,38 @@ var getClassNames = function(className) {
   return className.split(' ');
 };
 
-const servers = [
-  {
+var servers = {
+  localhost: {
     id: 'localhost',
     name: 'Localhost',
     protocol: 'http:',
-    host: 'localhost:4502'
+    host: ''
   },
-  {
+  qa: {
     id: 'qa',
     name: 'QA',
     protocol: 'https:',
     host: ''
   },
-  {
+  uat: {
     id: "author-uat",
     name: 'Author UAT',
     protocol: 'https:',
     host: ''
   },
-  {
+  ppe: {
     id: "author-ppe",
     name: 'Author PPE',
     protocol: 'https:',
     host: ''
   },
-  {
+  production: {
     id: 'author-prod',
     name: 'Author Production',
     protocol: 'https:',
     host: ''
   }
-];
+};
 
 class Server {
   constructor(id, name, url) {
@@ -53,11 +53,12 @@ class Server {
   }
 }
 
-var getCrxDePages = function(servers) {
+var getCrxDePages = function(serverNames) {
   var results = [];
 
   var i = 0;
-  servers.forEach(function(server) {
+  serverNames.forEach(function(name) {
+    var server = servers[name];
     var serverUrl = new URL(`${server.protocol}//${server.host}/crx/de/index.jsp`);
 
     results.push(new CrxDePage(i, server.name, serverUrl));
@@ -71,8 +72,10 @@ var getServers = function(url) {
   url = new URL(url);
 
   var results = [];
-  servers.forEach(function(server) {
+  Object.keys(servers).forEach(function(name) {
+    var server = servers[name];
     var serverUrl = new URL(url);
+
     serverUrl.protocol = server.protocol;
     serverUrl.host = server.host;
 
@@ -295,7 +298,7 @@ var createServersMenu = function(url) {
 var createCrxDePagesMenu = function(url) {
   var state = new AemPageState("pages");
 
-  getCrxDePages(servers).forEach(function(page) {
+  getCrxDePages(Object.keys(servers)).forEach(function(page) {
     console.log(page.toString());
     state.appendPage(page);
   });
@@ -307,8 +310,19 @@ var createCrxDePagesMenu = function(url) {
   return menu;
 };
 
-// Initalize the popup window.
-document.addEventListener('DOMContentLoaded', function() {
+initialize = function(andThen) {
+  chrome.storage.sync.get({ localhost: '', qa: '', uat: '', ppe: '', production: '' }, function(saved_values) {
+    servers.localhost.host = saved_values.localhost;
+    servers.qa.host = saved_values.qa;
+    servers.uat.host = saved_values.uat;
+    servers.ppe.host = saved_values.ppe;
+    servers.production.host = saved_values.production;
+
+    andThen();
+  });
+};
+
+var main = function() {
   chrome.tabs.query({ active: true, currentWindow: true }, tabs => {
     var tab = tabs[0];
     var url = tab.url;
@@ -341,12 +355,15 @@ document.addEventListener('DOMContentLoaded', function() {
         }
       });
     } catch (exception) {
-      // appendError(exception);
-
       var menu = createCrxDePagesMenu();
       menu.render();
     }
   });
+};
+
+// Initalize the popup window.
+document.addEventListener('DOMContentLoaded', function() {
+  initialize(main);
 });
 
 class AemPage {
