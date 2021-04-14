@@ -222,7 +222,8 @@ var getPages = function(page) {
     page.editorPage,
     page.previewPage,
     page.crxDePage,
-    page.crxPackMgrPage
+    page.crxPackMgrPage,
+    page.userAdminPage
   ];
 };
 
@@ -374,6 +375,7 @@ class AemPage {
     if (PreviewPage.isPage(url)) return new PreviewPage(url);
     if (CrxDePage.isPage(url)) return new CrxDePage(0, 'CRX / DE', url);
     if (CrxPackMgrPage.isPage(url)) return new CrxPackMgrPage(url);
+    if (UserAdminPage.isPage(url)) return new UserAdminPage(url);
 
     throw `Sorry the url (${url}) is not an AEM page`;
   }
@@ -384,6 +386,60 @@ class AemPage {
 
   toString() {
     return this.url.toString();
+  }
+}
+
+class UserAdminPage extends AemPage {
+  static pathRegex = /^\/useradmin$/;
+
+  static isPage(url) {
+    url = new URL(url);
+
+    return UserAdminPage.pathRegex.test(new URL(url).pathname);
+  }
+
+  get id() {
+    return 'user-admin';
+  }
+
+  get name() {
+    return "User Admin";
+  }
+
+  constructor(url) {
+    var url = new URL(url);
+
+    super(`${url.origin}/useradmin`);
+  }
+
+  get editorPage() {
+    var url = `${this.url.origin}/editor.html\.html`;
+
+    return new EditorPage(url);
+  }
+
+  get previewPage() {
+    var url = `${this.url.origin}\/\.html?wcmmode=disabled`;
+
+    return new PreviewPage(url);
+  }
+
+  get crxDePage() {
+    var url = new URL(this.url);
+    url.pathname = '/crx/de/index.jsp';
+
+    return new CrxDePage(0, 'CRX / DE', url);
+  }
+
+  get crxPackMgrPage() {
+    var url = new URL(this.url);
+    url.pathname = '/crx/packmgr/index.jsp';
+
+    return new CrxPackMgrPage(0, 'CRX / Package Manager', url);
+  }
+
+  get userAdminPage() {
+    return this;
   }
 }
 
@@ -430,6 +486,10 @@ class CrxPackMgrPage extends AemPage {
   get crxPackMgrPage() {
     return this;
   }
+
+  get userAdminPage() {
+    return new UserAdminPage(this.url);
+  }
 }
 
 class CrxDePage extends AemPage {
@@ -474,6 +534,10 @@ class CrxDePage extends AemPage {
 
     return new CrxPackMgrPage(url);
   }
+
+  get userAdminPage() {
+    return new UserAdminPage(this.url);
+  }
 }
 
 class EditorPage extends AemPage {
@@ -517,6 +581,10 @@ class EditorPage extends AemPage {
     var url = `${this.url.origin}/crx/packmgr/index.jsp#${this.url.pathname.match(EditorPage.pathRegex)[1]}`;
 
     return new CrxPackMgrPage(url);
+  }
+
+  get userAdminPage() {
+    return new UserAdminPage(this.url);
   }
 }
 
@@ -570,5 +638,9 @@ class PreviewPage extends AemPage {
     var url = `${this.url.origin}/crx/packmgr/index.jsp#${jcrPath}`;
 
     return new CrxPackMgrPage(url);
+  }
+
+  get userAdminPage() {
+    return new UserAdminPage(this.url);
   }
 }
