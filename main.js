@@ -411,31 +411,29 @@ class UserAdminPage extends AemPage {
   constructor(url) {
     var url = new URL(url);
 
-    super(`${url.origin}/useradmin`);
+    super(url);
   }
 
   get editorPage() {
-    var url = `${this.url.origin}/editor.html\.html`;
+    var url = `${this.url.origin}/editor.html/content\.html`;
 
     return new EditorPage(url);
   }
 
   get previewPage() {
-    var url = `${this.url.origin}\/\.html?wcmmode=disabled`;
+    var url = `${this.url.origin}\/content\.html?wcmmode=disabled`;
 
     return new PreviewPage(url);
   }
 
   get crxDePage() {
-    var url = new URL(this.url);
-    url.pathname = '/crx/de/index.jsp';
+    var url = new URL(`${this.url}/crx/de/index.jsp`);
 
     return new CrxDePage(0, 'CRX / DE', url);
   }
 
   get crxPackMgrPage() {
-    var url = new URL(this.url);
-    url.pathname = '/crx/packmgr/index.jsp';
+    var url = new URL(`${this.url}/crx/packmgr/index.jsp`);
 
     return new CrxPackMgrPage(0, 'CRX / Package Manager', url);
   }
@@ -445,7 +443,9 @@ class UserAdminPage extends AemPage {
   }
 
   get sitesPage() {
-    return new SitesPage();
+    var url = new URL(`${this.url.origin}/sites.html/content`);
+
+    return new SitesPage(url);
   }
 }
 
@@ -494,7 +494,9 @@ class CrxPackMgrPage extends AemPage {
   }
 
   get userAdminPage() {
-    return new UserAdminPage(this.url);
+    var url = new URL(`${this.url.origin}/useradmin`);
+
+    return new UserAdminPage(url);
   }
 
   get sitesPage() {
@@ -548,7 +550,9 @@ class CrxDePage extends AemPage {
   }
 
   get userAdminPage() {
-    return new UserAdminPage(this.url);
+    var url = new URL(`${this.url.origin}/useradmin`);
+
+    return new UserAdminPage(url);
   }
 
   get sitesPage() {
@@ -602,7 +606,9 @@ class EditorPage extends AemPage {
   }
 
   get userAdminPage() {
-    return new UserAdminPage(this.url);
+    var url = new URL(`${this.url.origin}/useradmin`);
+
+    return new UserAdminPage(url);
   }
 
   get sitesPage() {
@@ -665,7 +671,9 @@ class PreviewPage extends AemPage {
   }
 
   get userAdminPage() {
-    return new UserAdminPage(this.url);
+    var url = new URL(`${this.url.origin}/useradmin`);
+
+    return new UserAdminPage(url);
   }
 
   get sitesPage() {
@@ -726,7 +734,9 @@ class SitesPage extends AemPage {
   }
 
   get userAdminPage() {
-    return new UserAdminPage(this.url);
+    var url = new URL(`${this.url.origin}/useradmin`);
+
+    return new UserAdminPage(url);
   }
 
   get sitesPage() {
