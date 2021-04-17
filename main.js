@@ -223,6 +223,7 @@ var getPages = function(page) {
     page.previewPage,
     page.crxDePage,
     page.crxPackMgrPage,
+    page.sitesPage,
     page.userAdminPage
   ];
 };
@@ -376,6 +377,7 @@ class AemPage {
     if (CrxDePage.isPage(url)) return new CrxDePage(0, 'CRX / DE', url);
     if (CrxPackMgrPage.isPage(url)) return new CrxPackMgrPage(url);
     if (UserAdminPage.isPage(url)) return new UserAdminPage(url);
+    if (SitesPage.isPage(url)) return new SitesPage(url);
 
     throw `Sorry the url (${url}) is not an AEM page`;
   }
@@ -441,6 +443,10 @@ class UserAdminPage extends AemPage {
   get userAdminPage() {
     return this;
   }
+
+  get sitesPage() {
+    return new SitesPage();
+  }
 }
 
 class CrxPackMgrPage extends AemPage {
@@ -490,6 +496,12 @@ class CrxPackMgrPage extends AemPage {
   get userAdminPage() {
     return new UserAdminPage(this.url);
   }
+
+  get sitesPage() {
+    var url = `${this.url.origin}/sites.html${this.url.hash.substr(1)}`;
+
+    return new SitesPage(url);
+  }
 }
 
 class CrxDePage extends AemPage {
@@ -538,6 +550,12 @@ class CrxDePage extends AemPage {
   get userAdminPage() {
     return new UserAdminPage(this.url);
   }
+
+  get sitesPage() {
+    var url = `${this.url.origin}/sites.html${this.url.hash.substr(1)}`;
+
+    return new SitesPage(url);
+  }
 }
 
 class EditorPage extends AemPage {
@@ -585,6 +603,12 @@ class EditorPage extends AemPage {
 
   get userAdminPage() {
     return new UserAdminPage(this.url);
+  }
+
+  get sitesPage() {
+    var url = `${this.url.origin}/sites.html${this.url.pathname.match(EditorPage.pathRegex)[1]}`;
+
+    return new SitesPage(url);
   }
 }
 
@@ -642,5 +666,70 @@ class PreviewPage extends AemPage {
 
   get userAdminPage() {
     return new UserAdminPage(this.url);
+  }
+
+  get sitesPage() {
+    var regex = /(\/.*)\.html/;
+
+    var jcrPath = this.url.pathname.match(regex)[1] || this.url.pathname;
+    var url = `${this.url.origin}/sites.html${jcrPath}`;
+
+    return new SitesPage(url);
+  }
+}
+
+class SitesPage extends AemPage {
+  static pathRegex = /^\/sites\.html(\/.*)/
+
+  static isPage(url) {
+    url = new URL(url);
+
+    return SitesPage.pathRegex.test(new URL(url).pathname);
+  }
+
+  get id() {
+    return 'sites-page';
+  }
+
+  get name() {
+    return 'Sites';
+  }
+
+  constructor(url) {
+    super(new URL(url));
+  }
+
+  get editorPage() {
+    var url = new URL(this.url);
+
+    var url = `${this.url.origin}/editor.html${this.url.pathname.match(SitesPage.pathRegex)[1]}\.html`;
+
+    return new EditorPage(url);
+  }
+
+  get previewPage() {
+    var url = `${this.url.origin}${this.url.pathname.match(SitesPage.pathRegex)[1]}\.html?wcmmode=disabled`;
+
+    return new PreviewPage(url);
+  }
+
+  get crxDePage() {
+    var url = `${this.url.origin}/crx/de/index.jsp#${this.url.pathname.match(SitesPage.pathRegex)[1]}`;
+
+    return new CrxDePage(0, 'CRX / DE', url);
+  }
+
+  get crxPackMgrPage() {
+    var url = `${this.url.origin}/crx/packmgr/index.jsp#${this.url.pathname.match(SitesPage.pathRegex)[1]}`;
+
+    return new CrxPackMgrPage(url);
+  }
+
+  get userAdminPage() {
+    return new UserAdminPage(this.url);
+  }
+
+  get sitesPage() {
+    return this;
   }
 }
