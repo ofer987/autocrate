@@ -1,12 +1,16 @@
+import { AemPage } from "./aemPage";
 import { EditorPage } from "./editorPage";
 import { UserAdminPage } from "./userAdminPage";
 import { CrxDePage } from "./crxDePage";
 import { CrxPackMgrPage } from "./crxPackManagerPage";
 import { PreviewPage } from "./previewPage";
 
-export class SitesPage {
+export class SitesPage extends AemPage {
   static pathRegex = /^\/sites\.html(\/.*)/
-  private url: URL;
+
+  static getName(): string {
+    return 'Sites';
+  }
 
   static isPage(url: URL) {
     return SitesPage.pathRegex.test(url.pathname);
@@ -16,45 +20,41 @@ export class SitesPage {
     return 'sites-page';
   }
 
-  get name(): string {
-    return 'Sites';
-  }
-
-  get editorPage(): EditorPage {
-    var url = new URL(`${this.url.origin}/editor.html${this.url.pathname.match(SitesPage.pathRegex)[1]}\.html`);
+  get editorPage(): AemPage {
+    var url = new URL(`${this._url.origin}/editor.html${this._url.pathname.match(SitesPage.pathRegex)[1]}\.html`);
 
     return new EditorPage(url);
   }
 
-  get previewPage(): PreviewPage {
-    var url = new URL(`${this.url.origin}${this.url.pathname.match(SitesPage.pathRegex)[1]}\.html?wcmmode=disabled`);
+  get previewPage(): AemPage {
+    var url = new URL(`${this._url.origin}${this._url.pathname.match(SitesPage.pathRegex)[1]}\.html?wcmmode=disabled`);
 
     return new PreviewPage(url);
   }
 
-  get crxDePage(): CrxDePage {
-    var url = new URL(`${this.url.origin}/crx/de/index.jsp#${this.url.pathname.match(SitesPage.pathRegex)[1]}`);
+  get crxDePage(): AemPage {
+    var url = new URL(`${this._url.origin}/crx/de/index.jsp#${this._url.pathname.match(SitesPage.pathRegex)[1]}`);
 
     return new CrxDePage(url);
   }
 
-  get crxPackMgrPage(): CrxPackMgrPage {
-    var url = new URL(`${this.url.origin}/crx/packmgr/index.jsp#${this.url.pathname.match(SitesPage.pathRegex)[1]}`);
+  get crxPackMgrPage(): AemPage {
+    var url = new URL(`${this._url.origin}/crx/packmgr/index.jsp#${this._url.pathname.match(SitesPage.pathRegex)[1]}`);
 
     return new CrxPackMgrPage(url);
   }
 
-  get userAdminPage(): UserAdminPage {
-    var url = new URL(`${this.url.origin}/useradmin`);
+  get userAdminPage(): AemPage {
+    var url = new URL(`${this._url.origin}/useradmin`);
 
     return new UserAdminPage(url);
   }
 
-  get sitesPage(): SitesPage {
+  get sitesPage(): AemPage {
     return this;
   }
 
   constructor(url: URL) {
-    this.url = url;
+    super(url);
   }
 }

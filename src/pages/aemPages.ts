@@ -1,3 +1,4 @@
+import { AemPage } from "./aemPage";
 import { PreviewPage } from "./previewPage";
 import { EditorPage } from "./editorPage";
 import { UserAdminPage } from"./userAdminPage";
@@ -6,7 +7,7 @@ import { CrxPackMgrPage } from "./crxPackManagerPage";
 import { SitesPage } from "./sitesPage";
 
 export class AemPages {
-  static getPage(url: URL) {
+  static getPage(url: URL): AemPage {
     url = new URL(url.toString());
 
     if (EditorPage.isPage(url)) return new EditorPage(url);
@@ -16,6 +17,17 @@ export class AemPages {
     if (UserAdminPage.isPage(url)) return new UserAdminPage(url);
     if (SitesPage.isPage(url)) return new SitesPage(url);
 
-    throw `Sorry the url (${url}) is not an AEM page`;
+    return new CrxDePage(url);
+  }
+
+  static getPageNames(): string[] {
+    return [
+      EditorPage.getName(),
+      PreviewPage.getName(),
+      CrxDePage.getName(),
+      CrxPackMgrPage.getName(),
+      UserAdminPage.getName(),
+      SitesPage.getName()
+    ]
   }
 }

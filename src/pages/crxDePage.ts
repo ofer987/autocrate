@@ -1,61 +1,61 @@
+import { AemPage } from "./aemPage";
 import { EditorPage } from "./editorPage";
 import { UserAdminPage } from"./userAdminPage";
 import { CrxPackMgrPage } from "./crxPackManagerPage";
 import { SitesPage } from "./sitesPage";
 import { PreviewPage } from "./previewPage";
 
-export class CrxDePage {
+export class CrxDePage extends AemPage {
   static pathRegex = /^\/crx\/de\/index\.jsp$/;
-  private url: URL;
+
+  static getName(): string {
+    return "CRX / DE Page";
+  }
 
   static isPage(url: URL): boolean {
     return CrxDePage.pathRegex.test(url.pathname);
-  }
-
-  get name(): string {
-    return "CRX / DE Page";
   }
 
   get id(): string {
     return "crx-de";
   }
 
-  get editorPage(): EditorPage {
-    var url = new URL(`${this.url.origin}/editor.html${this.url.hash.substring(1)}\.html`);
+  get editorPage(): AemPage {
+    var url = new URL(`${this._url.origin}/editor.html${this._url.hash.substring(1)}\.html`);
 
     return new EditorPage(url);
   }
 
-  get previewPage(): PreviewPage {
-    var url = new URL(`${this.url.origin}${this.url.hash.substring(1)}\.html?wcmmode=disabled`);
+  get previewPage(): AemPage {
+    var url = new URL(`${this._url.origin}${this._url.hash.substring(1)}\.html?wcmmode=disabled`);
 
     return new PreviewPage(url);
   }
 
-  get crxDePage(): CrxDePage {
+  get crxDePage(): AemPage {
     return this;
   }
 
-  get crxPackMgrPage(): CrxPackMgrPage {
-    var url = new URL(this.url.toString());
+  get crxPackMgrPage(): AemPage {
+    var url = new URL(this._url.toString());
     url.pathname = '/crx/packmgr/index.jsp';
 
     return new CrxPackMgrPage(url);
   }
 
-  get userAdminPage(): UserAdminPage {
-    var url = new URL(`${this.url.origin}/useradmin`);
+  get userAdminPage(): AemPage {
+    var url = new URL(`${this._url.origin}/useradmin`);
 
     return new UserAdminPage(url);
   }
 
-  get sitesPage(): SitesPage {
-    var url = new URL(`${this.url.origin}/sites.html${this.url.hash.substring(1)}`);
+  get sitesPage(): AemPage {
+    var url = new URL(`${this._url.origin}/sites.html${this._url.hash.substring(1)}`);
 
     return new SitesPage(url);
   }
 
   constructor(url: URL) {
-    this.url = url;
+    super(url);
   }
 }

@@ -2,7 +2,7 @@ import { Server } from "../models/server";
 
 export class ServerMenuViewModel {
   private IS_SELECTED_CLASS = "selected";
-  private SERVER_CLASS = "page";
+  private SERVER_CLASS = "server";
 
   private url: URL;
   private _selectedIndex: number;
@@ -14,7 +14,6 @@ export class ServerMenuViewModel {
 
   private setSelectedIndex(value: number) {
     let pages = document.querySelectorAll(`.${this.SERVER_CLASS}`);
-    // alert(`${pages.length} pages`);
     pages.forEach(item => item.classList.remove(this.IS_SELECTED_CLASS));
 
     if (value < 0) {
@@ -29,24 +28,9 @@ export class ServerMenuViewModel {
 
     this._selectedIndex = value;
 
-    // alert(`${this._selectedIndex}: ${selectedServerElementId}`);
     document.getElementById(selectedServerElementId).classList
       .add(this.IS_SELECTED_CLASS);
   }
-
-  // setSelectedPage(id) {
-  //   var selectedPage = this.menuElement.querySelector(`#${id}`);
-  //
-  //   selectedPage.classList.add("selected");
-  // }
-  //
-  // get pageElements() {
-  //   return this.menuElement.querySelectorAll('.page');
-  // }
-  //
-  // get menuElement(): HTMLElement {
-  //   return document.getElementById('pages');
-  // }
 
   private menu: HTMLElement;
 
@@ -72,7 +56,6 @@ export class ServerMenuViewModel {
   }
 
   moveUp(): number {
-    // alert("moved up");
     this.setSelectedIndex(this._selectedIndex - 1)
 
     return this._selectedIndex;
@@ -132,12 +115,10 @@ export class ServerMenuViewModel {
     let pages = document.querySelectorAll(`.${this.SERVER_CLASS}`);
     pages.forEach(item => item.classList.remove(this.IS_SELECTED_CLASS));
 
-    // alert(`searching for server ${url.origin}`);
     for (let index = 0; index < this.servers.length; index += 1) {
       let server = this.servers[index];
 
       if (server.url.origin === url.origin) {
-        // alert(`open to ${url.origin}`);
         this._selectedIndex = index;
         const elementId = this.getServerElementId(this._selectedIndex);
         document.getElementById(elementId).classList
@@ -156,10 +137,7 @@ export class ServerMenuViewModel {
   }
 
   private onKeyDown(): void {
-    // alert("foobar2");
-    // alert(this.menu.id);
     document.addEventListener("keydown", (event: KeyboardEvent) => {
-      // alert("foobar");
       event.preventDefault();
 
       if (event.key === "j" || event.key === "ArrowDown") {
@@ -184,61 +162,5 @@ export class ServerMenuViewModel {
       }
     });
   }
-  // moveUp() {
-  //   var currentIndex = this.selectedIndex;
-  //   var pageLength = this.pages.length;
-  //
-  //   // rollover
-  //   if (currentIndex <= 0) {
-  //     this.selectedIndex = this.pages.length - 1;
-  //   } else {
-  //     this.selectedIndex -= 1;
-  //   }
-  //
-  //   this.render();
-  // }
-  //
-  // moveDown() {
-  //   var currentIndex = this.selectedIndex;
-  //   var pageLength = this.pages.length;
-  //
-  //   // rollover
-  //   if (currentIndex + 1 >= pageLength) {
-  //     this.selectedIndex = 0;
-  //   } else {
-  //     this.selectedIndex += 1;
-  //   }
-  //
-  //   this.render();
-  // }
-
-  // launch() {
-  //   var selectedPage = this.pages[this.selectedIndex];
-  //
-  //   navigateTo(selectedPage.toString());
-  // }
-  //
-  // close() {
-  //   window.close();
-  // }
-  //
-  // clear() {
-  //   this.pageElements.forEach(function(page) {
-  //     page.remove();
-  //   });
-  // }
-
-  // render() {
-  //   this.clear();
-  //
-  //   var menuElement = this.menuElement;
-  //   this.pages.forEach(function(page) {
-  //     var pageElement = getSelectionDiv(page.id, page.name, page.toString());
-  //
-  //     menuElement.appendChild(pageElement);
-  //   });
-  //
-  //   this.setSelectedPage(this.pages[this.selectedIndex].id);
-  // }
 }
 

@@ -3,7 +3,7 @@ import { Options } from "./models/options";
 import { Server } from "./models/server";
 import { ServerMenuViewModel } from "./viewModels/serverMenuViewModel";
 
-var defaultValues = {  
+var defaultValues = {
   localhost: {
     name: "Localhost",
     url: new URL("http://localhost:4502")
@@ -197,7 +197,16 @@ var appendError = function(exception: Error) {
 //   return menu;
 // };
 
+const defaultMode = "servers";
+type Modes = "servers" | "pages";
+
 export class Main {
+  private mode: Modes;
+
+  constructor() {
+    this.mode = defaultMode;
+  }
+
 // TODO: Convert to async/await
   initialize(_andThen?: any) {
     // TODO: add await
@@ -226,22 +235,33 @@ export class Main {
 
   work(options: Options): void {
     chrome.tabs.query({ active: true, currentWindow: true }, (tabs: chrome.tabs.Tab[]) => {
+      var mode = defaultMode;
+
       var tab = tabs[0];
       var url = new URL(tab.url);
 
       let servers = Object.values(options) as Server[];
+      let serversMenu = new ServerMenuViewModel(url, servers);
+      let pagesMenu = new PagesMenuViewModel(url);
+      // TODO: instantiate PagesMenu
 
       try {
-        let serverMenu = new ServerMenuViewModel(url, servers);
-        // var menu = createPagesMenu(url);
-        serverMenu.display();
-
-        chrome.commands.onCommand.addListener(command => {
-          serverMenu.display();
+        chrome.commands.onCommand.addListener((command: string) => {
+          alert(`hello ${mode}`);
+          if (command === "select") {
+            mode = mode == "servers"
+              ? "pages"
+              : "servers";
+          }
         });
       } catch (exception) {
-        // var menu = createCrxDePagesMenu(options);
-        // menu.display();
+        // NOTE: do I even need this Exception catch block?
+      }
+
+      ifserversMenu"servers") {
+        serverMenu.display();
+      } serversMenu
+        serverMenu.hide();
       }
     });
   }

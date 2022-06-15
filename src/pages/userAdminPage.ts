@@ -1,12 +1,20 @@
+import { AemPage } from "./aemPage";
 import { EditorPage } from "./editorPage";
 import { CrxDePage } from "./crxDePage";
 import { CrxPackMgrPage } from "./crxPackManagerPage";
 import { SitesPage } from "./sitesPage";
 import { PreviewPage } from "./previewPage";
 
-export class UserAdminPage {
+export class UserAdminPage extends AemPage {
   static pathRegex = /^\/useradmin$/;
-  private url: URL;
+
+  static getName(): string {
+    return "User Admin";
+  }
+
+  get url() {
+    return this._url;
+  }
 
   static isPage(url: URL) {
     return UserAdminPage.pathRegex.test(url.pathname);
@@ -16,45 +24,41 @@ export class UserAdminPage {
     return 'user-admin';
   }
 
-  get name(): string {
-    return "User Admin";
-  }
-
-  get editorPage(): EditorPage {
-    var url = new URL(`${this.url.origin}/editor.html/content\.html`);
+  get editorPage(): AemPage {
+    var url = new URL(`${this._url.origin}/editor.html/content\.html`);
 
     return new EditorPage(url);
   }
 
-  get previewPage(): PreviewPage {
-    var url = new URL(`${this.url.origin}\/content\.html?wcmmode=disabled`);
+  get previewPage(): AemPage {
+    var url = new URL(`${this._url.origin}\/content\.html?wcmmode=disabled`);
 
     return new PreviewPage(url);
   }
 
-  get crxDePage(): CrxDePage {
-    var url = new URL(`${this.url}/crx/de/index.jsp`);
+  get crxDePage(): AemPage {
+    var url = new URL(`${this._url}/crx/de/index.jsp`);
 
     return new CrxDePage(url);
   }
 
-  get crxPackMgrPage(): CrxPackMgrPage {
-    var url = new URL(`${this.url}/crx/packmgr/index.jsp`);
+  get crxPackMgrPage(): AemPage {
+    var url = new URL(`${this._url}/crx/packmgr/index.jsp`);
 
     return new CrxPackMgrPage(url);
   }
 
-  get userAdminPage(): UserAdminPage {
+  get userAdminPage(): AemPage {
     return this;
   }
 
-  get sitesPage(): SitesPage {
-    var url = new URL(`${this.url.origin}/sites.html/content`);
+  get sitesPage(): AemPage {
+    var url = new URL(`${this._url.origin}/sites.html/content`);
 
     return new SitesPage(url);
   }
 
   constructor(url: URL) {
-    this.url = url;
+    super(url);
   }
 }
