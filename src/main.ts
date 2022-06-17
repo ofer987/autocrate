@@ -1,6 +1,7 @@
 import { AemPages } from "./pages/aemPages";
 import { Options } from "./models/options";
 import { Server } from "./models/server";
+import { PagesMenuViewModel } from "./viewModels/pageMenuViewModel";
 import { ServerMenuViewModel } from "./viewModels/serverMenuViewModel";
 
 var defaultValues = {
@@ -198,17 +199,22 @@ var appendError = function(exception: Error) {
 // };
 
 const defaultMode = "servers";
-type Modes = "servers" | "pages";
+type modes = "servers" | "pages";
 
 export class Main {
-  private mode: Modes;
+  private mode: modes;
+  private servers: Server[];
+  private serversMenu: ServerMenuViewModel;
+  private pagesMenu: PagesMenuViewModel | null;
 
   constructor() {
     this.mode = defaultMode;
+
+    this.init();
   }
 
 // TODO: Convert to async/await
-  initialize(_andThen?: any) {
+  init(_andThen?: any) {
     // TODO: add await
     var options = { ...defaultValues }
     // var options = {
@@ -230,40 +236,90 @@ export class Main {
     //   andThen();
     // });
 
-    this.work(options);
-  }
-
-  work(options: Options): void {
     chrome.tabs.query({ active: true, currentWindow: true }, (tabs: chrome.tabs.Tab[]) => {
-      var mode = defaultMode;
-
       var tab = tabs[0];
       var url = new URL(tab.url);
 
-      let servers = Object.values(options) as Server[];
-      let serversMenu = new ServerMenuViewModel(url, servers);
-      let pagesMenu = new PagesMenuViewModel(url);
-      // TODO: instantiate PagesMenu
-
+      this.servers = Object.values(options) as Server[];
+      this.serversMenu = new ServerMenuViewModel(url, this.servers);
+      this.pagesMenu = null;
       try {
-        chrome.commands.onCommand.addListener((command: string) => {
-          alert(`hello ${mode}`);
-          if (command === "select") {
-            mode = mode == "servers"
-              ? "pages"
-              : "servers";
-          }
-        });
-      } catch (exception) {
-        // NOTE: do I even need this Exception catch block?
+        const aemPage = AemPages.getAemPage(url)
+
+        // alert("everything is fine");
+        this.pagesMenu = new PagesMenuViewModel(aemPage);
+      } catch(exception) {
+        alert(`Error: ${exception}`);
+        alert(`is not an aem page url is ${url} ${this.pagesMenu}`);
+        // not an AEM Page so do nothing and the AEM Pages Menu
+        // won't display
       }
 
-      ifserversMenu"servers") {
-        serverMenu.display();
-      } serversMenu
-        serverMenu.hide();
-      }
+      chrome.commands.onCommand.addListener((command: string) => {
+        // alert(`hello ${this.mode}`);
+        if (command === "select" && this.pagesMenu !== null) {
+          // alert(`2. hello ${this.mode}`);
+          this.mode = this.mode == "servers"
+            ? "pages"
+            : "servers";
+        }
+
+        this.displayMenu();
+      });
+
+      this.displayMenu();
     });
+  }
+
+  // display(options: Options): void {
+  //   chrome.tabs.query({ active: true, currentWindow: true }, (tabs: chrome.tabs.Tab[]) => {
+  //     var tab = tabs[0];
+  //     var url = new URL(tab.url);
+  //
+  //     let servers = Object.values(options) as Server[];
+  //     let serversMenu = new ServerMenuViewModel(url, servers);
+  //     let pagesMenu = null;
+  //     try {
+  //       const aemPage = AemPages.getAemPage(url)
+  //
+  //       // alert("everything is fine");
+  //       pagesMenu = new PagesMenuViewModel(aemPage);
+  //     } catch(exception) {
+  //       alert(`Error: ${exception}`);
+  //       alert(`is not an aem page url is ${url} ${pagesMenu}`);
+  //       // not an AEM Page so do nothing and the AEM Pages Menu
+  //       // won't display
+  //     }
+  //
+  //     chrome.commands.onCommand.addListener((command: string) => {
+  //       // alert(`hello ${this.mode}`);
+  //       if (command === "select" && pagesMenu !== null) {
+  //         alert(`2. hello ${this.mode}`);
+  //         this.mode = this.mode == "servers"
+  //           ? "pages"
+  //           : "servers";
+  //       }
+  //
+  //     });
+  //
+  //     // if (this.mode === "servers") {
+  //     //   serversMenu.display();
+  //     //   pagesMenu.hide();
+  //     // } else {
+  //     //   serversMenu.hide();
+  //     //   pagesMenu.display();
+  //     // }
+  //   });
+  // }
+
+  private displayMenu() {
+    if (this.mode === "servers") {
+      this.serversMenu.display();
+      this.pagesMenu.hide();
+    } else {
+      this.serversMenu.hide();
+      this.pagesMenu.display();
+    }
   }
 }
 

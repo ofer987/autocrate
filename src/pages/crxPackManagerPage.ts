@@ -1,4 +1,4 @@
-import { AemPage } from "./aemPage";
+import { AemPage, aemPageTypes } from "./aemPage";
 import { EditorPage } from "./editorPage";
 import { CrxDePage } from "./crxDePage";
 import { UserAdminPage } from "./userAdminPage";
@@ -8,12 +8,12 @@ import { PreviewPage } from "./previewPage";
 export class CrxPackMgrPage extends AemPage {
   static pathRegex = /^\/crx\/packmgr\/index\.jsp#?(.*)$/;
 
-  static getName(): string {
-    return "CRX / Package Manager";
-  }
-
   static isPage(url: URL): boolean {
     return CrxPackMgrPage.pathRegex.test(url.pathname);
+  }
+
+  get getType(): aemPageTypes {
+    return "Package Manager";
   }
 
   get id(): string {

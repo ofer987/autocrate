@@ -1,4 +1,4 @@
-import { AemPage } from "./aemPage";
+import { AemPage, aemPageTypes } from "./aemPage";
 import { EditorPage } from "./editorPage";
 import { UserAdminPage } from "./userAdminPage";
 import { CrxDePage } from "./crxDePage";
@@ -8,12 +8,12 @@ import { PreviewPage } from "./previewPage";
 export class SitesPage extends AemPage {
   static pathRegex = /^\/sites\.html(\/.*)/
 
-  static getName(): string {
-    return 'Sites';
-  }
-
   static isPage(url: URL) {
     return SitesPage.pathRegex.test(url.pathname);
+  }
+
+  get getType(): aemPageTypes {
+    return "Sites";
   }
 
   get id(): string {

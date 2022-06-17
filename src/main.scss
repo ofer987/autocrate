@@ -11,15 +11,32 @@ body {
   display: block;
 }
 
+.server {
+  padding-top: 7px;
+  padding-bottom: 7px;
+  padding-left: 2px;
+  padding-right: 20px;
+  white-space: nowrap;
+
+  &.selected {
+    color: white;
+    background-color: rgb(89,100, 200);
+  }
+
+  &:hover {
+    color: white;
+    background-color: rgb(89,100, 200);
+    cursor: pointer;
+  }
+}
+
 .page {
   padding-top: 7px;
   padding-bottom: 7px;
   padding-left: 2px;
   padding-right: 20px;
   white-space: nowrap;
-}
 
-.page {
   &.selected {
     color: white;
     background-color: rgb(89,100, 200);

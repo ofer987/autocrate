@@ -1,48 +1,80 @@
+import { kebabCase } from "lodash";
+
 import { MenuViewModel } from "./menuViewModel";
-import { AemPage } from "../pages/aemPage";
-import { AemPages } from "../pages/aemPages";
+import { AemPage, aemPageTypes } from "../pages/aemPage";
+
+interface Page {
+  id: string;
+  name: string;
+  aemPage: AemPage;
+  url: URL;
+}
 
 export class PagesMenuViewModel extends MenuViewModel {
   protected IS_SELECTED_CLASS = "selected";
-  protected SERVER_CLASS = "page";
+  protected ITEM_CLASS = "page";
+  protected MENU_CLASS = "pages";
 
-  private pages: string[];
+  private currentAemPage: AemPage;
+  private pages: Page[];
 
   protected get selectedElementId() {
     return this.getElementId(this._selectedIndex);
   }
 
-  constructor(currentUrl: URL, selectedIndex?: number) {
+  constructor(currentAemPage: AemPage) {
     super();
 
-    this.url = currentUrl;
-    this.pages = AemPages.getPageNames();
-    this._selectedIndex = selectedIndex || 0;
+    // this.url = currentUrl;
+    // alert("1");
+    // alert(`the current page is ${currentAemPage}`);
+    // alert(`the current page type is ${currentAemPage.getType}`);
+    this.currentAemPage = currentAemPage;
+    // alert(`1.5 the current page is ${this.currentAemPage}`);
+    // alert(`1.5 the current page type is ${this.currentAemPage.getType}`);
+    this.pages = AemPage
+      .getPageTypes()
+      .map((pageType: aemPageTypes) => {
+        const aemPage = this.currentAemPage.switchAemPage(pageType)
 
-    this.menu = document.getElementById("pages");
+        return {
+          id: kebabCase(pageType),
+          name: pageType,
+          aemPage: aemPage,
+          url: aemPage.url
+        }
+      });
+    // this._selectedIndex = selectedIndex || 0;
+
+    // alert("2");
+    this.menu = document.getElementById(this.MENU_CLASS);
     this.init();
   }
 
   private init(): void {
     let index = 0;
 
-    this.pages.map((page: AemPage) => {
-      return this.createItem(index++, page.name, page.url);
-    }).forEach((item: HTMLElement) => {
-      this.menu.appendChild(item);
-    });
+    this.pages
+      .map((page: Page) => {
+        return this.createItem(index++, page.name, page.url);
+      }).forEach((item: HTMLElement) => {
+        this.menu.appendChild(item);
+      });
+
+    // alert(`Created ${index} pages`);
 
     this.onKeyDown();
   }
 
   navigate(): void {
-    this.nprivateavigateTo(this.pages[this._selectedIndex].url);
+    this.navigateTo(this.pages[this._selectedIndex].url);
   }
 
   display(): void {
     this.menu.classList.remove("hidden");
     this.menu.classList.add("displayed");
-    this.setSelectedElementByUrl(this.url);
+    // alert("pages menu is displayed!");
+    this.setSelectedElementByUrl();
   }
 
   hide(): void {
@@ -56,7 +88,7 @@ export class PagesMenuViewModel extends MenuViewModel {
     const elementId = this.getElementId(id);
     result.id = elementId;
     result.textContent = name;
-    result.className = this.SERVER_CLASS;
+    result.className = this.ITEM_CLASS;
 
     result.onclick = () => {
       this.navigateTo(url);
@@ -66,7 +98,7 @@ export class PagesMenuViewModel extends MenuViewModel {
   };
 
   protected setSelectedIndex(value: number) {
-    let pages = document.querySelectorAll(`.${this.SERVER_CLASS}`);
+    let pages = document.querySelectorAll(`.${this.ITEM_CLASS}`);
     pages.forEach(item => item.classList.remove(this.IS_SELECTED_CLASS));
 
     if (value < 0) {
@@ -95,14 +127,14 @@ export class PagesMenuViewModel extends MenuViewModel {
       });
   };
 
-  protected setSelectedElementByUrl(url: URL) {
-    let pages = document.querySelectorAll(`.${this.SERVER_CLASS}`);
+  protected setSelectedElementByUrl() {
+    let pages = document.querySelectorAll(`.${this.ITEM_CLASS}`);
     pages.forEach(item => item.classList.remove(this.IS_SELECTED_CLASS));
 
     for (let index = 0; index < this.pages.length; index += 1) {
       let page = this.pages[index];
 
-      if (page.url.origin === url.origin) {
+      if (page.aemPage.getType === this.currentAemPage.getType) {
         this._selectedIndex = index;
         const elementId = this.getElementId(this._selectedIndex);
         document.getElementById(elementId).classList
@@ -150,4 +182,18 @@ export class PagesMenuViewModel extends MenuViewModel {
       }
     });
   }
+
+  // private toPage(name: aemPageTypes): Page {
+  //   alert(`the current page is ${this.currentAemPage}`);
+  //   alert(`I am currently on the ${this.currentAemPage.getType.toString()} page`);
+  //   alert(`1.5 name is ${name}`);
+  //   const aemPage = this.currentAemPage.switchAemPage(name)
+  //
+  //   return {
+  //     id: kebabCase(name),
+  //     name: name,
+  //     aemPage: aemPage,
+  //     url: aemPage.url
+  //   }
+  // }
 }

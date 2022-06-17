@@ -1,4 +1,4 @@
-import { AemPage } from "./aemPage";
+import { AemPage, aemPageTypes } from "./aemPage";
 import { UserAdminPage } from "./userAdminPage";
 import { CrxDePage } from "./crxDePage";
 import { CrxPackMgrPage } from "./crxPackManagerPage";
@@ -8,14 +8,15 @@ import { PreviewPage } from "./previewPage";
 export class EditorPage extends AemPage {
   static pathRegex = /^\/editor\.html(\/.*)\.html/
 
-  static getName(): string {
-    return 'Editor';
-  }
-
   static isPage(url: URL) {
     return EditorPage.pathRegex.test(url.pathname);
   }
 
+  get getType(): aemPageTypes {
+    return "Editor";
+  }
+
+  // TODO: Remove
   get id(): string {
     return 'editor-page';
   }

@@ -1,4 +1,4 @@
-import { AemPage } from "./aemPage";
+import { AemPage, aemPageTypes } from "./aemPage";
 import { EditorPage } from "./editorPage";
 import { CrxDePage } from "./crxDePage";
 import { CrxPackMgrPage } from "./crxPackManagerPage";
@@ -8,16 +8,16 @@ import { PreviewPage } from "./previewPage";
 export class UserAdminPage extends AemPage {
   static pathRegex = /^\/useradmin$/;
 
-  static getName(): string {
-    return "User Admin";
-  }
-
   get url() {
     return this._url;
   }
 
   static isPage(url: URL) {
     return UserAdminPage.pathRegex.test(url.pathname);
+  }
+
+  get getType(): aemPageTypes {
+    return "Sites";
   }
 
   get id(): string {

@@ -1,6 +1,7 @@
 export abstract class MenuViewModel {
   protected abstract IS_SELECTED_CLASS: string;
-  protected abstract SERVER_CLASS: string;
+  protected abstract ITEM_CLASS: string;
+  protected abstract MENU_CLASS: string;
 
   protected url: URL;
   protected _selectedIndex: number;
@@ -22,7 +23,7 @@ export abstract class MenuViewModel {
   display(): void {
     this.menu.classList.remove("hidden");
     this.menu.classList.add("displayed");
-    this.setSelectedElementByUrl(this.url);
+    this.setSelectedElementByUrl();
   }
 
   hide(): void {
@@ -42,7 +43,7 @@ export abstract class MenuViewModel {
       });
   };
 
-  protected abstract setSelectedElementByUrl(url: URL): void;
+  protected abstract setSelectedElementByUrl(): void;
 
   protected abstract setSelectedIndex(value: number): void;
 

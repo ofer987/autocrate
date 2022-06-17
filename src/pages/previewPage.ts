@@ -1,4 +1,4 @@
-import { AemPage } from "./aemPage";
+import { AemPage, aemPageTypes } from "./aemPage";
 import { EditorPage } from "./editorPage";
 import { UserAdminPage } from"./userAdminPage";
 import { CrxDePage } from "./crxDePage";
@@ -8,12 +8,12 @@ import { SitesPage } from "./sitesPage";
 export class PreviewPage extends AemPage {
   static pathRegex = /\?(.*)wcmmode=disabled(.*)/
 
-  static getName(): string {
-    return 'Preview';
-  }
-
   static isPage(url: URL): boolean {
     return url.searchParams.get('wcmmode') === 'disabled';
+  }
+
+  get getType(): aemPageTypes {
+    return "Preview";
   }
 
   get id(): string {

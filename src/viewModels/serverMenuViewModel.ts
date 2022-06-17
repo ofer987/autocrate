@@ -2,7 +2,8 @@ import { Server } from "../models/server";
 
 export class ServerMenuViewModel {
   private IS_SELECTED_CLASS = "selected";
-  private SERVER_CLASS = "server";
+  private ITEM_CLASS = "server";
+  private MENU_CLASS = "servers";
 
   private url: URL;
   private _selectedIndex: number;
@@ -13,7 +14,7 @@ export class ServerMenuViewModel {
   }
 
   private setSelectedIndex(value: number) {
-    let pages = document.querySelectorAll(`.${this.SERVER_CLASS}`);
+    let pages = document.querySelectorAll(`.${this.ITEM_CLASS}`);
     pages.forEach(item => item.classList.remove(this.IS_SELECTED_CLASS));
 
     if (value < 0) {
@@ -39,7 +40,7 @@ export class ServerMenuViewModel {
     this.servers = servers;
     this._selectedIndex = selectedIndex || 0;
 
-    this.menu = document.getElementById("pages");
+    this.menu = document.getElementById(this.MENU_CLASS);
     this.init();
   }
 
@@ -88,7 +89,7 @@ export class ServerMenuViewModel {
     const elementId = this.getServerElementId(id);
     result.id = elementId;
     result.textContent = name;
-    result.className = this.SERVER_CLASS;
+    result.className = this.ITEM_CLASS;
 
     result.onclick = () => {
       this.navigateTo(url);
@@ -112,7 +113,7 @@ export class ServerMenuViewModel {
   };
 
   private setSelectedElementByUrl(url: URL) {
-    let pages = document.querySelectorAll(`.${this.SERVER_CLASS}`);
+    let pages = document.querySelectorAll(`.${this.ITEM_CLASS}`);
     pages.forEach(item => item.classList.remove(this.IS_SELECTED_CLASS));
 
     for (let index = 0; index < this.servers.length; index += 1) {
