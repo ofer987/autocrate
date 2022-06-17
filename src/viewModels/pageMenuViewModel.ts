@@ -4,6 +4,7 @@ import { MenuViewModel } from "./menuViewModel";
 import { AemPage, aemPageTypes } from "../pages/aemPage";
 
 interface Page {
+  isEnabled: boolean;
   id: string;
   name: string;
   aemPage: AemPage;
@@ -12,6 +13,7 @@ interface Page {
 
 export class PagesMenuViewModel extends MenuViewModel {
   protected IS_SELECTED_CLASS = "selected";
+  private IS_DISABLED_CLASS = "disabled-page";
   protected ITEM_CLASS = "page";
   protected MENU_CLASS = "pages";
 
@@ -20,6 +22,10 @@ export class PagesMenuViewModel extends MenuViewModel {
 
   protected get selectedElementId() {
     return this.getElementId(this._selectedIndex);
+  }
+
+  get enabledPages(): Page[] {
+    return this.pages.filter(page => page.isEnabled);
   }
 
   constructor(currentAemPage: AemPage) {
@@ -38,6 +44,7 @@ export class PagesMenuViewModel extends MenuViewModel {
         const aemPage = this.currentAemPage.switchAemPage(pageType)
 
         return {
+          isEnabled: aemPage.getType !== "Disabled Page",
           id: kebabCase(pageType),
           name: pageType,
           aemPage: aemPage,
@@ -56,7 +63,7 @@ export class PagesMenuViewModel extends MenuViewModel {
 
     this.pages
       .map((page: Page) => {
-        return this.createItem(index++, page.name, page.url);
+        return this.createItem(page.isEnabled, index++, page.name, page.url);
       }).forEach((item: HTMLElement) => {
         this.menu.appendChild(item);
       });
@@ -67,7 +74,12 @@ export class PagesMenuViewModel extends MenuViewModel {
   }
 
   navigate(): void {
-    this.navigateTo(this.pages[this._selectedIndex].url);
+    const page = this.pages[this._selectedIndex];
+    if (!page.isEnabled) {
+      return;
+    }
+
+    this.navigateTo(page.url);
   }
 
   display(): void {
@@ -78,19 +90,32 @@ export class PagesMenuViewModel extends MenuViewModel {
   }
 
   hide(): void {
+    const page = this.pages[this._selectedIndex];
+    if (!page.isEnabled) {
+      return;
+    }
+
     this.menu.classList.remove("displayed");
     this.menu.classList.add("hidden");
   }
 
-  private createItem(id: number, name: string, url: URL): HTMLDivElement {
+  private createItem(isEnabled: boolean, id: number, name: string, url: URL): HTMLDivElement {
     let result = document.createElement('div');
 
     const elementId = this.getElementId(id);
     result.id = elementId;
     result.textContent = name;
-    result.className = this.ITEM_CLASS;
+    if (!isEnabled) {
+      result.classList.add(this.IS_DISABLED_CLASS);
+    } else {
+      result.className = this.ITEM_CLASS;
+    }
 
     result.onclick = () => {
+      if (!isEnabled) {
+        return;
+      }
+
       this.navigateTo(url);
     };
 
@@ -158,14 +183,22 @@ export class PagesMenuViewModel extends MenuViewModel {
 
   private onKeyDown(): void {
     document.addEventListener("keydown", (event: KeyboardEvent) => {
+      if (this.pages.filter(page => !page.isEnabled).length === 0) {
+        return;
+      }
+
       event.preventDefault();
 
       if (event.key === "j" || event.key === "ArrowDown") {
-        this.moveDown();
+        do {
+          this.moveDown();
+        } while (!this.pages[this._selectedIndex].isEnabled)
       }
 
       if (event.key === "k" || event.key === "ArrowUp") {
-        this.moveUp();
+        do {
+          this.moveUp();
+        } while (!this.pages[this._selectedIndex].isEnabled)
       }
 
       if (event.key === "o" || event.key === "Enter") {

@@ -1,4 +1,5 @@
 import { AemPage, aemPageTypes } from "./aemPage";
+import { DisabledPage } from "./disabledPage";
 import { EditorPage } from "./editorPage";
 import { CrxDePage } from "./crxDePage";
 import { UserAdminPage } from "./userAdminPage";
@@ -21,14 +22,20 @@ export class CrxPackMgrPage extends AemPage {
   }
 
   get editorPage(): AemPage {
-    var url = new URL(`${this._url.origin}/editor.html${this._url.hash.substring(1)}\.html`);
+    if (this._url.hash === "") {
+      return new DisabledPage(this.url);
+    }
 
+    var url = new URL(`${this._url.origin}/editor.html${this._url.hash.substring(1)}\.html`);
     return new EditorPage(url);
   }
 
   get previewPage(): AemPage {
-    var url = new URL(`${this._url.origin}${this._url.hash.substring(1)}\.html?wcmmode=disabled`);
+    if (this._url.hash === "") {
+      return new DisabledPage(this.url);
+    }
 
+    var url = new URL(`${this._url.origin}${this._url.hash.substring(1)}\.html?wcmmode=disabled`);
     return new PreviewPage(url);
   }
 

@@ -1,4 +1,5 @@
-export type aemPageTypes = "Editor"
+export type aemPageTypes = "Disabled Page"
+  | "Editor"
   | "Preview"
   | "CrxDe"
   | "Package Manager"
@@ -9,7 +10,7 @@ export abstract class AemPage {
   static getPageTypes(): aemPageTypes[] {
     return [
       "Editor",
-      // "Preview",
+      "Preview",
       "CrxDe",
       "Package Manager",
       "User Admin",

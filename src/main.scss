@@ -3,6 +3,22 @@ body {
   margin: 0;
 }
 
+.disabled-page {
+  padding-top: 7px;
+  padding-bottom: 7px;
+  padding-left: 2px;
+  padding-right: 20px;
+  white-space: nowrap;
+
+  background-color: grey;
+
+  &.selected, &:hover {
+    background-color: grey;
+
+    cursor: not-allowed;
+  }
+}
+
 .hidden {
   display: none;
 }
