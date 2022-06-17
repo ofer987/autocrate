@@ -182,18 +182,4 @@ export class PagesMenuViewModel extends MenuViewModel {
       }
     });
   }
-
-  // private toPage(name: aemPageTypes): Page {
-  //   alert(`the current page is ${this.currentAemPage}`);
-  //   alert(`I am currently on the ${this.currentAemPage.getType.toString()} page`);
-  //   alert(`1.5 name is ${name}`);
-  //   const aemPage = this.currentAemPage.switchAemPage(name)
-  //
-  //   return {
-  //     id: kebabCase(name),
-  //     name: name,
-  //     aemPage: aemPage,
-  //     url: aemPage.url
-  //   }
-  // }
 }

@@ -213,7 +213,7 @@ export class Main {
     this.init();
   }
 
-// TODO: Convert to async/await
+  // TODO: Convert to async/await
   init(_andThen?: any) {
     // TODO: add await
     var options = { ...defaultValues }
@@ -255,62 +255,21 @@ export class Main {
         // won't display
       }
 
-      chrome.commands.onCommand.addListener((command: string) => {
-        // alert(`hello ${this.mode}`);
-        if (command === "select" && this.pagesMenu !== null) {
-          // alert(`2. hello ${this.mode}`);
-          this.mode = this.mode == "servers"
-            ? "pages"
-            : "servers";
-        }
+      this.displayMenu();
+    });
 
-        this.displayMenu();
-      });
+    chrome.commands.onCommand.addListener((command: string) => {
+      // alert(`hello ${this.mode}`);
+      if (command === "select" && this.pagesMenu !== null) {
+        // alert(`2. hello ${this.mode}`);
+        this.mode = this.mode == "servers"
+          ? "pages"
+          : "servers";
+      }
 
       this.displayMenu();
     });
   }
-
-  // display(options: Options): void {
-  //   chrome.tabs.query({ active: true, currentWindow: true }, (tabs: chrome.tabs.Tab[]) => {
-  //     var tab = tabs[0];
-  //     var url = new URL(tab.url);
-  //
-  //     let servers = Object.values(options) as Server[];
-  //     let serversMenu = new ServerMenuViewModel(url, servers);
-  //     let pagesMenu = null;
-  //     try {
-  //       const aemPage = AemPages.getAemPage(url)
-  //
-  //       // alert("everything is fine");
-  //       pagesMenu = new PagesMenuViewModel(aemPage);
-  //     } catch(exception) {
-  //       alert(`Error: ${exception}`);
-  //       alert(`is not an aem page url is ${url} ${pagesMenu}`);
-  //       // not an AEM Page so do nothing and the AEM Pages Menu
-  //       // won't display
-  //     }
-  //
-  //     chrome.commands.onCommand.addListener((command: string) => {
-  //       // alert(`hello ${this.mode}`);
-  //       if (command === "select" && pagesMenu !== null) {
-  //         alert(`2. hello ${this.mode}`);
-  //         this.mode = this.mode == "servers"
-  //           ? "pages"
-  //           : "servers";
-  //       }
-  //
-  //     });
-  //
-  //     // if (this.mode === "servers") {
-  //     //   serversMenu.display();
-  //     //   pagesMenu.hide();
-  //     // } else {
-  //     //   serversMenu.hide();
-  //     //   pagesMenu.display();
-  //     // }
-  //   });
-  // }
 
   private displayMenu() {
     if (this.mode === "servers") {
@@ -322,8 +281,3 @@ export class Main {
     }
   }
 }
-
-// Initalize the popup window.
-// document.addEventListener('DOMContentLoaded', () => {
-//   initialize(main);
-// });

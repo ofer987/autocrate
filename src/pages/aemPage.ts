@@ -1,8 +1,8 @@
-export type aemPageTypes = "Editor" 
-  | "Preview" 
-  | "CrxDe" 
-  | "Package Manager" 
-  | "User Admin" 
+export type aemPageTypes = "Editor"
+  | "Preview"
+  | "CrxDe"
+  | "Package Manager"
+  | "User Admin"
   | "Sites";
 
 export abstract class AemPage {
