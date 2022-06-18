@@ -29,19 +29,21 @@ export class ConsolePage extends AemPage {
   }
 
   get crxDePage(): AemPage {
-    var url = new URL(`${this._url}/crx/de/index.jsp`);
+    var url = new URL(`${this._url.origin}/crx/de/index.jsp`);
 
     return new CrxDePage(url);
   }
 
   get crxPackMgrPage(): AemPage {
-    var url = new URL(`${this._url}/crx/packmgr/index.jsp`);
+    var url = new URL(`${this._url.origin}/crx/packmgr/index.jsp`);
 
     return new CrxPackMgrPage(url);
   }
 
   get userAdminPage(): AemPage {
-    return new UserAdminPage(this.url);
+    var url = new URL(`${this._url.origin}/useradmin`);
+
+    return new UserAdminPage(url);
   }
 
   get consolePage(): AemPage {
