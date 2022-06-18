@@ -1,3 +1,4 @@
+import { AemPages } from "../pages/aemPages";
 import { Server } from "../models/server";
 
 export class ServerMenuViewModel {
@@ -69,7 +70,18 @@ export class ServerMenuViewModel {
   }
 
   navigate(): void {
-    this.navigateTo(this.servers[this._selectedIndex].url);
+    const url = this.servers[this._selectedIndex].url;
+    const aemPage = AemPages.getAemPage(url);
+
+    if (aemPage.isEnabled) {
+      const aemPageUrl = new URL(`${url.origin}${this.url.pathname}${this.url.search}${this.url.hash}`)
+
+      this.navigateTo(aemPageUrl);
+    } else {
+      const url = aemPage.crxDePage.url;
+
+      this.navigateTo(url)
+    }
   }
 
   display(): void {

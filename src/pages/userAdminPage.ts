@@ -1,9 +1,8 @@
 import { AemPage, aemPageTypes } from "./aemPage";
-import { EditorPage } from "./editorPage";
 import { CrxDePage } from "./crxDePage";
 import { CrxPackMgrPage } from "./crxPackManagerPage";
 import { SitesPage } from "./sitesPage";
-import { PreviewPage } from "./previewPage";
+import { DisabledPage } from "./disabledPage";
 
 export class UserAdminPage extends AemPage {
   static pathRegex = /^\/useradmin$/;
@@ -25,15 +24,11 @@ export class UserAdminPage extends AemPage {
   }
 
   get editorPage(): AemPage {
-    var url = new URL(`${this._url.origin}/editor.html/content\.html`);
-
-    return new EditorPage(url);
+    return new DisabledPage(this.url);
   }
 
   get previewPage(): AemPage {
-    var url = new URL(`${this._url.origin}\/content\.html?wcmmode=disabled`);
-
-    return new PreviewPage(url);
+    return new DisabledPage(this.url);
   }
 
   get crxDePage(): AemPage {

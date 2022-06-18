@@ -1,13 +1,10 @@
-import { kebabCase } from "lodash";
-
 import { MenuViewModel } from "./menuViewModel";
 import { AemPage, aemPageTypes } from "../pages/aemPage";
 
 interface Page {
   isEnabled: boolean;
-  id: string;
   name: string;
-  aemPage: AemPage;
+  aemPageType: aemPageTypes;
   url: URL;
 }
 
@@ -38,16 +35,15 @@ export class PagesMenuViewModel extends MenuViewModel {
     this.currentAemPage = currentAemPage;
     // alert(`1.5 the current page is ${this.currentAemPage}`);
     // alert(`1.5 the current page type is ${this.currentAemPage.getType}`);
-    this.pages = AemPage
+    this.pages = this
       .getPageTypes()
       .map((pageType: aemPageTypes) => {
         const aemPage = this.currentAemPage.switchAemPage(pageType)
 
         return {
-          isEnabled: aemPage.getType !== "Disabled Page",
-          id: kebabCase(pageType),
+          isEnabled: aemPage.isEnabled,
           name: pageType,
-          aemPage: aemPage,
+          aemPageType: pageType,
           url: aemPage.url
         }
       });
@@ -159,7 +155,7 @@ export class PagesMenuViewModel extends MenuViewModel {
     for (let index = 0; index < this.pages.length; index += 1) {
       let page = this.pages[index];
 
-      if (page.aemPage.getType === this.currentAemPage.getType) {
+      if (page.aemPageType === this.currentAemPage.getType) {
         this._selectedIndex = index;
         const elementId = this.getElementId(this._selectedIndex);
         document.getElementById(elementId).classList
@@ -183,7 +179,7 @@ export class PagesMenuViewModel extends MenuViewModel {
 
   private onKeyDown(): void {
     document.addEventListener("keydown", (event: KeyboardEvent) => {
-      if (this.pages.filter(page => !page.isEnabled).length === 0) {
+      if (this.pages.filter(page => page.isEnabled).length === 0) {
         return;
       }
 
@@ -214,5 +210,16 @@ export class PagesMenuViewModel extends MenuViewModel {
         window.close();
       }
     });
+  }
+
+  private getPageTypes(): aemPageTypes[] {
+    return [
+      "Editor",
+      "Preview",
+      "CrxDe",
+      "Package Manager",
+      "User Admin",
+      "Sites",
+    ]
   }
 }

@@ -57,8 +57,11 @@ export class CrxPackMgrPage extends AemPage {
   }
 
   get sitesPage(): AemPage {
-    var url = new URL(`${this._url.origin}/sites.html${this._url.hash.substring(1)}`);
+    if (this._url.hash === "") {
+      return new DisabledPage(this.url);
+    }
 
+    var url = new URL(`${this._url.origin}/sites.html${this._url.hash.substring(1)}`);
     return new SitesPage(url);
   }
 

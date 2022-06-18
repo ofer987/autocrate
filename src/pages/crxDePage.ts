@@ -4,6 +4,7 @@ import { UserAdminPage } from"./userAdminPage";
 import { CrxPackMgrPage } from "./crxPackManagerPage";
 import { SitesPage } from "./sitesPage";
 import { PreviewPage } from "./previewPage";
+import { DisabledPage } from "./disabledPage";
 
 export class CrxDePage extends AemPage {
   static pathRegex = /^\/crx\/de\/index\.jsp$/;
@@ -16,19 +17,21 @@ export class CrxDePage extends AemPage {
     return "CrxDe";
   }
 
-  get id(): string {
-    return "crx-de";
-  }
-
   get editorPage(): AemPage {
-    var url = new URL(`${this._url.origin}/editor.html${this._url.hash.substring(1)}\.html`);
+    if (this._url.hash === "") {
+      return new DisabledPage(this.url);
+    }
 
+    var url = new URL(`${this._url.origin}/editor.html${this._url.hash.substring(1)}\.html`);
     return new EditorPage(url);
   }
 
   get previewPage(): AemPage {
-    var url = new URL(`${this._url.origin}${this._url.hash.substring(1)}\.html?wcmmode=disabled`);
+    if (this._url.hash === "") {
+      return new DisabledPage(this.url);
+    }
 
+    var url = new URL(`${this._url.origin}${this._url.hash.substring(1)}\.html?wcmmode=disabled`);
     return new PreviewPage(url);
   }
 
@@ -50,8 +53,11 @@ export class CrxDePage extends AemPage {
   }
 
   get sitesPage(): AemPage {
-    var url = new URL(`${this._url.origin}/sites.html${this._url.hash.substring(1)}`);
+    if (this._url.hash === "") {
+      return new DisabledPage(this.url);
+    }
 
+    var url = new URL(`${this._url.origin}/sites.html${this._url.hash.substring(1)}`);
     return new SitesPage(url);
   }
 

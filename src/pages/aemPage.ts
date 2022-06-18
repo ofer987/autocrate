@@ -1,4 +1,5 @@
-export type aemPageTypes = "Disabled Page"
+export type aemPageTypes = "Non AEM Page"
+  | "Disabled Page"
   | "Editor"
   | "Preview"
   | "CrxDe"
@@ -7,21 +8,14 @@ export type aemPageTypes = "Disabled Page"
   | "Sites";
 
 export abstract class AemPage {
-  static getPageTypes(): aemPageTypes[] {
-    return [
-      "Editor",
-      "Preview",
-      "CrxDe",
-      "Package Manager",
-      "User Admin",
-      "Sites",
-    ]
-  }
-
   protected _url: URL;
 
   get url() {
     return this._url;
+  }
+
+  get isEnabled(): boolean {
+    return true;
   }
 
   abstract get getType(): aemPageTypes;

@@ -5,6 +5,10 @@ export class DisabledPage extends AemPage {
     return "Disabled Page";
   }
 
+  get isEnabled(): boolean {
+    return false;
+  }
+
   get editorPage(): AemPage {
     return this;
   }

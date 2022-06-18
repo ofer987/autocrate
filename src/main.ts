@@ -243,16 +243,10 @@ export class Main {
       this.servers = Object.values(options) as Server[];
       this.serversMenu = new ServerMenuViewModel(url, this.servers);
       this.pagesMenu = null;
-      try {
-        const aemPage = AemPages.getAemPage(url)
 
-        // alert("everything is fine");
+      const aemPage = AemPages.getAemPage(url)
+      if (aemPage.isEnabled) {
         this.pagesMenu = new PagesMenuViewModel(aemPage);
-      } catch(exception) {
-        alert(`Error: ${exception}`);
-        alert(`is not an aem page url is ${url} ${this.pagesMenu}`);
-        // not an AEM Page so do nothing and the AEM Pages Menu
-        // won't display
       }
 
       this.displayMenu();
