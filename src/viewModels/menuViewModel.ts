@@ -5,8 +5,11 @@ export abstract class MenuViewModel {
 
   protected url: URL;
   protected _selectedIndex: number;
-  // private servers: Server[];
   protected menu: HTMLElement;
+
+  get isNull(): boolean {
+    return false;
+  }
 
   moveUp(): number {
     this.setSelectedIndex(this._selectedIndex - 1)
