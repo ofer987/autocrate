@@ -31,6 +31,13 @@ var defaultValues = {
   }
 };
 
+var publisherServers = {
+  qa_publishers: {
+    name: "QA Publisher 1",
+    url: new URL("http://publish1useast1-as.qa.ewp.thomsonreuters.com:4503")
+  },
+}
+
 const defaultMode = "servers";
 type modes = "servers" | "pages";
 
@@ -49,7 +56,7 @@ export class Main {
   // TODO: Convert to async/await
   // TODO: add await
   init(_andThen?: any) {
-    var options = { ...defaultValues }
+    var options = { ...defaultValues, ...publisherServers }
 
     chrome.tabs.query({ active: true, currentWindow: true }, (tabs: chrome.tabs.Tab[]) => {
       var tab = tabs[0];
