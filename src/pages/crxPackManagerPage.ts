@@ -6,6 +6,7 @@ import { UserAdminPage } from "./userAdminPage";
 import { SitesPage } from "./sitesPage";
 import { PreviewPage } from "./previewPage";
 import { ConsolePage } from "./consolePage";
+import { LoginPage } from "./loginPage";
 
 export class CrxPackMgrPage extends AemPage {
   static pathRegex = /^\/crx\/packmgr\/index\.jsp#?(.*)$/;
@@ -70,6 +71,12 @@ export class CrxPackMgrPage extends AemPage {
     const url = new URL(`${this.url.origin}/system/console`);
 
     return new ConsolePage(url);
+  }
+
+  get loginPage(): AemPage {
+    const url = new URL(`${this.url.origin}/libs/granite/core/content/login.html`);
+
+    return new LoginPage(url);
   }
 
   constructor(url: URL) {

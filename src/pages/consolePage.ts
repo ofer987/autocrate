@@ -4,6 +4,7 @@ import { CrxPackMgrPage } from "./crxPackManagerPage";
 import { SitesPage } from "./sitesPage";
 import { UserAdminPage } from "./userAdminPage";
 import { DisabledPage } from "./disabledPage";
+import { LoginPage } from "./loginPage";
 
 export class ConsolePage extends AemPage {
   static pathRegex = /^\/system\/console(\/bundles)?/;
@@ -56,6 +57,12 @@ export class ConsolePage extends AemPage {
     var url = new URL(`${this._url.origin}/sites.html/content`);
 
     return new SitesPage(url);
+  }
+
+  get loginPage(): AemPage {
+    const url = new URL(`${this.url.origin}/libs/granite/core/content/login.html`);
+
+    return new LoginPage(url);
   }
 
   constructor(url: URL) {
