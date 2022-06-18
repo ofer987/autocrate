@@ -266,6 +266,7 @@ export class Main {
   }
 
   private displayMenu() {
+    // Display the selected menu
     if (this.mode === "servers") {
       this.serversMenu.display();
       this.pagesMenu.hide();
