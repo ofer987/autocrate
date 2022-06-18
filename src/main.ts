@@ -4,7 +4,7 @@ import { ServerMenuViewModel } from "./viewModels/serverMenuViewModel";
 import { PagesMenuViewModel } from "./viewModels/pageMenuViewModel";
 import { NullMenu } from "./viewModels/nullMenu";
 
-var defaultValues = {
+const authorServers = {
   localhost: {
     name: "Localhost",
     url: new URL("http://localhost:4502")
@@ -31,10 +31,30 @@ var defaultValues = {
   }
 };
 
-var publisherServers = {
-  qa_publishers: {
-    name: "QA Publisher 1",
-    url: new URL("http://publish1useast1-as.qa.ewp.thomsonreuters.com:4503")
+const publisherServers = {
+  qa_publisher_1: {
+    name: "QA Publish",
+    url: new URL("http://publish1useast1-as.qa.ewp.thomsonreuters.com:4503"),
+  },
+  uat_publisher_1: {
+    name: "UAT Publish",
+    url: new URL("http://publish1useast1-as.uat.ewp.thomsonreuters.com:4503"),
+  },
+  ppe_publisher_1: {
+    name: "PPE Publish 1 US EAST 1",
+    url: new URL("http://publish1useast1-as.ppe.ewp.thomsonreuters.com:4503"),
+  },
+  ppe_publisher_2: {
+    name: "PPE Publish 2 US EAST 1",
+    url: new URL("http://publish2useast1-as.ppe.ewp.thomsonreuters.com:4503"),
+  },
+  ppe_publisher_3: {
+    name: "PPE Publish 1 US WEST 1",
+    url: new URL("http://publish1uswest1-as.ppe.ewp.thomsonreuters.com:4503"),
+  },
+  ppe_publisher_4: {
+    name: "PPE Publish 1 US WEST 2",
+    url: new URL("http://publish2uswest2-as.ppe.ewp.thomsonreuters.com:4503"),
   },
 }
 
@@ -43,7 +63,8 @@ type modes = "servers" | "pages";
 
 export class Main {
   private mode: modes;
-  private servers: Server[];
+  private authorServers: Server[];
+  private publisherServers: Server[];
   private serversMenu: ServerMenuViewModel;
   private pagesMenu: PagesMenuViewModel | NullMenu = new NullMenu();
 
@@ -56,14 +77,13 @@ export class Main {
   // TODO: Convert to async/await
   // TODO: add await
   init(_andThen?: any) {
-    var options = { ...defaultValues, ...publisherServers }
-
     chrome.tabs.query({ active: true, currentWindow: true }, (tabs: chrome.tabs.Tab[]) => {
       var tab = tabs[0];
       var url = new URL(tab.url);
 
-      this.servers = Object.values(options) as Server[];
-      this.serversMenu = new ServerMenuViewModel(url, this.servers);
+      this.authorServers = Object.values(authorServers) as Server[];
+      this.publisherServers = Object.values(publisherServers) as Server[];
+      this.serversMenu = new ServerMenuViewModel(url, this.authorServers, this.publisherServers);
 
       const aemPage = AemPages.getAemPage(url)
       if (aemPage.isEnabled) {

@@ -1,5 +1,6 @@
 import { AemPages } from "../pages/aemPages";
 import { Server } from "../models/server";
+import { NonAemPage } from "../pages/nonAemPage";
 
 export class ServerMenuViewModel {
   private IS_SELECTED_CLASS = "selected";
@@ -8,50 +9,45 @@ export class ServerMenuViewModel {
 
   private url: URL;
   private _selectedIndex: number;
-  private servers: Server[];
+  private authorServers: Server[];
+  private publisherServers: Server[];
+  private isActive: boolean;
 
-  private get selectedElementId() {
-    return this.getServerElementId(this._selectedIndex);
-  }
-
-  private setSelectedIndex(value: number) {
-    let pages = document.querySelectorAll(`.${this.ITEM_CLASS}`);
-    pages.forEach(item => item.classList.remove(this.IS_SELECTED_CLASS));
-
-    if (value < 0) {
-      value = this.servers.length - 1;
-    }
-
-    if (value > this.servers.length - 1) {
-      value = 0;
-    }
-
-    const selectedServerElementId = this.getServerElementId(value);
-
-    this._selectedIndex = value;
-
-    document.getElementById(selectedServerElementId).classList
-      .add(this.IS_SELECTED_CLASS);
+  private get servers(): Server[] {
+    return this.authorServers
+      .concat(this.publisherServers);
   }
 
   private menu: HTMLElement;
+  private authors: HTMLElement;
+  private publishers: HTMLElement;
 
-  constructor(currentUrl: URL, servers: Server[], selectedIndex?: number) {
+  constructor(currentUrl: URL, authorServers: Server[], publisherServers: Server[], selectedIndex?: number) {
     this.url = currentUrl;
-    this.servers = servers;
+    this.authorServers = authorServers;
+    this.publisherServers = publisherServers;
     this._selectedIndex = selectedIndex || 0;
 
     this.menu = document.getElementById(this.MENU_CLASS);
+    this.authors = this.menu.querySelector("#authors");
+    this.publishers = this.menu.querySelector("#publishers");
+
     this.init();
   }
 
   private init(): void {
     let index = 0;
 
-    this.servers.map((server: Server) => {
+    this.authorServers.map((server: Server) => {
       return this.createItem(index++, server.name, server.url);
     }).forEach((item: HTMLElement) => {
-      this.menu.appendChild(item);
+      this.authors.appendChild(item);
+    });
+
+    this.publisherServers.map((server: Server) => {
+      return this.createItem(index++, server.name, server.url);
+    }).forEach((item: HTMLElement) => {
+      this.publishers.appendChild(item);
     });
 
     this.onKeyDown();
@@ -70,27 +66,31 @@ export class ServerMenuViewModel {
   }
 
   navigate(): void {
+    const aemPage = AemPages.getAemPage(this.url);
     const url = this.servers[this._selectedIndex].url;
-    const aemPage = AemPages.getAemPage(url);
 
-    if (aemPage.isEnabled) {
-      const aemPageUrl = new URL(`${url.origin}${this.url.pathname}${this.url.search}${this.url.hash}`)
+    if (aemPage.getType === "Non AEM Page") {
+      const newUrl = new NonAemPage(url).crxDePage.url;
 
-      this.navigateTo(aemPageUrl);
+      this.navigateTo(newUrl);
     } else {
-      const url = aemPage.crxDePage.url;
+      const newUrl = new URL(`${url.origin}${this.url.pathname}${this.url.search}${this.url.hash}`);
 
-      this.navigateTo(url)
+      this.navigateTo(newUrl);
     }
   }
 
   display(): void {
+    this.activate();
+
     this.menu.classList.remove("hidden");
     this.menu.classList.add("displayed");
     this.setSelectedElementByUrl(this.url);
   }
 
   hide(): void {
+    this.deactivate();
+
     this.menu.classList.remove("displayed");
     this.menu.classList.add("hidden");
   }
@@ -151,6 +151,10 @@ export class ServerMenuViewModel {
 
   private onKeyDown(): void {
     document.addEventListener("keydown", (event: KeyboardEvent) => {
+      if (!this.isActive) {
+        return;
+      }
+
       event.preventDefault();
 
       if (event.key === "j" || event.key === "ArrowDown") {
@@ -174,6 +178,34 @@ export class ServerMenuViewModel {
         window.close();
       }
     });
+  }
+
+  private activate(): void {
+    this.isActive = true;
+  }
+
+  private deactivate(): void {
+    this.isActive = false;
+  }
+
+  private setSelectedIndex(value: number) {
+    let pages = document.querySelectorAll(`.${this.ITEM_CLASS}`);
+    pages.forEach(item => item.classList.remove(this.IS_SELECTED_CLASS));
+
+    if (value < 0) {
+      value = this.servers.length - 1;
+    }
+
+    if (value > this.servers.length - 1) {
+      value = 0;
+    }
+
+    const selectedServerElementId = this.getServerElementId(value);
+
+    this._selectedIndex = value;
+
+    document.getElementById(selectedServerElementId).classList
+      .add(this.IS_SELECTED_CLASS);
   }
 }
 

@@ -16,6 +16,7 @@ export class PagesMenuViewModel extends MenuViewModel {
 
   private currentAemPage: AemPage;
   private pages: Page[];
+  private isActive: boolean;
 
   protected get selectedElementId() {
     return this.getElementId(this._selectedIndex);
@@ -24,13 +25,7 @@ export class PagesMenuViewModel extends MenuViewModel {
   constructor(currentAemPage: AemPage) {
     super();
 
-    // this.url = currentUrl;
-    // alert("1");
-    // alert(`the current page is ${currentAemPage}`);
-    // alert(`the current page type is ${currentAemPage.getType}`);
     this.currentAemPage = currentAemPage;
-    // alert(`1.5 the current page is ${this.currentAemPage}`);
-    // alert(`1.5 the current page type is ${this.currentAemPage.getType}`);
     this.pages = this
       .getPageTypes()
       .map((pageType: aemPageTypes) => {
@@ -43,9 +38,7 @@ export class PagesMenuViewModel extends MenuViewModel {
           url: aemPage.url
         }
       });
-    // this._selectedIndex = selectedIndex || 0;
 
-    // alert("2");
     this.menu = document.getElementById(this.MENU_CLASS);
     this.init();
   }
@@ -60,8 +53,6 @@ export class PagesMenuViewModel extends MenuViewModel {
         this.menu.appendChild(item);
       });
 
-    // alert(`Created ${index} pages`);
-
     this.onKeyDown();
   }
 
@@ -75,13 +66,16 @@ export class PagesMenuViewModel extends MenuViewModel {
   }
 
   display(): void {
+    this.activate();
+
     this.menu.classList.remove("hidden");
     this.menu.classList.add("displayed");
-    // alert("pages menu is displayed!");
     this.setSelectedElementByUrl();
   }
 
   hide(): void {
+    this.deactivate();
+
     const page = this.pages[this._selectedIndex];
     if (!page.isEnabled) {
       return;
@@ -173,8 +167,20 @@ export class PagesMenuViewModel extends MenuViewModel {
     return `page-${id}`;
   }
 
+  private activate(): void {
+    this.isActive = true;
+  }
+
+  private deactivate(): void {
+    this.isActive = false;
+  }
+
   private onKeyDown(): void {
     document.addEventListener("keydown", (event: KeyboardEvent) => {
+      if (!this.isActive) {
+        return;
+      }
+
       if (this.pages.filter(page => page.isEnabled).length === 0) {
         return;
       }
