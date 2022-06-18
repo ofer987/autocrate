@@ -1,66 +1,76 @@
+// TODO: change rest to em
 body {
-  padding: 8px;
+  padding: 0.75em;
   margin: 0;
+
+  font-size: 12px;
+
+  overflow-x: scroll;
+  overflow-y: scroll;
 }
 
-.disabled-page {
-  padding-top: 7px;
-  padding-bottom: 7px;
-  padding-left: 2px;
-  padding-right: 20px;
-  white-space: nowrap;
+.menu {
+  width: 20em;
 
-  background-color: grey;
+  &.hidden {
+    display: none;
+  }
 
-  &.selected, &:hover {
+  &.displayed {
+    display: block;
+  }
+
+  .disabled-page {
+    padding-top: 7px;
+    padding-bottom: 7px;
+    padding-left: 2px;
+    padding-right: 20px;
+    white-space: nowrap;
+
     background-color: grey;
 
-    cursor: not-allowed;
-  }
-}
+    &.selected, &:hover {
+      background-color: grey;
 
-.hidden {
-  display: none;
-}
-
-.displayed {
-  display: block;
-}
-
-.server {
-  padding-top: 7px;
-  padding-bottom: 7px;
-  padding-left: 2px;
-  padding-right: 20px;
-  white-space: nowrap;
-
-  &.selected {
-    color: white;
-    background-color: rgb(89,100, 200);
+      cursor: not-allowed;
+    }
   }
 
-  &:hover {
-    color: white;
-    background-color: rgb(89,100, 200);
-    cursor: pointer;
+  .server {
+    padding-top: 7px;
+    padding-bottom: 7px;
+    padding-left: 2px;
+    padding-right: 20px;
+    white-space: nowrap;
+
+    &.selected {
+      color: white;
+      background-color: rgb(89,100, 200);
+    }
+
+    &:hover {
+      color: white;
+      background-color: rgb(89,100, 200);
+      cursor: pointer;
+    }
   }
-}
 
-.page {
-  padding-top: 7px;
-  padding-bottom: 7px;
-  padding-left: 2px;
-  padding-right: 20px;
-  white-space: nowrap;
+  .page {
+    padding-top: 7px;
+    padding-bottom: 7px;
+    padding-left: 2px;
+    padding-right: 20px;
+    white-space: nowrap;
 
-  &.selected {
-    color: white;
-    background-color: rgb(89,100, 200);
-  }
+    &.selected {
+      color: white;
+      background-color: rgb(89,100, 200);
+    }
 
-  &:hover {
-    color: white;
-    background-color: rgb(89,100, 200);
-    cursor: pointer;
+    &:hover {
+      color: white;
+      background-color: rgb(89,100, 200);
+      cursor: pointer;
+    }
   }
 }
