@@ -6,6 +6,7 @@ import { CrxDePage } from "./crxDePage";
 import { CrxPackMgrPage } from "./crxPackManagerPage";
 import { SitesPage } from "./sitesPage";
 import { NonAemPage } from "./nonAemPage";
+import { ConsolePage } from "./consolePage";
 
 export class AemPages {
   static getAemPage(url: URL): AemPage {
@@ -15,6 +16,7 @@ export class AemPages {
     if (CrxPackMgrPage.isPage(url)) return new CrxPackMgrPage(url);
     if (UserAdminPage.isPage(url)) return new UserAdminPage(url);
     if (SitesPage.isPage(url)) return new SitesPage(url);
+    if (ConsolePage.isPage(url)) return new ConsolePage(url);
 
     return new NonAemPage(url);
   }

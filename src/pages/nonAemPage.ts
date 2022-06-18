@@ -3,6 +3,7 @@ import { CrxDePage } from "./crxDePage";
 import { CrxPackMgrPage } from "./crxPackManagerPage";
 import { DisabledPage } from "./disabledPage";
 import { UserAdminPage } from "./userAdminPage";
+import { ConsolePage } from "./consolePage";
 
 export class NonAemPage extends AemPage {
   get getType(): aemPageTypes {
@@ -35,6 +36,12 @@ export class NonAemPage extends AemPage {
 
   get sitesPage(): AemPage {
     return new DisabledPage(this.url);
+  }
+
+  get consolePage(): AemPage {
+    const url = new URL(`${this.url.origin}/system/console`);
+
+    return new ConsolePage(url);
   }
 
   constructor(url: URL) {

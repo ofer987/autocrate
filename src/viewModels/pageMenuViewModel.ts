@@ -220,6 +220,7 @@ export class PagesMenuViewModel extends MenuViewModel {
       "Package Manager",
       "User Admin",
       "Sites",
+      "Console",
     ]
   }
 }

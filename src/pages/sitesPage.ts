@@ -4,6 +4,7 @@ import { UserAdminPage } from "./userAdminPage";
 import { CrxDePage } from "./crxDePage";
 import { CrxPackMgrPage } from "./crxPackManagerPage";
 import { PreviewPage } from "./previewPage";
+import { ConsolePage } from "./consolePage";
 
 export class SitesPage extends AemPage {
   static pathRegex = /^\/sites\.html(\/.*)/
@@ -52,6 +53,12 @@ export class SitesPage extends AemPage {
 
   get sitesPage(): AemPage {
     return this;
+  }
+
+  get consolePage(): AemPage {
+    const url = new URL(`${this.url.origin}/system/console`);
+
+    return new ConsolePage(url);
   }
 
   constructor(url: URL) {

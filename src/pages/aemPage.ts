@@ -5,7 +5,8 @@ export type aemPageTypes = "Non AEM Page"
   | "CrxDe"
   | "Package Manager"
   | "User Admin"
-  | "Sites";
+  | "Sites"
+  | "Console";
 
 export abstract class AemPage {
   protected _url: URL;
@@ -32,6 +33,8 @@ export abstract class AemPage {
 
   abstract get sitesPage(): AemPage;
 
+  abstract get consolePage(): AemPage;
+
   switchAemPage(pageType: aemPageTypes): AemPage {
     switch (pageType) {
       case "Editor": return this.editorPage;
@@ -40,6 +43,7 @@ export abstract class AemPage {
       case "Package Manager": return this.crxPackMgrPage;
       case "User Admin": return this.userAdminPage;
       case "Sites": return this.sitesPage;
+      case "Console": return this.consolePage;
     }
   }
 

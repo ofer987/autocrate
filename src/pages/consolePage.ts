@@ -2,26 +2,22 @@ import { AemPage, aemPageTypes } from "./aemPage";
 import { CrxDePage } from "./crxDePage";
 import { CrxPackMgrPage } from "./crxPackManagerPage";
 import { SitesPage } from "./sitesPage";
+import { UserAdminPage } from "./userAdminPage";
 import { DisabledPage } from "./disabledPage";
-import { ConsolePage } from "./consolePage";
 
-export class UserAdminPage extends AemPage {
-  static pathRegex = /^\/useradmin$/;
+export class ConsolePage extends AemPage {
+  static pathRegex = /^\/system\/console(\/bundles)?/;
 
   get url() {
     return this._url;
   }
 
   static isPage(url: URL) {
-    return UserAdminPage.pathRegex.test(url.pathname);
+    return ConsolePage.pathRegex.test(url.pathname);
   }
 
   get getType(): aemPageTypes {
     return "Sites";
-  }
-
-  get id(): string {
-    return 'user-admin';
   }
 
   get editorPage(): AemPage {
@@ -45,19 +41,19 @@ export class UserAdminPage extends AemPage {
   }
 
   get userAdminPage(): AemPage {
-    return this;
-  }
-
-  get sitesPage(): AemPage {
-    var url = new URL(`${this._url.origin}/sites.html/content`);
-
-    return new SitesPage(url);
+    return new UserAdminPage(this.url);
   }
 
   get consolePage(): AemPage {
     const url = new URL(`${this.url.origin}/system/console`);
 
     return new ConsolePage(url);
+  }
+
+  get sitesPage(): AemPage {
+    var url = new URL(`${this._url.origin}/sites.html/content`);
+
+    return new SitesPage(url);
   }
 
   constructor(url: URL) {
