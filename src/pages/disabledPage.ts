@@ -1,6 +1,7 @@
 import { AemPage, aemPageTypes } from "./aemPage";
 import { ConsolePage } from "./consolePage";
 import { LoginPage } from "./loginPage";
+import { StartPage } from "./startPage";
 
 export class DisabledPage extends AemPage {
   get getType(): aemPageTypes {
@@ -45,5 +46,11 @@ export class DisabledPage extends AemPage {
     const url = new URL(`${this.url.origin}/libs/granite/core/content/login.html`);
 
     return new LoginPage(url);
+  }
+
+  get startPage(): AemPage {
+    const url = new URL(`${this.url.origin}/aem/start`);
+
+    return new StartPage(url);
   }
 }

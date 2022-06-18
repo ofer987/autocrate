@@ -7,7 +7,8 @@ export type aemPageTypes = "Non AEM Page"
   | "User Admin"
   | "Sites"
   | "Console"
-  | "Login";
+  | "Login"
+  | "Start";
 
 export abstract class AemPage {
   protected _url: URL;
@@ -38,6 +39,8 @@ export abstract class AemPage {
 
   abstract get loginPage(): AemPage;
 
+  abstract get startPage(): AemPage;
+
   switchAemPage(pageType: aemPageTypes): AemPage {
     switch (pageType) {
       case "Editor": return this.editorPage;
@@ -48,6 +51,7 @@ export abstract class AemPage {
       case "Sites": return this.sitesPage;
       case "Console": return this.consolePage;
       case "Login": return this.loginPage;
+      case "Start": return this.startPage;
     }
   }
 

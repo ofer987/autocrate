@@ -215,6 +215,7 @@ export class PagesMenuViewModel extends MenuViewModel {
   private getPageTypes(): aemPageTypes[] {
     return [
       "Login",
+      "Start",
       "Editor",
       "Preview",
       "CrxDe",

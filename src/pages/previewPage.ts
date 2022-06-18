@@ -6,6 +6,7 @@ import { CrxPackMgrPage } from "./crxPackManagerPage";
 import { SitesPage } from "./sitesPage";
 import { ConsolePage } from "./consolePage";
 import { LoginPage } from "./loginPage";
+import { StartPage } from "./startPage";
 
 export class PreviewPage extends AemPage {
   static pathRegex = /\?(.*)wcmmode=disabled(.*)/
@@ -78,6 +79,12 @@ export class PreviewPage extends AemPage {
     const url = new URL(`${this.url.origin}/libs/granite/core/content/login.html`);
 
     return new LoginPage(url);
+  }
+
+  get startPage(): AemPage {
+    const url = new URL(`${this.url.origin}/aem/start`);
+
+    return new StartPage(url);
   }
 
   constructor(url: URL) {

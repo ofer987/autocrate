@@ -1,19 +1,24 @@
 import { AemPage, aemPageTypes } from "./aemPage";
 import { CrxDePage } from "./crxDePage";
 import { CrxPackMgrPage } from "./crxPackManagerPage";
+import { SitesPage } from "./sitesPage";
 import { DisabledPage } from "./disabledPage";
-import { UserAdminPage } from "./userAdminPage";
 import { ConsolePage } from "./consolePage";
 import { LoginPage } from "./loginPage";
-import { StartPage } from "./startPage";
 
-export class NonAemPage extends AemPage {
-  get getType(): aemPageTypes {
-    return "Non AEM Page";
+export class StartPage extends AemPage {
+  static pathRegex = /^\/aem\/start$/;
+
+  get url() {
+    return this._url;
   }
 
-  get isEnabled(): boolean {
-    return false;
+  static isPage(url: URL) {
+    return StartPage.pathRegex.test(url.pathname);
+  }
+
+  get getType(): aemPageTypes {
+    return "Start";
   }
 
   get editorPage(): AemPage {
@@ -25,19 +30,25 @@ export class NonAemPage extends AemPage {
   }
 
   get crxDePage(): AemPage {
-    return new CrxDePage(new URL(`${this.url.origin}/crx/de/index.jsp`));
+    var url = new URL(`${this.url.origin}/crx/de/index.jsp`);
+
+    return new CrxDePage(url);
   }
 
   get crxPackMgrPage(): AemPage {
-    return new CrxPackMgrPage(new URL(`${this.url.origin}/crx/packmgr/index.jsp`));
+    var url = new URL(`${this.url.origin}/crx/packmgr/index.jsp`);
+
+    return new CrxPackMgrPage(url);
   }
 
   get userAdminPage(): AemPage {
-    return new UserAdminPage(new URL(`${this.url.origin}/useradmin`));
+    return this;
   }
 
   get sitesPage(): AemPage {
-    return new DisabledPage(this.url);
+    var url = new URL(`${this._url.origin}/sites.html/content`);
+
+    return new SitesPage(url);
   }
 
   get consolePage(): AemPage {

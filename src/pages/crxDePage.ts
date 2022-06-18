@@ -7,6 +7,7 @@ import { PreviewPage } from "./previewPage";
 import { DisabledPage } from "./disabledPage";
 import { ConsolePage } from "./consolePage";
 import { LoginPage } from "./loginPage";
+import { StartPage } from "./startPage";
 
 export class CrxDePage extends AemPage {
   static pathRegex = /^\/crx\/de\/index\.jsp$/;
@@ -73,6 +74,12 @@ export class CrxDePage extends AemPage {
     const url = new URL(`${this.url.origin}/libs/granite/core/content/login.html`);
 
     return new LoginPage(url);
+  }
+
+  get startPage(): AemPage {
+    const url = new URL(`${this.url.origin}/aem/start`);
+
+    return new StartPage(url);
   }
 
   constructor(url: URL) {
