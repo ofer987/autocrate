@@ -19,10 +19,6 @@ export class PreviewPage extends AemPage {
     return "Preview";
   }
 
-  get id(): string {
-    return 'preview-page';
-  }
-
   get editorPage(): AemPage {
     var url = new URL(this._url.toString());
 

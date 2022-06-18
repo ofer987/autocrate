@@ -68,6 +68,7 @@ export class Main {
       const aemPage = AemPages.getAemPage(url)
       if (aemPage.isEnabled) {
         this.pagesMenu = new PagesMenuViewModel(aemPage);
+        this.mode = "pages";
       }
 
       this.displayMenu();

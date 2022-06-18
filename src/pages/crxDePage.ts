@@ -56,11 +56,8 @@ export class CrxDePage extends AemPage {
   }
 
   get sitesPage(): AemPage {
-    if (this._url.hash === "") {
-      return new DisabledPage(this.url);
-    }
-
     var url = new URL(`${this._url.origin}/sites.html${this._url.hash.substring(1)}`);
+
     return new SitesPage(url);
   }
 

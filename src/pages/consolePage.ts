@@ -19,7 +19,7 @@ export class ConsolePage extends AemPage {
   }
 
   get getType(): aemPageTypes {
-    return "Sites";
+    return "Console";
   }
 
   get editorPage(): AemPage {

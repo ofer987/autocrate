@@ -19,11 +19,6 @@ export class EditorPage extends AemPage {
     return "Editor";
   }
 
-  // TODO: Remove
-  get id(): string {
-    return 'editor-page';
-  }
-
   get editorPage(): AemPage {
     return this;
   }

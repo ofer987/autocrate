@@ -21,10 +21,6 @@ export class PagesMenuViewModel extends MenuViewModel {
     return this.getElementId(this._selectedIndex);
   }
 
-  get enabledPages(): Page[] {
-    return this.pages.filter(page => page.isEnabled);
-  }
-
   constructor(currentAemPage: AemPage) {
     super();
 

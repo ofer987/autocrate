@@ -61,7 +61,9 @@ export class LoginPage extends AemPage {
   }
 
   get loginPage(): AemPage {
-    const url = new URL(`${this.url.origin}/libs/granite/core/content/login.html`);
+    const url = new URL(
+      `${this.url.origin}/libs/granite/core/content/login.html`
+    );
 
     return new LoginPage(url);
   }

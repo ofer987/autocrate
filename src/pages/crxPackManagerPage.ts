@@ -20,10 +20,6 @@ export class CrxPackMgrPage extends AemPage {
     return "Package Manager";
   }
 
-  get id(): string {
-    return 'crx-pack-mgr';
-  }
-
   get editorPage(): AemPage {
     if (this._url.hash === "") {
       return new DisabledPage(this.url);

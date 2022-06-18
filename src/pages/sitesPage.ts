@@ -19,10 +19,6 @@ export class SitesPage extends AemPage {
     return "Sites";
   }
 
-  get id(): string {
-    return 'sites-page';
-  }
-
   get editorPage(): AemPage {
     var url = new URL(`${this._url.origin}/editor.html${this._url.pathname.match(SitesPage.pathRegex)[1]}\.html`);
 

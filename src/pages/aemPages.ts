@@ -8,6 +8,7 @@ import { SitesPage } from "./sitesPage";
 import { NonAemPage } from "./nonAemPage";
 import { ConsolePage } from "./consolePage";
 import { StartPage } from "./startPage";
+import { LoginPage } from "./loginPage";
 
 export class AemPages {
   static getAemPage(url: URL): AemPage {
@@ -19,6 +20,7 @@ export class AemPages {
     if (SitesPage.isPage(url)) return new SitesPage(url);
     if (ConsolePage.isPage(url)) return new ConsolePage(url);
     if (StartPage.isPage(url)) return new StartPage(url);
+    if (LoginPage.isPage(url)) return new LoginPage(url);
 
     return new NonAemPage(url);
   }
