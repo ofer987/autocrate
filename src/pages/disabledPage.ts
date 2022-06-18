@@ -1,4 +1,5 @@
 import { AemPage, aemPageTypes } from "./aemPage";
+import { ConsolePage } from "./consolePage";
 
 export class DisabledPage extends AemPage {
   get getType(): aemPageTypes {
@@ -31,5 +32,11 @@ export class DisabledPage extends AemPage {
 
   get sitesPage(): AemPage {
     return this;
+  }
+
+  get consolePage(): AemPage {
+    const url = new URL(`${this.url.origin}/system/console`);
+
+    return new ConsolePage(url);
   }
 }

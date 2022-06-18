@@ -4,6 +4,7 @@ import { UserAdminPage } from"./userAdminPage";
 import { CrxDePage } from "./crxDePage";
 import { CrxPackMgrPage } from "./crxPackManagerPage";
 import { SitesPage } from "./sitesPage";
+import { ConsolePage } from "./consolePage";
 
 export class PreviewPage extends AemPage {
   static pathRegex = /\?(.*)wcmmode=disabled(.*)/
@@ -64,6 +65,12 @@ export class PreviewPage extends AemPage {
     var url = new URL(`${this._url.origin}/sites.html${jcrPath}`);
 
     return new SitesPage(url);
+  }
+
+  get consolePage(): AemPage {
+    const url = new URL(`${this.url.origin}/system/console`);
+
+    return new ConsolePage(url);
   }
 
   constructor(url: URL) {

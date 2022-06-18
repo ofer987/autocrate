@@ -5,6 +5,7 @@ import { CrxDePage } from "./crxDePage";
 import { UserAdminPage } from "./userAdminPage";
 import { SitesPage } from "./sitesPage";
 import { PreviewPage } from "./previewPage";
+import { ConsolePage } from "./consolePage";
 
 export class CrxPackMgrPage extends AemPage {
   static pathRegex = /^\/crx\/packmgr\/index\.jsp#?(.*)$/;
@@ -63,6 +64,12 @@ export class CrxPackMgrPage extends AemPage {
 
     var url = new URL(`${this._url.origin}/sites.html${this._url.hash.substring(1)}`);
     return new SitesPage(url);
+  }
+
+  get consolePage(): AemPage {
+    const url = new URL(`${this.url.origin}/system/console`);
+
+    return new ConsolePage(url);
   }
 
   constructor(url: URL) {
