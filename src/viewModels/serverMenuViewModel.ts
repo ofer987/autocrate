@@ -39,13 +39,13 @@ export class ServerMenuViewModel {
     let index = 0;
 
     this.authorServers.map((server: Server) => {
-      return this.createItem(index++, server.name, server.url);
+      return this.createItem(index++, server.name, new URL(server.url));
     }).forEach((item: HTMLElement) => {
       this.authors.appendChild(item);
     });
 
     this.publisherServers.map((server: Server) => {
-      return this.createItem(index++, server.name, server.url);
+      return this.createItem(index++, server.name, new URL(server.url));
     }).forEach((item: HTMLElement) => {
       this.publishers.appendChild(item);
     });
@@ -67,7 +67,7 @@ export class ServerMenuViewModel {
 
   navigate(): void {
     const aemPage = AemPages.getAemPage(this.url);
-    const url = this.servers[this._selectedIndex].url;
+    const url = new URL(this.servers[this._selectedIndex].url);
 
     if (aemPage.getType === "Non AEM Page") {
       const newUrl = new NonAemPage(url).crxDePage.url;
@@ -129,9 +129,10 @@ export class ServerMenuViewModel {
     pages.forEach(item => item.classList.remove(this.IS_SELECTED_CLASS));
 
     for (let index = 0; index < this.servers.length; index += 1) {
-      let server = this.servers[index];
+      const server = this.servers[index];
+      const serverUrl = new URL(server.url);
 
-      if (server.url.origin === url.origin) {
+      if (serverUrl.origin === url.origin) {
         this._selectedIndex = index;
         const elementId = this.getServerElementId(this._selectedIndex);
         document.getElementById(elementId).classList
