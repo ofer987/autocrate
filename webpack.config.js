@@ -8,7 +8,7 @@ const PRODUCTION = "production";
 var configurations = {};
 configurations[COMMON] = {
   output: {
-    filename: "main.js",
+    filename: "[name].js",
     path: path.resolve(__dirname, "dist"),
   },
   resolve: {
@@ -35,6 +35,7 @@ configurations[COMMON] = {
       patterns: [
         { from: "chrome-extension", to: "" },
         { from: "src/main.html", to: "" },
+        { from: "src/options.html", to: "" },
       ],
     })
   ],
@@ -43,13 +44,19 @@ configurations[DEVELOPMENT] = {
   name: DEVELOPMENT,
   mode: DEVELOPMENT,
   watch: true,
-  entry: `./src/index.${DEVELOPMENT}.ts`,
+  entry: {
+    main: `./src/index.${DEVELOPMENT}.ts`,
+    options: "./src/options.ts",
+  },
   devtool: "inline-source-map",
 };
 configurations[PRODUCTION] = {
   name: PRODUCTION,
   mode: PRODUCTION,
-  entry: `./src/index.${PRODUCTION}.ts`,
+  entry: {
+    main: `./src/index.${PRODUCTION}.ts`,
+    options: "./src/options.ts",
+  },
   watch: false,
 };
 
