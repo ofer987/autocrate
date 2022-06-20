@@ -45,7 +45,7 @@ configurations[DEVELOPMENT] = {
   mode: DEVELOPMENT,
   watch: true,
   entry: {
-    main: `./src/index.${DEVELOPMENT}.ts`,
+    main: `./src/index.ts`,
     options: "./src/options.ts",
   },
   devtool: "inline-source-map",
@@ -54,7 +54,7 @@ configurations[PRODUCTION] = {
   name: PRODUCTION,
   mode: PRODUCTION,
   entry: {
-    main: `./src/index.${PRODUCTION}.ts`,
+    main: `./src/index.ts`,
     options: "./src/options.ts",
   },
   watch: false,
