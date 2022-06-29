@@ -2,7 +2,6 @@ import { AemPages } from "./pages/aemPages";
 import { Servers, Server } from "./models/server";
 import { ServerMenuViewModel } from "./viewModels/serverMenuViewModel";
 import { PagesMenuViewModel } from "./viewModels/pageMenuViewModel";
-import { NullMenu } from "./viewModels/nullMenu";
 
 const defaultMode = "servers";
 type modes = "servers" | "pages";
@@ -11,7 +10,7 @@ export class Main {
   private mode: modes;
   private servers: Servers;
   private serversMenu: ServerMenuViewModel;
-  private pagesMenu: PagesMenuViewModel | NullMenu = new NullMenu();
+  private pagesMenu: PagesMenuViewModel;
 
   private get authorServers(): Server[] {
     return this.servers.authors;
@@ -54,10 +53,8 @@ export class Main {
       this.serversMenu = new ServerMenuViewModel(url, this.authorServers, this.publisherServers);
 
       const aemPage = AemPages.getAemPage(url)
-      if (aemPage.isEnabled) {
-        this.pagesMenu = new PagesMenuViewModel(aemPage);
-        this.mode = "pages";
-      }
+      this.pagesMenu = new PagesMenuViewModel(aemPage);
+      this.mode = "pages";
 
       this.displayMenu();
     });
