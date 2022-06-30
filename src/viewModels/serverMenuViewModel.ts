@@ -70,10 +70,12 @@ export class ServerMenuViewModel {
     const url = new URL(this.servers[this._selectedIndex].url);
 
     if (aemPage.getType === "Non AEM Page") {
+      // Changing url path
       const newUrl = new NonAemPage(url).crxDePage.url;
 
       this.navigateTo(newUrl);
     } else {
+      // Changing server
       const newUrl = new URL(`${url.origin}${this.url.pathname}${this.url.search}${this.url.hash}`);
 
       this.navigateTo(newUrl);

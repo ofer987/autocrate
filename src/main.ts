@@ -7,6 +7,8 @@ const defaultMode = "servers";
 type modes = "servers" | "pages";
 
 export class Main {
+  private NEW_TAB = "chrome://newtab/";
+
   private mode: modes;
   private servers: Servers;
   private serversMenu: ServerMenuViewModel;
@@ -54,7 +56,12 @@ export class Main {
 
       const aemPage = AemPages.getAemPage(url)
       this.pagesMenu = new PagesMenuViewModel(aemPage);
-      this.mode = "pages";
+
+      if (url.toString() === this.NEW_TAB) {
+        this.mode = "servers";
+      } else {
+        this.mode = "pages";
+      }
 
       this.displayMenu();
     });
