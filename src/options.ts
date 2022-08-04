@@ -1,8 +1,67 @@
 import { kebabCase} from "lodash";
 
-import { Servers, Server } from "./models/server"
+import { Servers } from "./models/server"
+import { Server } from "./models/server"
 
 import "./options.scss";
+
+const authorServers = {
+  localhost: {
+    name: "Localhost",
+    url: new URL("http://localhost:4502")
+  },
+  dev: {
+    name: "Dev",
+    url: new URL("https://author-dev-ams.ewp.thomsonreuters.com/")
+  },
+  qa: {
+    name: "QA",
+    url: new URL("https://author-qa-ams.ewp.thomsonreuters.com/")
+  },
+  uat: {
+    name: "UAT",
+    url: new URL("https://author-uat-ams.ewp.thomsonreuters.com/")
+  },
+  ppe: {
+    name: "PPE",
+    url: new URL("https://author-ppe-ams.ewp.thomsonreuters.com/")
+  },
+  production: {
+    name: "Production",
+    url: new URL("https://author-prod-ams.ewp.thomsonreuters.com/")
+  }
+};
+
+const publisherServers = {
+  localhost_publisher_1: {
+    name: "Localhost Publish",
+    url: new URL("http://localhost:4503"),
+  },
+  qa_publisher_1: {
+    name: "QA Publish",
+    url: new URL("http://publish1useast1-as.qa.ewp.thomsonreuters.com:4503"),
+  },
+  uat_publisher_1: {
+    name: "UAT Publish",
+    url: new URL("http://publish1useast1-as.uat.ewp.thomsonreuters.com:4503"),
+  },
+  ppe_publisher_1: {
+    name: "PPE Publish 1 US EAST 1",
+    url: new URL("http://publish1useast1-as.ppe.ewp.thomsonreuters.com:4503"),
+  },
+  ppe_publisher_2: {
+    name: "PPE Publish 2 US EAST 1",
+    url: new URL("http://publish2useast1-as.ppe.ewp.thomsonreuters.com:4503"),
+  },
+  ppe_publisher_3: {
+    name: "PPE Publish 1 US WEST 1",
+    url: new URL("http://publish1uswest1-as.ppe.ewp.thomsonreuters.com:4503"),
+  },
+  ppe_publisher_4: {
+    name: "PPE Publish 1 US WEST 2",
+    url: new URL("http://publish2uswest2-as.ppe.ewp.thomsonreuters.com:4503"),
+  },
+}
 
 class Options {
   private AUTHORS_SELECTOR = "#servers #authors .list";
@@ -32,15 +91,29 @@ class Options {
   }
 
   private restore(): void {
+    // NOTE: Uncomment to set new authorServers and/or publisherServers values
+    // Object.values(authorServers).forEach(item => {
+    //   let optionElement = this.createOption(item);
+    //
+    //   this.authorServersElement.appendChild(optionElement);
+    // });
+    //
+    // Object.values(publisherServers).forEach(item => {
+    //   let optionElement = this.createOption(item);
+    //
+    //   this.publisherServersElement.appendChild(optionElement);
+    // });
+    // this.save();
+
     chrome.storage.sync.get(null, (savedValues: Servers) => {
-      savedValues.authors.forEach((saved_value: Server) => {
-        let optionElement = this.createOption(saved_value)
+      savedValues.authors.forEach((savedValue: Server) => {
+        let optionElement = this.createOption(savedValue);
 
         this.authorServersElement.appendChild(optionElement);
       });
 
-      savedValues.publishers.forEach((saved_value: Server) => {
-        let optionElement = this.createOption(saved_value)
+      savedValues.publishers.forEach((savedValue: Server) => {
+        let optionElement = this.createOption(savedValue);
 
         this.publisherServersElement.appendChild(optionElement);
       });

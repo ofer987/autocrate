@@ -5,5 +5,5 @@ export interface Servers {
 
 export interface Server {
   name: string;
-  url: string;
+  url: URL;
 }
