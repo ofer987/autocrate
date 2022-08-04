@@ -2,8 +2,8 @@ export type aemPageTypes = "Non AEM Page"
   | "Disabled Page"
   | "Editor"
   | "Preview"
-  | "CrxDe"
-  | "Package Manager"
+  | "CRX / DE JCR Manager"
+  | "CRX / DE Package Manager"
   | "User Admin"
   | "Sites"
   | "Console"
@@ -45,8 +45,8 @@ export abstract class AemPage {
     switch (pageType) {
       case "Editor": return this.editorPage;
       case "Preview": return this.previewPage;
-      case "CrxDe": return this.crxDePage;
-      case "Package Manager": return this.crxPackMgrPage;
+      case "CRX / DE JCR Manager": return this.crxDePage;
+      case "CRX / DE Package Manager": return this.crxPackMgrPage;
       case "User Admin": return this.userAdminPage;
       case "Sites": return this.sitesPage;
       case "Console": return this.consolePage;

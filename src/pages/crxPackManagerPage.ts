@@ -17,7 +17,7 @@ export class CrxPackMgrPage extends AemPage {
   }
 
   get getType(): aemPageTypes {
-    return "Package Manager";
+    return "CRX / DE Package Manager";
   }
 
   get editorPage(): AemPage {

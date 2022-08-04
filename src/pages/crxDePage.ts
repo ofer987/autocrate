@@ -17,7 +17,7 @@ export class CrxDePage extends AemPage {
   }
 
   get getType(): aemPageTypes {
-    return "CrxDe";
+    return "CRX / DE JCR Manager";
   }
 
   get editorPage(): AemPage {
