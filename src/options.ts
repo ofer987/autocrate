@@ -54,11 +54,11 @@ const publisherServers = {
     url: new URL("http://publish2useast1-as.ppe.ewp.thomsonreuters.com:4503"),
   },
   ppe_publisher_3: {
-    name: "PPE Publish 1 US WEST 1",
-    url: new URL("http://publish1uswest1-as.ppe.ewp.thomsonreuters.com:4503"),
+    name: "PPE Publish 1 US WEST 2",
+    url: new URL("http://publish1uswest2-as.ppe.ewp.thomsonreuters.com:4503"),
   },
   ppe_publisher_4: {
-    name: "PPE Publish 1 US WEST 2",
+    name: "PPE Publish 2 US WEST 2",
     url: new URL("http://publish2uswest2-as.ppe.ewp.thomsonreuters.com:4503"),
   },
 }
