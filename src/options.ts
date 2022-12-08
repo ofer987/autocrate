@@ -61,6 +61,22 @@ const publisherServers = {
     name: "PPE Publish 2 US WEST 2",
     url: new URL("http://publish2uswest2-as.ppe.ewp.thomsonreuters.com:4503"),
   },
+  prod_publisher_1: {
+    name: "Prod Publish 1 US EAST 1",
+    url: new URL("http://publish1useast1-as.prod.ewp.thomsonreuters.com:4503"),
+  },
+  prod_publisher_2: {
+    name: "Prod Publish 2 US EAST 1",
+    url: new URL("http://publish2useast1-as.prod.ewp.thomsonreuters.com:4503"),
+  },
+  prod_publisher_3: {
+    name: "Prod Publish 1 US WEST 2",
+    url: new URL("http://publish1uswest2-as.prod.ewp.thomsonreuters.com:4503"),
+  },
+  prod_publisher_4: {
+    name: "Prod Publish 2 US WEST 2",
+    url: new URL("http://publish2uswest2-as.prod.ewp.thomsonreuters.com:4503"),
+  },
 }
 
 class Options {
