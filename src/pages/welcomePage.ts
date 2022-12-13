@@ -6,21 +6,21 @@ import { DisabledPage } from "./disabledPage";
 import { ConsolePage } from "./consolePage";
 import { LoginPage } from "./loginPage";
 import { StartPage } from "./startPage";
-import { WelcomePage } from "./welcomePage";
+import { UserAdminPage } from "./userAdminPage";
 
-export class UserAdminPage extends AemPage {
-  static pathRegex = /^\/useradmin$/;
+export class WelcomePage extends AemPage {
+  static pathRegex = /^\/welcome$/;
 
   get url() {
     return this._url;
   }
 
   static isPage(url: URL) {
-    return UserAdminPage.pathRegex.test(url.pathname);
+    return WelcomePage.pathRegex.test(url.pathname);
   }
 
   get getType(): aemPageTypes {
-    return "User Admin";
+    return "Welcome";
   }
 
   get editorPage(): AemPage {
@@ -44,7 +44,9 @@ export class UserAdminPage extends AemPage {
   }
 
   get userAdminPage(): AemPage {
-    return this;
+    var url = new URL(`${this._url.origin}/useradmin`);
+
+    return new UserAdminPage(url);
   }
 
   get sitesPage(): AemPage {
@@ -72,9 +74,7 @@ export class UserAdminPage extends AemPage {
   }
 
   get welcomePage(): AemPage {
-    const url = new URL(`${this.url.origin}/welcome`);
-
-    return new WelcomePage(url);
+    return new WelcomePage(this.url);
   }
 
   constructor(url: URL) {

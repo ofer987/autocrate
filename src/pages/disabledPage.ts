@@ -2,6 +2,7 @@ import { AemPage, aemPageTypes } from "./aemPage";
 import { ConsolePage } from "./consolePage";
 import { LoginPage } from "./loginPage";
 import { StartPage } from "./startPage";
+import { WelcomePage } from "./welcomePage";
 
 export class DisabledPage extends AemPage {
   get getType(): aemPageTypes {
@@ -52,5 +53,11 @@ export class DisabledPage extends AemPage {
     const url = new URL(`${this.url.origin}/aem/start`);
 
     return new StartPage(url);
+  }
+
+  get welcomePage(): AemPage {
+    const url = new URL(`${this.url.origin}/welcome`);
+
+    return new WelcomePage(url);
   }
 }

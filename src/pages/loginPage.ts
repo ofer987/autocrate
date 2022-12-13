@@ -6,6 +6,7 @@ import { UserAdminPage } from "./userAdminPage";
 import { DisabledPage } from "./disabledPage";
 import { ConsolePage } from "./consolePage";
 import { StartPage } from "./startPage";
+import { WelcomePage } from "./welcomePage";
 
 export class LoginPage extends AemPage {
   static pathRegex = /^\/\/libs\/granite\/core\/content\/login\.html$/;
@@ -72,6 +73,12 @@ export class LoginPage extends AemPage {
     const url = new URL(`${this.url.origin}/aem/start`);
 
     return new StartPage(url);
+  }
+
+  get welcomePage(): AemPage {
+    const url = new URL(`${this.url.origin}/welcome`);
+
+    return new WelcomePage(url);
   }
 
   constructor(url: URL) {

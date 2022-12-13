@@ -5,6 +5,7 @@ import { SitesPage } from "./sitesPage";
 import { DisabledPage } from "./disabledPage";
 import { ConsolePage } from "./consolePage";
 import { LoginPage } from "./loginPage";
+import { WelcomePage } from "./welcomePage";
 
 export class StartPage extends AemPage {
   static pathRegex = /^\/aem\/start$/;
@@ -67,6 +68,12 @@ export class StartPage extends AemPage {
     const url = new URL(`${this.url.origin}/aem/start`);
 
     return new StartPage(url);
+  }
+
+  get welcomePage(): AemPage {
+    const url = new URL(`${this.url.origin}/welcome`);
+
+    return new WelcomePage(url);
   }
 
   constructor(url: URL) {

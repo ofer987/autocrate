@@ -225,6 +225,7 @@ export class PagesMenuViewModel extends MenuViewModel {
       "User Admin",
       "Sites",
       "Console",
+      "Welcome"
     ]
   }
 }
