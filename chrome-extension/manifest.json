@@ -10,7 +10,7 @@
     "storage"
   ],
   "options_page": "options.html",
-  "browser_action": {
+  "action": {
     "default_title": "Autocrate",
     "default_popup": "main.html"
   },
@@ -22,7 +22,7 @@
       },
       "description": "Change between servers/pages"
     },
-    "_execute_browser_action": {
+    "_execute_action": {
       "suggested_key": {
         "default": "Alt+J",
         "mac": "Alt+J"
@@ -30,5 +30,5 @@
       "description": "Change pages"
     }
 },
-  "manifest_version": 2
+  "manifest_version": 3
 }
