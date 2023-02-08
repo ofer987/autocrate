@@ -9,88 +9,17 @@ interface ServerOption extends Server {
   id: string
 }
 
-// const authorServers = {
-//   localhost: {
-//     name: "Localhost",
-//     url: new URL("http://localhost:4502")
-//   },
-//   dev: {
-//     name: "Dev",
-//     url: new URL("https://author-dev-ams.ewp.thomsonreuters.com/")
-//   },
-//   qa: {
-//     name: "QA",
-//     url: new URL("https://author-qa-ams.ewp.thomsonreuters.com/")
-//   },
-//   uat: {
-//     name: "UAT",
-//     url: new URL("https://author-uat-ams.ewp.thomsonreuters.com/")
-//   },
-//   ppe: {
-//     name: "PPE",
-//     url: new URL("https://author-ppe-ams.ewp.thomsonreuters.com/")
-//   },
-//   production: {
-//     name: "Production",
-//     url: new URL("https://author-prod-ams.ewp.thomsonreuters.com/")
-//   }
-// };
-//
-// const publisherServers = {
-//   localhost_publisher_1: {
-//     name: "Localhost Publish",
-//     url: new URL("http://localhost:4503"),
-//   },
-//   qa_publisher_1: {
-//     name: "QA Publish",
-//     url: new URL("http://publish1useast1-as.qa.ewp.thomsonreuters.com:4503"),
-//   },
-//   uat_publisher_1: {
-//     name: "UAT Publish",
-//     url: new URL("http://publish1useast1-as.uat.ewp.thomsonreuters.com:4503"),
-//   },
-//   ppe_publisher_1: {
-//     name: "PPE Publish 1 US EAST 1",
-//     url: new URL("http://publish1useast1-as.ppe.ewp.thomsonreuters.com:4503"),
-//   },
-//   ppe_publisher_2: {
-//     name: "PPE Publish 2 US EAST 1",
-//     url: new URL("http://publish2useast1-as.ppe.ewp.thomsonreuters.com:4503"),
-//   },
-//   ppe_publisher_3: {
-//     name: "PPE Publish 1 US WEST 2",
-//     url: new URL("http://publish1uswest2-as.ppe.ewp.thomsonreuters.com:4503"),
-//   },
-//   ppe_publisher_4: {
-//     name: "PPE Publish 2 US WEST 2",
-//     url: new URL("http://publish2uswest2-as.ppe.ewp.thomsonreuters.com:4503"),
-//   },
-//   prod_publisher_1: {
-//     name: "Prod Publish 1 US EAST 1",
-//     url: new URL("http://publish1useast1-as.prod.ewp.thomsonreuters.com:4503"),
-//   },
-//   prod_publisher_2: {
-//     name: "Prod Publish 2 US EAST 1",
-//     url: new URL("http://publish2useast1-as.prod.ewp.thomsonreuters.com:4503"),
-//   },
-//   prod_publisher_3: {
-//     name: "Prod Publish 1 US WEST 2",
-//     url: new URL("http://publish1uswest2-as.prod.ewp.thomsonreuters.com:4503"),
-//   },
-//   prod_publisher_4: {
-//     name: "Prod Publish 2 US WEST 2",
-//     url: new URL("http://publish2uswest2-as.prod.ewp.thomsonreuters.com:4503"),
-//   },
-// }
-
 class Options {
+  private AUTHOR_DISPATCHERS_SELECTOR = "#servers #author-dispatchers .list";
   private AUTHORS_SELECTOR = "#servers #authors .list";
   private PUBLISHERS_SELECTOR = "#servers #publishers .list";
 
+  private AUTHOR_DISPATCHER_SERVERS_SELECTOR = "#servers #author-dispatchers .list > div";
   private AUTHOR_SERVERS_SELECTOR = "#servers #authors .list > div";
   private PUBLISHER_SERVERS_SELECTOR = "#servers #publishers .list > div";
   private SAVE_BUTTON_ID = "save";
 
+  private authorDispatcherServersElement: HTMLDivElement = document.querySelector(this.AUTHOR_DISPATCHERS_SELECTOR) as HTMLDivElement;
   private authorServersElement: HTMLDivElement = document.querySelector(this.AUTHORS_SELECTOR) as HTMLDivElement;
   private publisherServersElement: HTMLDivElement = document.querySelector(this.PUBLISHERS_SELECTOR) as HTMLDivElement;
   private saveButtonElement: HTMLButtonElement = document.getElementById(this.SAVE_BUTTON_ID) as HTMLButtonElement;
@@ -117,21 +46,11 @@ class Options {
   }
 
   private restore(): void {
-    // NOTE: Uncomment to set new authorServers and/or publisherServers values
-    // Object.values(authorServers).forEach(item => {
-    //   let optionElement = this.createOption(item);
-    //
-    //   this.authorServersElement.appendChild(optionElement);
-    // });
-    //
-    // Object.values(publisherServers).forEach(item => {
-    //   let optionElement = this.createOption(item);
-    //
-    //   this.publisherServersElement.appendChild(optionElement);
-    // });
-    // this.save();
-
     chrome.storage.sync.get(null, (savedValues: Servers) => {
+      savedValues.authorDispatchers.forEach((savedValue: Server) => {
+        this.createOption(this.authorDispatcherServersElement, savedValue);
+      });
+
       savedValues.authors.forEach((savedValue: Server) => {
         this.createOption(this.authorServersElement, savedValue);
       });
@@ -224,107 +143,41 @@ class Options {
 
   private shiftOptionDown(list: HTMLDivElement, id: string): void {
     // Serialize servers
-    let servers: ServerOption[] = [];
-
-    const ids: string[] = [];
-    list.childNodes.forEach((element: HTMLDivElement) => {
-      const server: ServerOption = {
-        id: element.id,
-        name: (element.querySelector("input.name") as HTMLInputElement).value,
-        url: new URL((element.querySelector("input.url") as HTMLInputElement).value)
-      };
-
-      ids.push(element.id);
-      servers.push(server);
-    });
+    const servers = this.serialiseServers(list);
 
     // Shift Server down
-    let shiftedList: ServerOption[] = []
-    let shiftedServer: ServerOption = null;
-    for (const server of servers) {
-      if (server.id !== id) {
-        shiftedList.push(server);
-      }
+    const shiftedList = this.shiftServer(servers, id);
 
-      if (shiftedServer) {
-        shiftedList.push(shiftedServer);
-        shiftedServer = null;
-      }
-
-      if (server.id === id) {
-        shiftedServer = server;
-      }
-    }
-    if (shiftedServer !== null) {
-      shiftedList.push(shiftedServer);
-      shiftedServer = null;
-    }
-
-    // Delete current list
-    for (const id of ids) {
-      document.getElementById(id).remove();
-    }
-
-    // Unserialize servers
-    shiftedList.forEach((server: ServerOption) => {
-      this.createOption(list, server);
-    });
+    // Recreate list
+    this.recreateList(list, shiftedList);
   }
 
   private shiftOptionUp(list: HTMLDivElement, id: string): void {
     // Serialize servers
-    let servers: ServerOption[] = [];
-
-    const ids: string[] = [];
-    list.childNodes.forEach((element: HTMLDivElement) => {
-      const server: ServerOption = {
-        id: element.id,
-        name: (element.querySelector("input.name") as HTMLInputElement).value,
-        url: new URL((element.querySelector("input.url") as HTMLInputElement).value)
-      };
-
-      ids.push(element.id);
-      servers.push(server);
-    });
+    const servers = this.serialiseServers(list);
 
     // Shift Server down
-    let shiftedList: ServerOption[] = []
-    let shiftedServer: ServerOption = null;
-    for (const server of servers.reverse()) {
-      if (server.id !== id) {
-        shiftedList.push(server);
-      }
+    const shiftedList = this.shiftServer(servers.reverse(), id);
 
-      if (shiftedServer) {
-        shiftedList.push(shiftedServer);
-        shiftedServer = null;
-      }
-
-      if (server.id === id) {
-        shiftedServer = server;
-      }
-    }
-    if (shiftedServer !== null) {
-      shiftedList.push(shiftedServer);
-      shiftedServer = null;
-    }
-
-    // Delete current list
-    for (const id of ids) {
-      document.getElementById(id).remove();
-    }
-
-    // Unserialize servers
-    shiftedList.reverse().forEach((server: ServerOption) => {
-      this.createOption(list, server);
-    });
+    // Recreate list
+    this.recreateList(list, shiftedList.reverse());
   }
 
   private save(): void {
     let servers = {
+      authorDispatchers: [],
       authors: [],
       publishers: [],
     };
+
+    document.querySelectorAll(this.AUTHOR_DISPATCHER_SERVERS_SELECTOR).forEach((element: HTMLDivElement) => {
+      const server = {
+        name: (element.querySelector("input.name") as HTMLInputElement).value,
+        url: (element.querySelector("input.url") as HTMLInputElement).value
+      };
+
+      servers.authorDispatchers.push(server);
+    });
 
     document.querySelectorAll(this.AUTHOR_SERVERS_SELECTOR).forEach((element: HTMLDivElement) => {
       const server = {
@@ -345,6 +198,57 @@ class Options {
     });
 
     chrome.storage.sync.set(servers, this.displaySaved);
+  }
+
+  private serialiseServers(list: HTMLDivElement): ServerOption[] {
+    let servers: ServerOption[] = [];
+
+    list.childNodes.forEach((element: HTMLDivElement) => {
+      const server: ServerOption = {
+        id: element.id,
+        name: (element.querySelector("input.name") as HTMLInputElement).value,
+        url: new URL((element.querySelector("input.url") as HTMLInputElement).value)
+      };
+
+      servers.push(server);
+    });
+
+    return servers;
+  }
+
+  private recreateList(list: HTMLDivElement, items: ServerOption[]): void {
+    for (const id of items.map(item => item.id)) {
+      document.getElementById(id).remove();
+    }
+
+    items.forEach((server: Server) => {
+      this.createOption(list, server);
+    });
+  }
+
+  private shiftServer(items: ServerOption[], idToShift: string): ServerOption[] {
+    let shiftedList: ServerOption[] = []
+    let shiftedServer: ServerOption = null;
+    for (const server of items) {
+      if (server.id !== idToShift) {
+        shiftedList.push(server);
+      }
+
+      if (shiftedServer) {
+        shiftedList.push(shiftedServer);
+        shiftedServer = null;
+      }
+
+      if (server.id === idToShift) {
+        shiftedServer = server;
+      }
+    }
+    if (shiftedServer !== null) {
+      shiftedList.push(shiftedServer);
+      shiftedServer = null;
+    }
+
+    return shiftedList;
   }
 
   private displaySaved(): void {

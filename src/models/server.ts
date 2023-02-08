@@ -1,4 +1,5 @@
 export interface Servers {
+  authorDispatchers: Server[];
   authors: Server[];
   publishers: Server[];
 }
