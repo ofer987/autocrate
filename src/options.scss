@@ -7,7 +7,7 @@ body {
   overflow-x: scroll;
   overflow-y: scroll;
 
-  max-width: 50em;
+  max-width: 100em;
 
   #servers {
     display: flex;
@@ -18,25 +18,30 @@ body {
       flex-direction: column;
       // flex-wrap: wrap;
       // justify-content: space-between;
-      max-width: 50em;
+      // max-width: 100em;
 
       > div {
         display: flex;
         flex-direction: row;
         flex-wrap: wrap;
-        justify-content: space-between;
-        max-width: 50em;
+        justify-content: flex-start;
+        // max-width: 100em;
 
-        label {
-          width: 20%;
+        input.name {
+          margin-right: 1%;
+          width: 15%;
         }
 
-        input {
-          width: 60%;
+        input.url {
+          width: 40%;
         }
 
-        button {
-          // width: 10%;
+        .buttons {
+          margin-left: 1%;
+
+          button {
+            // width: 10%;
+          }
         }
       }
     }

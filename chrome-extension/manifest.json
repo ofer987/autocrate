@@ -1,7 +1,7 @@
 {
   "name": "Autocrate 2",
-  "description": "Switch between AEM servers and pages (Editor, Preview, Editor, and Package Manager)",
-  "version": "0.3.0",
+  "description": "Switch between AEM servers and pages (Editor, Preview, Editor, and Package Manager, et cetera)",
+  "version": "0.3.1",
   "icons": {
     "64": "thumbnail-green.png"
   },
@@ -29,6 +29,6 @@
       },
       "description": "Change pages"
     }
-},
+  },
   "manifest_version": 3
 }

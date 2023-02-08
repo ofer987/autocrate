@@ -1,5 +1,5 @@
 {
-  "name": "Autocrate",
+  "name": "autocrate",
   "version": "0.0.1",
   "description": "Switch between AEM environments and pages",
   "main": "index.js",
