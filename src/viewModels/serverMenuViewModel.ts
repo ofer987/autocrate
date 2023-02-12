@@ -9,34 +9,17 @@ export class ServerMenuViewModel extends MenuViewModel {
   protected ITEM_CLASS = "server";
 
   private servers: Server[];
-  // private authorServers: Server[];
-  // private publisherServers: Server[];
   private isActive: boolean;
   private menuId: string;
-
-  // private get servers(): Server[] {
-  //   return this.authorServers
-  //     .concat(this.publisherServers);
-  // }
-
-  // private list: HTMLElement;
-  // private authors: HTMLElement;
-  // private publishers: HTMLElement;
 
   constructor(currentUrl: URL, servers: Server[], menuId: string) {
     super();
 
     this.url = currentUrl;
     this.servers = servers;
-    // this.authorServers = authorServers;
-    // this.publisherServers = publisherServers;
-    // this._selectedIndex = selectedIndex || 0;
 
     this.menuId = menuId;
     this.menu = document.getElementById(this.menuId);
-    // this.list = this.menu.querySelector("#list");
-    // this.authors = this.menu.querySelector("#authors");
-    // this.publishers = this.menu.querySelector("#publishers");
 
     this.init();
   }
@@ -49,18 +32,6 @@ export class ServerMenuViewModel extends MenuViewModel {
     }).forEach((item: HTMLElement) => {
       this.menu.appendChild(item);
     });
-
-    // this.authorServers.map((server: Server) => {
-    //   return this.createItem(index++, server.name, new URL(server.url));
-    // }).forEach((item: HTMLElement) => {
-    //   this.authors.appendChild(item);
-    // });
-    //
-    // this.publisherServers.map((server: Server) => {
-    //   return this.createItem(index++, server.name, new URL(server.url));
-    // }).forEach((item: HTMLElement) => {
-    //   this.publishers.appendChild(item);
-    // });
 
     this.onKeyDown();
   }
@@ -213,4 +184,3 @@ export class ServerMenuViewModel extends MenuViewModel {
     this.isActive = false;
   }
 }
-

@@ -4,18 +4,11 @@ import { MenuViewModel } from "./viewModels/menuViewModel";
 import { ServerMenuViewModel } from "./viewModels/serverMenuViewModel";
 import { PagesMenuViewModel } from "./viewModels/pageMenuViewModel";
 
-// const defaultMode = "servers";
-// type modes = "servers" | "pages";
-
 export class Main {
-  // private NEW_TAB = "chrome://newtab/";
-
-  // private mode: modes;
   private servers: Servers;
   private serverMenus: ServerMenuViewModel[] = [];
   private pagesMenu: PagesMenuViewModel;
   private menuIndex: number = 0;
-  // private currentMenu: MenuViewModel;
 
   private get currentMenu(): MenuViewModel {
     return this.menus[this.menuIndex];
@@ -43,8 +36,6 @@ export class Main {
   }
 
   constructor() {
-    // this.mode = defaultMode;
-
     this.restoreOptionsAndInit();
   }
 
@@ -81,9 +72,6 @@ export class Main {
       this.serverMenus.push(new ServerMenuViewModel(url, this.authorServers, "authors"));
       this.serverMenus.push(new ServerMenuViewModel(url, this.publisherServers, "publishers"));
 
-      // [this.authorDispatcherServers, this.authorServers, this.publisherServers].map(item => new ServerMenuViewModel(url, item));
-      // this.serversMenu = new ServerMenuViewModel(url, this.authorDispatcherServers, this.authorServers, this.publisherServers);
-
       const aemPage = AemPages.getAemPage(url)
       this.pagesMenu = new PagesMenuViewModel(aemPage);
 
@@ -92,26 +80,12 @@ export class Main {
       } else {
         this.displayServerMenu();
       }
-      // if (url.toString() === this.NEW_TAB || !aemPage.isAemPage) {
-      //   // this.mode = "servers";
-      // } else {
-      //   // this.mode = "pages";
-      // }
-      //
-      // this.menuIndex = 1;
-      // this.currentMenu = this.menus[this.menuIndex];
-      // this.displayMenu();
     });
 
     chrome.commands.onCommand.addListener((command: string) => {
-      if (command === "select" && !this.pagesMenu.isNull) {
+      if (command === "select") {
         this.rotateMenu();
-        // this.mode = this.mode == "servers"
-        //   ? "pages"
-        //   : "servers";
       }
-
-      // this.displayMenu();
     });
   }
 
@@ -125,7 +99,6 @@ export class Main {
       this.menuIndex = 0;
     }
 
-    // this.currentMenu = menus[this.menuIndex];
     this.displayMenu();
   }
 

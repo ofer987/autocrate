@@ -77,7 +77,6 @@ class Options {
 
     let nameElement = document.createElement("input");
     nameElement.classList.add("name");
-    // nameElement.htmlFor = id;
     nameElement.value = value.name;
     resultElement.appendChild(nameElement);
 
