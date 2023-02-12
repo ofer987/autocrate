@@ -2,9 +2,7 @@
 body {
   padding: 0.75em;
   margin: 0;
-
   font-size: 12px;
-
   overflow-x: scroll;
   overflow-y: scroll;
 }
@@ -21,55 +19,59 @@ body {
   }
 
   .disabled-page {
-    padding-top: 7px;
-    padding-bottom: 7px;
-    padding-left: 2px;
-    padding-right: 20px;
-    white-space: nowrap;
+    padding: 7px 20px 7px 2px;
 
+    // padding-top: 7px;
+    // padding-bottom: 7px;
+    // padding-left: 2px;
+    // padding-right: 20px;
+    white-space: nowrap;
     background-color: grey;
 
     &.selected, &:hover {
       background-color: grey;
-
       cursor: not-allowed;
     }
   }
 
   .server {
-    padding-top: 7px;
-    padding-bottom: 7px;
-    padding-left: 2px;
-    padding-right: 20px;
+    padding: 7px 20px 7px 2px;
+
+    // padding-top: 7px;
+    // padding-bottom: 7px;
+    // padding-left: 2px;
+    // padding-right: 20px;
     white-space: nowrap;
 
     &.selected {
       color: white;
-      background-color: rgb(89,100, 200);
+      background-color: rgb(89 100 200);
     }
 
     &:hover {
       color: white;
-      background-color: rgb(89,100, 200);
+      background-color: rgb(89 100 200);
       cursor: pointer;
     }
   }
 
   .page {
-    padding-top: 7px;
-    padding-bottom: 7px;
-    padding-left: 2px;
-    padding-right: 20px;
+    padding: 7px 20px 7px 2px;
+
+    // padding-top: 7px;
+    // padding-bottom: 7px;
+    // padding-left: 2px;
+    // padding-right: 20px;
     white-space: nowrap;
 
     &.selected {
       color: white;
-      background-color: rgb(89,100, 200);
+      background-color: rgb(89 100 200);
     }
 
     &:hover {
       color: white;
-      background-color: rgb(89,100, 200);
+      background-color: rgb(89 100 200);
       cursor: pointer;
     }
   }

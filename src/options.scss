@@ -1,12 +1,9 @@
 body {
   padding: 0.75em;
   margin: 0;
-
   font-size: 12px;
-
   overflow-x: scroll;
   overflow-y: scroll;
-
   max-width: 100em;
 
   #servers {
@@ -16,16 +13,11 @@ body {
     .list {
       display: flex;
       flex-direction: column;
-      // flex-wrap: wrap;
-      // justify-content: space-between;
-      // max-width: 100em;
 
       > div {
         display: flex;
-        flex-direction: row;
-        flex-wrap: wrap;
+        flex-flow: row wrap;
         justify-content: flex-start;
-        // max-width: 100em;
 
         input.name {
           margin-right: 1%;
@@ -38,10 +30,6 @@ body {
 
         .buttons {
           margin-left: 1%;
-
-          button {
-            // width: 10%;
-          }
         }
       }
     }
