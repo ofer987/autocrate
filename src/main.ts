@@ -11,6 +11,7 @@ export class Main {
 
   private mode: modes;
   private servers: Servers;
+  private serverMenus: ServerMenuViewModel[] = [];
   private serversMenu: ServerMenuViewModel;
   private pagesMenu: PagesMenuViewModel;
 
@@ -61,7 +62,12 @@ export class Main {
       var tab = tabs[0];
       var url = new URL(tab.url);
 
-      this.serversMenu = new ServerMenuViewModel(url, this.authorDispatcherServers, this.authorServers, this.publisherServers);
+      this.serverMenus.push(new ServerMenuViewModel(url, this.authorDispatcherServers, "author-dispatchers"));
+      this.serverMenus.push(new ServerMenuViewModel(url, this.authorServers, "authors"));
+      this.serverMenus.push(new ServerMenuViewModel(url, this.publisherServers, "publishers"));
+
+      // [this.authorDispatcherServers, this.authorServers, this.publisherServers].map(item => new ServerMenuViewModel(url, item));
+      // this.serversMenu = new ServerMenuViewModel(url, this.authorDispatcherServers, this.authorServers, this.publisherServers);
 
       const aemPage = AemPages.getAemPage(url)
       this.pagesMenu = new PagesMenuViewModel(aemPage);

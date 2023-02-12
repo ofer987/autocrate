@@ -5,36 +5,36 @@ import { NonAemPage } from "../pages/nonAemPage";
 export class ServerMenuViewModel {
   private IS_SELECTED_CLASS = "selected";
   private ITEM_CLASS = "server";
-  private MENU_CLASS = "servers";
+  // private MENU_CLASS = "servers";
 
   private url: URL;
   private _selectedIndex: number;
-  private authorDispatcherServers: Server[];
-  private authorServers: Server[];
-  private publisherServers: Server[];
+  private servers: Server[];
+  // private authorServers: Server[];
+  // private publisherServers: Server[];
   private isActive: boolean;
 
-  private get servers(): Server[] {
-    return this.authorServers
-      .concat(this.publisherServers);
-  }
+  // private get servers(): Server[] {
+  //   return this.authorServers
+  //     .concat(this.publisherServers);
+  // }
 
   private menu: HTMLElement;
-  private authorDispatchers: HTMLElement;
-  private authors: HTMLElement;
-  private publishers: HTMLElement;
+  // private list: HTMLElement;
+  // private authors: HTMLElement;
+  // private publishers: HTMLElement;
 
-  constructor(currentUrl: URL, authorDispatcherServers: Server[], authorServers: Server[], publisherServers: Server[], selectedIndex?: number) {
+  constructor(currentUrl: URL, servers: Server[], menuId: string) {
     this.url = currentUrl;
-    this.authorDispatcherServers = authorDispatcherServers;
-    this.authorServers = authorServers;
-    this.publisherServers = publisherServers;
-    this._selectedIndex = selectedIndex || 0;
+    this.servers = servers;
+    // this.authorServers = authorServers;
+    // this.publisherServers = publisherServers;
+    // this._selectedIndex = selectedIndex || 0;
 
-    this.menu = document.getElementById(this.MENU_CLASS);
-    this.authorDispatchers = this.menu.querySelector("#author-dispatchers");
-    this.authors = this.menu.querySelector("#authors");
-    this.publishers = this.menu.querySelector("#publishers");
+    this.menu = document.getElementById(menuId);
+    // this.list = this.menu.querySelector("#list");
+    // this.authors = this.menu.querySelector("#authors");
+    // this.publishers = this.menu.querySelector("#publishers");
 
     this.init();
   }
@@ -42,23 +42,23 @@ export class ServerMenuViewModel {
   private init(): void {
     let index = 0;
 
-    this.authorDispatcherServers.map((server: Server) => {
+    this.servers.map((server: Server) => {
       return this.createItem(index++, server.name, new URL(server.url));
     }).forEach((item: HTMLElement) => {
-      this.authorDispatchers.appendChild(item);
+      this.menu.appendChild(item);
     });
 
-    this.authorServers.map((server: Server) => {
-      return this.createItem(index++, server.name, new URL(server.url));
-    }).forEach((item: HTMLElement) => {
-      this.authors.appendChild(item);
-    });
-
-    this.publisherServers.map((server: Server) => {
-      return this.createItem(index++, server.name, new URL(server.url));
-    }).forEach((item: HTMLElement) => {
-      this.publishers.appendChild(item);
-    });
+    // this.authorServers.map((server: Server) => {
+    //   return this.createItem(index++, server.name, new URL(server.url));
+    // }).forEach((item: HTMLElement) => {
+    //   this.authors.appendChild(item);
+    // });
+    //
+    // this.publisherServers.map((server: Server) => {
+    //   return this.createItem(index++, server.name, new URL(server.url));
+    // }).forEach((item: HTMLElement) => {
+    //   this.publishers.appendChild(item);
+    // });
 
     this.onKeyDown();
   }
