@@ -12,6 +12,7 @@ export class ServerMenuViewModel extends MenuViewModel {
   // private authorServers: Server[];
   // private publisherServers: Server[];
   private isActive: boolean;
+  private menuId: string;
 
   // private get servers(): Server[] {
   //   return this.authorServers
@@ -31,7 +32,8 @@ export class ServerMenuViewModel extends MenuViewModel {
     // this.publisherServers = publisherServers;
     // this._selectedIndex = selectedIndex || 0;
 
-    this.menu = document.getElementById(menuId);
+    this.menuId = menuId;
+    this.menu = document.getElementById(this.menuId);
     // this.list = this.menu.querySelector("#list");
     // this.authors = this.menu.querySelector("#authors");
     // this.publishers = this.menu.querySelector("#publishers");
@@ -133,6 +135,26 @@ export class ServerMenuViewModel extends MenuViewModel {
       .add(this.IS_SELECTED_CLASS);
   }
 
+  protected setSelectedIndex(value: number) {
+    let pages = this.menu.querySelectorAll(`.${this.ITEM_CLASS}`);
+    pages.forEach(item => item.classList.remove(this.IS_SELECTED_CLASS));
+
+    if (value < 0) {
+      value = this.servers.length - 1;
+    }
+
+    if (value > this.servers.length - 1) {
+      value = 0;
+    }
+
+    const selectedServerElementId = this.getServerElementId(value);
+
+    this._selectedIndex = value;
+
+    document.getElementById(selectedServerElementId).classList
+      .add(this.IS_SELECTED_CLASS);
+  }
+
   private createItem(id: number, name: string, url: URL): HTMLDivElement {
     let result = document.createElement('div');
 
@@ -149,7 +171,7 @@ export class ServerMenuViewModel extends MenuViewModel {
   };
 
   private getServerElementId(id: number): string {
-    return `server-${id}`;
+    return `server-${this.menuId}-${id}`;
   }
 
   private onKeyDown(): void {
@@ -189,26 +211,6 @@ export class ServerMenuViewModel extends MenuViewModel {
 
   private deactivate(): void {
     this.isActive = false;
-  }
-
-  protected setSelectedIndex(value: number) {
-    let pages = document.querySelectorAll(`.${this.ITEM_CLASS}`);
-    pages.forEach(item => item.classList.remove(this.IS_SELECTED_CLASS));
-
-    if (value < 0) {
-      value = this.servers.length - 1;
-    }
-
-    if (value > this.servers.length - 1) {
-      value = 0;
-    }
-
-    const selectedServerElementId = this.getServerElementId(value);
-
-    this._selectedIndex = value;
-
-    document.getElementById(selectedServerElementId).classList
-      .add(this.IS_SELECTED_CLASS);
   }
 }
 

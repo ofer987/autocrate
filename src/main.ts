@@ -4,7 +4,7 @@ import { MenuViewModel } from "./viewModels/menuViewModel";
 import { ServerMenuViewModel } from "./viewModels/serverMenuViewModel";
 import { PagesMenuViewModel } from "./viewModels/pageMenuViewModel";
 
-const defaultMode = "servers";
+// const defaultMode = "servers";
 // type modes = "servers" | "pages";
 
 export class Main {
@@ -38,21 +38,8 @@ export class Main {
     return results;
   }
 
-  private rotateMenu(): void {
-    const menus = this.menus;
-    const menuCount = menus.length;
-
-    if (this.menuIndex + 1 < menuCount) {
-      this.menuIndex += 1;
-    } else {
-      this.menuIndex = 0;
-    }
-
-    this.currentMenu = menus[this.menuIndex];
-  }
-
   constructor() {
-    this.mode = defaultMode;
+    // this.mode = defaultMode;
 
     this.restoreOptionsAndInit();
   }
@@ -102,6 +89,8 @@ export class Main {
         // this.mode = "pages";
       }
 
+      this.menuIndex = 1;
+      this.currentMenu = this.menus[this.menuIndex];
       this.displayMenu();
     });
 
@@ -115,6 +104,20 @@ export class Main {
 
       this.displayMenu();
     });
+  }
+
+  private rotateMenu(): void {
+    const menus = this.menus;
+    const menuCount = menus.length;
+
+    if (this.menuIndex + 1 < menuCount) {
+      this.menuIndex += 1;
+    } else {
+      this.menuIndex = 0;
+    }
+
+    this.currentMenu = menus[this.menuIndex];
+    this.displayMenu();
   }
 
   // Display the selected menu
