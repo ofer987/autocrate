@@ -9,6 +9,7 @@ export class ServerMenuViewModel {
 
   private url: URL;
   private _selectedIndex: number;
+  private authorDispatcherServers: Server[];
   private authorServers: Server[];
   private publisherServers: Server[];
   private isActive: boolean;
@@ -19,16 +20,19 @@ export class ServerMenuViewModel {
   }
 
   private menu: HTMLElement;
+  private authorDispatchers: HTMLElement;
   private authors: HTMLElement;
   private publishers: HTMLElement;
 
-  constructor(currentUrl: URL, authorServers: Server[], publisherServers: Server[], selectedIndex?: number) {
+  constructor(currentUrl: URL, authorDispatcherServers: Server[], authorServers: Server[], publisherServers: Server[], selectedIndex?: number) {
     this.url = currentUrl;
+    this.authorDispatcherServers = authorDispatcherServers;
     this.authorServers = authorServers;
     this.publisherServers = publisherServers;
     this._selectedIndex = selectedIndex || 0;
 
     this.menu = document.getElementById(this.MENU_CLASS);
+    this.authorDispatchers = this.menu.querySelector("#author-dispatchers");
     this.authors = this.menu.querySelector("#authors");
     this.publishers = this.menu.querySelector("#publishers");
 
@@ -37,6 +41,12 @@ export class ServerMenuViewModel {
 
   private init(): void {
     let index = 0;
+
+    this.authorDispatcherServers.map((server: Server) => {
+      return this.createItem(index++, server.name, new URL(server.url));
+    }).forEach((item: HTMLElement) => {
+      this.authorDispatchers.appendChild(item);
+    });
 
     this.authorServers.map((server: Server) => {
       return this.createItem(index++, server.name, new URL(server.url));
