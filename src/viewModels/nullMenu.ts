@@ -10,17 +10,22 @@ export class NullMenu extends MenuViewModel {
   }
 
   display(): void {
+    return;
   }
 
   hide(): void {
+    return;
   }
 
   navigate(): void {
+    return;
   }
 
-  protected setSelectedIndex(_value: number) {
+  protected setSelectedIndex(): void {
+    return;
   }
 
   protected setSelectedElementByUrl() {
+    return;
   }
 }

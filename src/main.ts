@@ -8,7 +8,7 @@ export class Main {
   private servers: Servers;
   private serverMenus: ServerMenuViewModel[] = [];
   private pagesMenu: PagesMenuViewModel;
-  private menuIndex: number = 0;
+  private menuIndex = 0;
 
   private get currentMenu(): MenuViewModel {
     return this.menus[this.menuIndex];
@@ -65,14 +65,14 @@ export class Main {
 
   private init() {
     chrome.tabs.query({ active: true, currentWindow: true }, (tabs: chrome.tabs.Tab[]) => {
-      var tab = tabs[0];
-      var url = new URL(tab.url);
+      const tab = tabs[0];
+      const url = new URL(tab.url);
 
       this.serverMenus.push(new ServerMenuViewModel(url, this.authorDispatcherServers, "author-dispatchers"));
       this.serverMenus.push(new ServerMenuViewModel(url, this.authorServers, "authors"));
       this.serverMenus.push(new ServerMenuViewModel(url, this.publisherServers, "publishers"));
 
-      const aemPage = AemPages.getAemPage(url)
+      const aemPage = AemPages.getAemPage(url);
       this.pagesMenu = new PagesMenuViewModel(aemPage);
 
       if (aemPage.isAemPage) {

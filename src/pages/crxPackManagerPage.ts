@@ -26,7 +26,7 @@ export class CrxPackMgrPage extends AemPage {
       return new DisabledPage(this.url);
     }
 
-    var url = new URL(`${this._url.origin}/editor.html${this._url.hash.substring(1)}\.html`);
+    const url = new URL(`${this._url.origin}/editor.html${this._url.hash.substring(1)}.html`);
     return new EditorPage(url);
   }
 
@@ -35,12 +35,12 @@ export class CrxPackMgrPage extends AemPage {
       return new DisabledPage(this.url);
     }
 
-    var url = new URL(`${this._url.origin}${this._url.hash.substring(1)}\.html?wcmmode=disabled`);
+    const url = new URL(`${this._url.origin}${this._url.hash.substring(1)}.html?wcmmode=disabled`);
     return new PreviewPage(url);
   }
 
   get crxDePage(): AemPage {
-    var url = new URL(this._url.toString());
+    const url = new URL(this._url.toString());
     url.pathname = '/crx/de/index.jsp';
 
     return new CrxDePage(url);
@@ -51,7 +51,7 @@ export class CrxPackMgrPage extends AemPage {
   }
 
   get userAdminPage(): AemPage {
-    var url = new URL(`${this._url.origin}/useradmin`);
+    const url = new URL(`${this._url.origin}/useradmin`);
 
     return new UserAdminPage(url);
   }
@@ -61,7 +61,7 @@ export class CrxPackMgrPage extends AemPage {
       return new DisabledPage(this.url);
     }
 
-    var url = new URL(`${this._url.origin}/sites.html${this._url.hash.substring(1)}`);
+    const url = new URL(`${this._url.origin}/sites.html${this._url.hash.substring(1)}`);
     return new SitesPage(url);
   }
 

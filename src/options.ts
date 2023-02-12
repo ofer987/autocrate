@@ -1,7 +1,7 @@
 import { random } from "lodash";
 
-import { Servers } from "./models/server"
-import { Server } from "./models/server"
+import { Servers } from "./models/server";
+import { Server } from "./models/server";
 
 import "./options.scss";
 
@@ -34,7 +34,7 @@ class Options {
   }
 
   private setKeyboardBindings(): void {
-    this.saveButtonElement.addEventListener("mousedown", (_event: MouseEvent) => {
+    this.saveButtonElement.addEventListener("mousedown", () => {
       this.save();
     });
 
@@ -62,35 +62,35 @@ class Options {
   }
 
   private createNewOption(list: HTMLDivElement): void {
-    let result = {
+    const result = {
       name: "",
       url: new URL("https://domain.com")
-    }
+    };
 
     this.createOption(list, result);
   }
 
   private createOption(list: HTMLDivElement, value: Server): void {
     const id = random(0, 4294967296).toString();
-    let resultElement = document.createElement("div");
+    const resultElement = document.createElement("div");
     resultElement.id = id;
 
-    let nameElement = document.createElement("input");
+    const nameElement = document.createElement("input");
     nameElement.classList.add("name");
     nameElement.value = value.name;
     resultElement.appendChild(nameElement);
 
-    let valueElement = document.createElement("input");
+    const valueElement = document.createElement("input");
     valueElement.classList.add("url");
     valueElement.value = value.url.toString();
     resultElement.appendChild(valueElement);
 
-    let buttonsElement = document.createElement("div");
+    const buttonsElement = document.createElement("div");
     buttonsElement.classList.add("buttons");
 
-    let deleteElement = document.createElement("button");
+    const deleteElement = document.createElement("button");
     deleteElement.textContent = "Delete";
-    deleteElement.addEventListener("mousedown", ((_event: MouseEvent) => {
+    deleteElement.addEventListener("mousedown", (() => {
       resultElement.remove();
     }));
     deleteElement.addEventListener("keydown", ((event: KeyboardEvent) => {
@@ -100,9 +100,9 @@ class Options {
     }));
     buttonsElement.appendChild(deleteElement);
 
-    let addElement = document.createElement("button");
+    const addElement = document.createElement("button");
     addElement.textContent = "+";
-    addElement.addEventListener("mousedown", ((_event: MouseEvent) => {
+    addElement.addEventListener("mousedown", (() => {
       this.createNewOption(list);
     }));
     addElement.addEventListener("keydown", ((event: KeyboardEvent) => {
@@ -112,9 +112,9 @@ class Options {
     }));
     buttonsElement.appendChild(addElement);
 
-    let shiftDownElement = document.createElement("button");
+    const shiftDownElement = document.createElement("button");
     shiftDownElement.textContent = "down";
-    shiftDownElement.addEventListener("mousedown", ((_event: MouseEvent) => {
+    shiftDownElement.addEventListener("mousedown", (() => {
       this.shiftOptionDown(list, id);
     }));
     shiftDownElement.addEventListener("keydown", ((event: KeyboardEvent) => {
@@ -124,9 +124,9 @@ class Options {
     }));
     buttonsElement.appendChild(shiftDownElement);
 
-    let shiftUpElement = document.createElement("button");
+    const shiftUpElement = document.createElement("button");
     shiftUpElement.textContent = "up";
-    shiftUpElement.addEventListener("mousedown", ((_event: MouseEvent) => {
+    shiftUpElement.addEventListener("mousedown", (() => {
       this.shiftOptionUp(list, id);
     }));
     shiftUpElement.addEventListener("keydown", ((event: KeyboardEvent) => {
@@ -163,7 +163,7 @@ class Options {
   }
 
   private save(): void {
-    let servers = {
+    const servers = {
       authorDispatchers: [],
       authors: [],
       publishers: [],
@@ -200,7 +200,7 @@ class Options {
   }
 
   private serialiseServers(list: HTMLDivElement): ServerOption[] {
-    let servers: ServerOption[] = [];
+    const servers: ServerOption[] = [];
 
     list.childNodes.forEach((element: HTMLDivElement) => {
       const server: ServerOption = {
@@ -226,7 +226,7 @@ class Options {
   }
 
   private shiftServer(items: ServerOption[], idToShift: string): ServerOption[] {
-    let shiftedList: ServerOption[] = []
+    const shiftedList: ServerOption[] = [];
     let shiftedServer: ServerOption = null;
     for (const server of items) {
       if (server.id !== idToShift) {

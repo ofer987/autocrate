@@ -1,0 +1,13 @@
+#!/usr/bin/env sh
+
+source "$(dirname -- "$0")/_/husky.sh"
+
+# See as many errors as possible!
+set +e
+
+# ESLint src/**/*.ts ignores src/*.ts
+# Maybe it is a bug?
+yarn eslint src/*.ts src/**/*.ts
+
+# But not for Stylelint
+yarn stylelint src/**/*.scss
