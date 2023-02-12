@@ -10,9 +10,9 @@ interface Page {
 
 export class PagesMenuViewModel extends MenuViewModel {
   protected IS_SELECTED_CLASS = "selected";
-  private IS_DISABLED_CLASS = "disabled-page";
   protected ITEM_CLASS = "page";
   protected MENU_CLASS = "pages";
+  private IS_DISABLED_CLASS = "disabled-page";
 
   private currentAemPage: AemPage;
   private pages: Page[];
@@ -76,10 +76,11 @@ export class PagesMenuViewModel extends MenuViewModel {
   hide(): void {
     this.deactivate();
 
-    const page = this.pages[this._selectedIndex];
-    if (!page.isEnabled) {
-      return;
-    }
+    // alert(this.selectedElementId);
+    // const page = this.pages[this._selectedIndex];
+    // if (!page.isEnabled) {
+    //   return;
+    // }
 
     this.menu.classList.remove("displayed");
     this.menu.classList.add("hidden");
