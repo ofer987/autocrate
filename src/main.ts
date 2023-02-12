@@ -1,19 +1,21 @@
 import { AemPages } from "./pages/aemPages";
 import { Servers, Server } from "./models/server";
+import { MenuViewModel } from "./viewModels/menuViewModel";
 import { ServerMenuViewModel } from "./viewModels/serverMenuViewModel";
 import { PagesMenuViewModel } from "./viewModels/pageMenuViewModel";
 
 const defaultMode = "servers";
-type modes = "servers" | "pages";
+// type modes = "servers" | "pages";
 
 export class Main {
   private NEW_TAB = "chrome://newtab/";
 
-  private mode: modes;
+  // private mode: modes;
   private servers: Servers;
   private serverMenus: ServerMenuViewModel[] = [];
-  private serversMenu: ServerMenuViewModel;
   private pagesMenu: PagesMenuViewModel;
+  private menuIndex: number = 0;
+  private currentMenu: MenuViewModel;
 
   private get authorDispatcherServers(): Server[] {
     return this.servers.authorDispatchers;
@@ -25,6 +27,28 @@ export class Main {
 
   private get publisherServers(): Server[] {
     return this.servers.publishers;
+  }
+
+  private get menus(): MenuViewModel[] {
+    const results = [];
+
+    results.push(this.pagesMenu);
+    this.serverMenus.forEach(item => results.push(item));
+
+    return results;
+  }
+
+  private rotateMenu(): void {
+    const menus = this.menus;
+    const menuCount = menus.length;
+
+    if (this.menuIndex + 1 < menuCount) {
+      this.menuIndex += 1;
+    } else {
+      this.menuIndex = 0;
+    }
+
+    this.currentMenu = menus[this.menuIndex];
   }
 
   constructor() {
@@ -73,9 +97,9 @@ export class Main {
       this.pagesMenu = new PagesMenuViewModel(aemPage);
 
       if (url.toString() === this.NEW_TAB) {
-        this.mode = "servers";
+        // this.mode = "servers";
       } else {
-        this.mode = "pages";
+        // this.mode = "pages";
       }
 
       this.displayMenu();
@@ -83,9 +107,10 @@ export class Main {
 
     chrome.commands.onCommand.addListener((command: string) => {
       if (command === "select" && !this.pagesMenu.isNull) {
-        this.mode = this.mode == "servers"
-          ? "pages"
-          : "servers";
+        this.rotateMenu();
+        // this.mode = this.mode == "servers"
+        //   ? "pages"
+        //   : "servers";
       }
 
       this.displayMenu();
@@ -94,12 +119,7 @@ export class Main {
 
   // Display the selected menu
   private displayMenu() {
-    if (this.mode === "servers") {
-      this.serversMenu.display();
-      this.pagesMenu.hide();
-    } else {
-      this.serversMenu.hide();
-      this.pagesMenu.display();
-    }
+    this.menus.forEach(item => item.hide());
+    this.currentMenu.display();
   }
 }
