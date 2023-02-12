@@ -101,7 +101,7 @@ export class PagesMenuViewModel extends MenuViewModel {
     };
 
     return result;
-  };
+  }
 
   protected setSelectedIndex(value: number) {
     let pages = document.querySelectorAll(`.${this.ITEM_CLASS}`);
