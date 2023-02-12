@@ -49,33 +49,4 @@ export abstract class MenuViewModel {
   protected abstract setSelectedElementByUrl(): void;
 
   protected abstract setSelectedIndex(value: number): void;
-
-  // TODO: maybe this should be a protected function?
-  // private onKeyDown(): void {
-  //   document.addEventListener("keydown", (event: KeyboardEvent) => {
-  //     event.preventDefault();
-  //
-  //     if (event.key === "j" || event.key === "ArrowDown") {
-  //       this.moveDown();
-  //     }
-  //
-  //     if (event.key === "k" || event.key === "ArrowUp") {
-  //       this.moveUp();
-  //     }
-  //
-  //     if (event.key === "o" || event.key === "Enter") {
-  //       this.navigate();
-  //       this.hide();
-  //
-  //       window.close();
-  //     }
-  //
-  //     if (event.key === "Escape") {
-  //       this.hide();
-  //
-  //       window.close();
-  //     }
-  //   });
-  // }
 }
-

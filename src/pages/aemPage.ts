@@ -44,6 +44,10 @@ export abstract class AemPage {
 
   abstract get welcomePage(): AemPage;
 
+  get isAemPage(): boolean {
+    return this.getType !== "Non AEM Page";
+  }
+
   switchAemPage(pageType: aemPageTypes): AemPage {
     switch (pageType) {
       case "Editor": return this.editorPage;
