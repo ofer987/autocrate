@@ -12,7 +12,7 @@ export abstract class MenuViewModel {
   }
 
   moveUp(): number {
-    this.setSelectedIndex(this._selectedIndex - 1)
+    this.setSelectedIndex(this._selectedIndex - 1);
 
     return this._selectedIndex;
   }
@@ -39,12 +39,12 @@ export abstract class MenuViewModel {
   protected navigateTo(url: URL): void {
     chrome.tabs.query({ active: true, currentWindow: true },
       (tabs: chrome.tabs.Tab[]) => {
-        let currentUrl = tabs[0].url;
+        const currentUrl = tabs[0].url;
         chrome.tabs.update(tabs[0].id, { url: url.toString() }, () => {
           chrome.history.addUrl({ url: currentUrl });
         });
       });
-  };
+  }
 
   protected abstract setSelectedElementByUrl(): void;
 

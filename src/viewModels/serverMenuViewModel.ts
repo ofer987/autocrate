@@ -37,7 +37,7 @@ export class ServerMenuViewModel extends MenuViewModel {
   }
 
   moveUp(): number {
-    this.setSelectedIndex(this._selectedIndex - 1)
+    this.setSelectedIndex(this._selectedIndex - 1);
 
     return this._selectedIndex;
   }
@@ -81,7 +81,7 @@ export class ServerMenuViewModel extends MenuViewModel {
   }
 
   protected setSelectedElementByUrl(): void {
-    let pages = document.querySelectorAll(`.${this.ITEM_CLASS}`);
+    const pages = document.querySelectorAll(`.${this.ITEM_CLASS}`);
     pages.forEach(item => item.classList.remove(this.IS_SELECTED_CLASS));
 
     for (let index = 0; index < this.servers.length; index += 1) {
@@ -107,7 +107,7 @@ export class ServerMenuViewModel extends MenuViewModel {
   }
 
   protected setSelectedIndex(value: number) {
-    let pages = this.menu.querySelectorAll(`.${this.ITEM_CLASS}`);
+    const pages = this.menu.querySelectorAll(`.${this.ITEM_CLASS}`);
     pages.forEach(item => item.classList.remove(this.IS_SELECTED_CLASS));
 
     if (value < 0) {
@@ -127,7 +127,7 @@ export class ServerMenuViewModel extends MenuViewModel {
   }
 
   private createItem(id: number, name: string, url: URL): HTMLDivElement {
-    let result = document.createElement('div');
+    const result = document.createElement('div');
 
     const elementId = this.getServerElementId(id);
     result.id = elementId;
@@ -139,7 +139,7 @@ export class ServerMenuViewModel extends MenuViewModel {
     };
 
     return result;
-  };
+  }
 
   private getServerElementId(id: number): string {
     return `server-${this.menuId}-${id}`;

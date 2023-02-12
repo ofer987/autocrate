@@ -10,7 +10,7 @@ import { StartPage } from "./startPage";
 import { WelcomePage } from "./welcomePage";
 
 export class PreviewPage extends AemPage {
-  static pathRegex = /\?(.*)wcmmode=disabled(.*)/
+  static pathRegex = /\?(.*)wcmmode=disabled(.*)/;
 
   static isPage(url: URL): boolean {
     return url.searchParams.get('wcmmode') === 'disabled';
@@ -21,7 +21,7 @@ export class PreviewPage extends AemPage {
   }
 
   get editorPage(): AemPage {
-    var url = new URL(this._url.toString());
+    const url = new URL(this._url.toString());
 
     url.pathname =`/editor.html${url.pathname}`;
     url.searchParams.delete('wcmmode');
@@ -34,34 +34,34 @@ export class PreviewPage extends AemPage {
   }
 
   get crxDePage(): AemPage {
-    var regex = /(\/.*)\.html/;
+    const regex = /(\/.*)\.html/;
 
-    var jcrPath = this._url.pathname.match(regex)[1] || this._url.pathname;
-    var url = new URL(`${this._url.origin}/crx/de/index.jsp#${jcrPath}`);
+    const jcrPath = this._url.pathname.match(regex)[1] || this._url.pathname;
+    const url = new URL(`${this._url.origin}/crx/de/index.jsp#${jcrPath}`);
 
     return new CrxDePage(url);
   }
 
   get crxPackMgrPage(): AemPage {
-    var regex = /(\/.*)\.html/;
+    const regex = /(\/.*)\.html/;
 
-    var jcrPath = this._url.pathname.match(regex)[1] || this._url.pathname;
-    var url = new URL(`${this._url.origin}/crx/packmgr/index.jsp#${jcrPath}`);
+    const jcrPath = this._url.pathname.match(regex)[1] || this._url.pathname;
+    const url = new URL(`${this._url.origin}/crx/packmgr/index.jsp#${jcrPath}`);
 
     return new CrxPackMgrPage(url);
   }
 
   get userAdminPage(): AemPage {
-    var url = new URL(`${this._url.origin}/useradmin`);
+    const url = new URL(`${this._url.origin}/useradmin`);
 
     return new UserAdminPage(url);
   }
 
   get sitesPage(): AemPage {
-    var regex = /(\/.*)\.html/;
+    const regex = /(\/.*)\.html/;
 
-    var jcrPath = this._url.pathname.match(regex)[1] || this._url.pathname;
-    var url = new URL(`${this._url.origin}/sites.html${jcrPath}`);
+    const jcrPath = this._url.pathname.match(regex)[1] || this._url.pathname;
+    const url = new URL(`${this._url.origin}/sites.html${jcrPath}`);
 
     return new SitesPage(url);
   }

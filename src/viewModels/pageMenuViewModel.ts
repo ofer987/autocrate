@@ -29,14 +29,14 @@ export class PagesMenuViewModel extends MenuViewModel {
     this.pages = this
       .getPageTypes()
       .map((pageType: aemPageTypes) => {
-        const aemPage = this.currentAemPage.switchAemPage(pageType)
+        const aemPage = this.currentAemPage.switchAemPage(pageType);
 
         return {
           isEnabled: aemPage.isEnabled,
           name: pageType,
           aemPageType: pageType,
           url: aemPage.url
-        }
+        };
       });
 
     this.menu = document.getElementById(this.MENU_CLASS);
@@ -81,7 +81,7 @@ export class PagesMenuViewModel extends MenuViewModel {
   }
 
   private createItem(isEnabled: boolean, id: number, name: string, url: URL): HTMLDivElement {
-    let result = document.createElement('div');
+    const result = document.createElement('div');
 
     const elementId = this.getElementId(id);
     result.id = elementId;
@@ -104,7 +104,7 @@ export class PagesMenuViewModel extends MenuViewModel {
   }
 
   protected setSelectedIndex(value: number) {
-    let pages = document.querySelectorAll(`.${this.ITEM_CLASS}`);
+    const pages = document.querySelectorAll(`.${this.ITEM_CLASS}`);
     pages.forEach(item => item.classList.remove(this.IS_SELECTED_CLASS));
 
     if (value < 0) {
@@ -126,19 +126,19 @@ export class PagesMenuViewModel extends MenuViewModel {
   protected navigateTo(url: URL): void {
     chrome.tabs.query({ active: true, currentWindow: true },
       (tabs: chrome.tabs.Tab[]) => {
-        let currentUrl = tabs[0].url;
+        const currentUrl = tabs[0].url;
         chrome.tabs.update(tabs[0].id, { url: url.toString() }, () => {
           chrome.history.addUrl({ url: currentUrl });
         });
       });
-  };
+  }
 
   protected setSelectedElementByUrl() {
-    let pages = document.querySelectorAll(`.${this.ITEM_CLASS}`);
+    const pages = document.querySelectorAll(`.${this.ITEM_CLASS}`);
     pages.forEach(item => item.classList.remove(this.IS_SELECTED_CLASS));
 
     for (let index = 0; index < this.pages.length; index += 1) {
-      let page = this.pages[index];
+      const page = this.pages[index];
 
       if (page.aemPageType === this.currentAemPage.getType) {
         this._selectedIndex = index;
@@ -185,13 +185,13 @@ export class PagesMenuViewModel extends MenuViewModel {
       if (event.key === "j" || event.key === "ArrowDown") {
         do {
           this.moveDown();
-        } while (!this.pages[this._selectedIndex].isEnabled)
+        } while (!this.pages[this._selectedIndex].isEnabled);
       }
 
       if (event.key === "k" || event.key === "ArrowUp") {
         do {
           this.moveUp();
-        } while (!this.pages[this._selectedIndex].isEnabled)
+        } while (!this.pages[this._selectedIndex].isEnabled);
       }
 
       if (event.key === "o" || event.key === "Enter") {
@@ -221,6 +221,6 @@ export class PagesMenuViewModel extends MenuViewModel {
       "Sites",
       "Console",
       "Welcome"
-    ]
+    ];
   }
 }
