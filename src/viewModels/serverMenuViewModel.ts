@@ -1,14 +1,13 @@
 import { AemPages } from "../pages/aemPages";
 import { Server } from "../models/server";
 import { NonAemPage } from "../pages/nonAemPage";
+import { MenuViewModel } from "./menuViewModel";
 
-export class ServerMenuViewModel {
-  private IS_SELECTED_CLASS = "selected";
-  private ITEM_CLASS = "server";
-  // private MENU_CLASS = "servers";
+export class ServerMenuViewModel extends MenuViewModel {
+  protected IS_SELECTED_CLASS = "selected";
+  protected MENU_CLASS = "servers";
+  protected ITEM_CLASS = "server";
 
-  private url: URL;
-  private _selectedIndex: number;
   private servers: Server[];
   // private authorServers: Server[];
   // private publisherServers: Server[];
@@ -19,12 +18,13 @@ export class ServerMenuViewModel {
   //     .concat(this.publisherServers);
   // }
 
-  private menu: HTMLElement;
   // private list: HTMLElement;
   // private authors: HTMLElement;
   // private publishers: HTMLElement;
 
   constructor(currentUrl: URL, servers: Server[], menuId: string) {
+    super();
+
     this.url = currentUrl;
     this.servers = servers;
     // this.authorServers = authorServers;
@@ -97,7 +97,7 @@ export class ServerMenuViewModel {
 
     this.menu.classList.remove("hidden");
     this.menu.classList.add("displayed");
-    this.setSelectedElementByUrl(this.url);
+    this.setSelectedElementByUrl();
   }
 
   hide(): void {
@@ -105,6 +105,32 @@ export class ServerMenuViewModel {
 
     this.menu.classList.remove("displayed");
     this.menu.classList.add("hidden");
+  }
+
+  protected setSelectedElementByUrl(): void {
+    let pages = document.querySelectorAll(`.${this.ITEM_CLASS}`);
+    pages.forEach(item => item.classList.remove(this.IS_SELECTED_CLASS));
+
+    for (let index = 0; index < this.servers.length; index += 1) {
+      const server = this.servers[index];
+      const serverUrl = new URL(server.url);
+
+      if (serverUrl.origin === this.url.origin) {
+        this._selectedIndex = index;
+        const elementId = this.getServerElementId(this._selectedIndex);
+        document.getElementById(elementId).classList
+          .add(this.IS_SELECTED_CLASS);
+
+        return;
+      }
+    }
+
+    // This is not an AEM page, so
+    // set to first Server
+    this._selectedIndex = 0;
+    const elementId = this.getServerElementId(0);
+    document.getElementById(elementId).classList
+      .add(this.IS_SELECTED_CLASS);
   }
 
   private createItem(id: number, name: string, url: URL): HTMLDivElement {
@@ -124,42 +150,6 @@ export class ServerMenuViewModel {
 
   private getServerElementId(id: number): string {
     return `server-${id}`;
-  }
-
-  private navigateTo(url: URL): void {
-    chrome.tabs.query({ active: true, currentWindow: true },
-      (tabs: chrome.tabs.Tab[]) => {
-        let currentUrl = tabs[0].url;
-        chrome.tabs.update(tabs[0].id, { url: url.toString() }, () => {
-          chrome.history.addUrl({ url: currentUrl });
-        });
-      });
-  };
-
-  private setSelectedElementByUrl(url: URL) {
-    let pages = document.querySelectorAll(`.${this.ITEM_CLASS}`);
-    pages.forEach(item => item.classList.remove(this.IS_SELECTED_CLASS));
-
-    for (let index = 0; index < this.servers.length; index += 1) {
-      const server = this.servers[index];
-      const serverUrl = new URL(server.url);
-
-      if (serverUrl.origin === url.origin) {
-        this._selectedIndex = index;
-        const elementId = this.getServerElementId(this._selectedIndex);
-        document.getElementById(elementId).classList
-          .add(this.IS_SELECTED_CLASS);
-
-        return;
-      }
-    }
-
-    // This is not an AEM page, so
-    // set to first Server
-    this._selectedIndex = 0;
-    const elementId = this.getServerElementId(0);
-    document.getElementById(elementId).classList
-      .add(this.IS_SELECTED_CLASS);
   }
 
   private onKeyDown(): void {
@@ -201,7 +191,7 @@ export class ServerMenuViewModel {
     this.isActive = false;
   }
 
-  private setSelectedIndex(value: number) {
+  protected setSelectedIndex(value: number) {
     let pages = document.querySelectorAll(`.${this.ITEM_CLASS}`);
     pages.forEach(item => item.classList.remove(this.IS_SELECTED_CLASS));
 
