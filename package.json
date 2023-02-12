@@ -10,7 +10,8 @@
   "scripts": {
     "build-and-watch": "webpack --env mode=development",
     "build": "webpack --env mode=production",
-    "start-server": "ws --hostname=localhost --port=8000"
+    "start-server": "ws --hostname=localhost --port=8000",
+    "prepare": "husky install"
   },
   "devDependencies": {
     "@types/chrome": "^0.0.190",
@@ -31,7 +32,8 @@
     "stylelint-scss": "^4.4.0",
     "ts-loader": "^9.2.5",
     "webpack": "^5.48.0",
-    "webpack-cli": "^4.7.2"
+    "webpack-cli": "^4.7.2",
+    "husky": "^8.0.0"
   },
   "dependencies": {
     "lodash": "^4.17.21",
