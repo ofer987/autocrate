@@ -1,14 +1,5 @@
-import { aemPageTypes } from "./pageType";
+import { PageType, aemPageTypes } from "./pageType";
 import { AemPage } from "./aemPage";
-import { UserAdminPage } from "./userAdminPage";
-import { CrxDePage } from "./crxDePage";
-import { CrxPackMgrPage } from "./crxPackManagerPage";
-import { SitesPage } from "./sitesPage";
-import { PreviewPage } from "./previewPage";
-import { ConsolePage } from "./consolePage";
-import { LoginPage } from "./loginPage";
-import { StartPage } from "./startPage";
-import { WelcomePage } from "./welcomePage";
 
 export class EditorPage extends AemPage {
   static pathRegex = /^\/editor\.html(\/.*)\.html/;
@@ -21,62 +12,92 @@ export class EditorPage extends AemPage {
     return "Editor";
   }
 
-  get editorPage(): AemPage {
-    return this;
+  get editorPage(): PageType {
+    return {
+      pageType: "Editor",
+      url: this.url
+    }
   }
 
-  get previewPage(): AemPage {
+  get previewPage(): PageType {
     const url = new URL(`${this.url.origin}${(this.url.pathname.match(EditorPage.pathRegex) || [])[1]}.html?wcmmode=disabled`);
 
-    return new PreviewPage(url);
+    return {
+      pageType: "Preview",
+      url: url
+    }
   }
 
-  get crxDePage(): AemPage {
+  get crxDePage(): PageType {
     const url = new URL(`${this.url.origin}/crx/de/index.jsp#${(this.url.pathname.match(EditorPage.pathRegex) || [])[1]}`);
 
-    return new CrxDePage(url);
+    return {
+      pageType: "CRX / DE JCR Manager",
+      url: url
+    }
   }
 
-  get crxPackMgrPage(): AemPage {
+  get crxPackMgrPage(): PageType {
     const url = new URL(`${this.url.origin}/crx/packmgr/index.jsp#${(this.url.pathname.match(EditorPage.pathRegex) || [])[1]}`);
 
-    return new CrxPackMgrPage(url);
+    return {
+      pageType: "CRX / DE Package Manager",
+      url: url
+    }
   }
 
-  get userAdminPage(): AemPage {
+  get userAdminPage(): PageType {
     const url = new URL(`${this.url.origin}/useradmin`);
 
-    return new UserAdminPage(url);
+    return {
+      pageType: "User Admin",
+      url: url
+    }
   }
 
-  get sitesPage(): AemPage {
+  get sitesPage(): PageType {
     const url = new URL(`${this.url.origin}/sites.html${(this.url.pathname.match(EditorPage.pathRegex) || [])[1]}`);
 
-    return new SitesPage(url);
+    return {
+      pageType: "Sites",
+      url: url
+    }
   }
 
-  get consolePage(): AemPage {
+  get consolePage(): PageType {
     const url = new URL(`${this.url.origin}/system/console`);
 
-    return new ConsolePage(url);
+    return {
+      pageType: "Console",
+      url: url
+    }
   }
 
-  get loginPage(): AemPage {
+  get loginPage(): PageType {
     const url = new URL(`${this.url.origin}/libs/granite/core/content/login.html`);
 
-    return new LoginPage(url);
+    return {
+      pageType: "Login",
+      url: url
+    }
   }
 
-  get startPage(): AemPage {
+  get startPage(): PageType {
     const url = new URL(`${this.url.origin}/aem/start`);
 
-    return new StartPage(url);
+    return {
+      pageType: "Start",
+      url: url
+    }
   }
 
-  get welcomePage(): AemPage {
+  get welcomePage(): PageType {
     const url = new URL(`${this.url.origin}/welcome`);
 
-    return new WelcomePage(url);
+    return {
+      pageType: "Welcome",
+      url: url
+    }
   }
 
   constructor(url: URL) {

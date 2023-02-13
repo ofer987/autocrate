@@ -1,4 +1,4 @@
-import { aemPageTypes } from "./pageType";
+import { PageType, aemPageTypes } from "./pageType";
 import { AemPage } from "./aemPage";
 import { CrxDePage } from "./crxDePage";
 import { CrxPackMgrPage } from "./crxPackManagerPage";
@@ -20,57 +20,60 @@ export class WelcomePage extends AemPage {
     return "Welcome";
   }
 
-  get editorPage(): AemPage {
+  get editorPage(): PageType {
+    return {
+      pageType: "Editor",
+      url: this.url
+    };
+  }
+
+  get previewPage(): PageType {
     return new DisabledPage(this.url);
   }
 
-  get previewPage(): AemPage {
-    return new DisabledPage(this.url);
-  }
-
-  get crxDePage(): AemPage {
+  get crxDePage(): PageType {
     const url = new URL(`${this.url.origin}/crx/de/index.jsp`);
 
     return new CrxDePage(url);
   }
 
-  get crxPackMgrPage(): AemPage {
+  get crxPackMgrPage(): PageType {
     const url = new URL(`${this.url.origin}/crx/packmgr/index.jsp`);
 
     return new CrxPackMgrPage(url);
   }
 
-  get userAdminPage(): AemPage {
+  get userAdminPage(): PageType {
     const url = new URL(`${this.url.origin}/useradmin`);
 
     return new UserAdminPage(url);
   }
 
-  get sitesPage(): AemPage {
+  get sitesPage(): PageType {
     const url = new URL(`${this.url.origin}/sites.html/content`);
 
     return new SitesPage(url);
   }
 
-  get consolePage(): AemPage {
+  get consolePage(): PageType {
     const url = new URL(`${this.url.origin}/system/console`);
 
     return new ConsolePage(url);
   }
 
-  get loginPage(): AemPage {
+  get loginPage(): PageType {
     const url = new URL(`${this.url.origin}/libs/granite/core/content/login.html`);
 
     return new LoginPage(url);
   }
 
-  get startPage(): AemPage {
+  get startPage(): PageType {
     const url = new URL(`${this.url.origin}/aem/start`);
 
     return new StartPage(url);
   }
 
-  get welcomePage(): AemPage {
+  get welcomePage(): PageType {
     return this;
   }
 

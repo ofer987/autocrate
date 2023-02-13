@@ -1,5 +1,4 @@
-import { NonAemPage } from "./nonAemPage";
-import { aemPageTypes } from "./pageType";
+import { PageType, aemPageTypes } from "./pageType";
 
 export abstract class AemPage {
   private _url: URL;
@@ -14,31 +13,31 @@ export abstract class AemPage {
 
   abstract get getType(): aemPageTypes;
 
-  abstract get editorPage(): AemPage;
+  abstract get editorPage(): PageType;
 
-  abstract get previewPage(): AemPage;
+  abstract get previewPage(): PageType;
 
-  abstract get crxDePage(): AemPage;
+  abstract get crxDePage(): PageType;
 
-  abstract get crxPackMgrPage(): AemPage;
+  abstract get crxPackMgrPage(): PageType;
 
-  abstract get userAdminPage(): AemPage;
+  abstract get userAdminPage(): PageType;
 
-  abstract get sitesPage(): AemPage;
+  abstract get sitesPage(): PageType;
 
-  abstract get consolePage(): AemPage;
+  abstract get consolePage(): PageType;
 
-  abstract get loginPage(): AemPage;
+  abstract get loginPage(): PageType;
 
-  abstract get startPage(): AemPage;
+  abstract get startPage(): PageType;
 
-  abstract get welcomePage(): AemPage;
+  abstract get welcomePage(): PageType;
 
   get isAemPage(): boolean {
     return this.getType !== "Non AEM Page";
   }
 
-  switchAemPage(pageType: aemPageTypes): AemPage {
+  switchAemPage(pageType: aemPageTypes): PageType {
     switch (pageType) {
       case "Editor": return this.editorPage;
       case "Preview": return this.previewPage;
@@ -50,9 +49,13 @@ export abstract class AemPage {
       case "Login": return this.loginPage;
       case "Start": return this.startPage;
       case "Welcome": return this.welcomePage;
+      case "Non AEM Page": return {
+        pageType: "Non AEM Page",
+        url: this.url
+      }
     }
 
-    return new NonAemPage(new URL(window.location.toString()));
+    throw `No page type for ${pageType}`
   }
 
   constructor(url: URL) {
