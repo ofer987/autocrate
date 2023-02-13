@@ -4,7 +4,7 @@ export abstract class MenuViewModel {
   protected abstract MENU_CLASS: string;
 
   protected url: URL;
-  protected _selectedIndex: number;
+  protected _selectedIndex = 0;
   protected menu: HTMLElement | null;
 
   get isNull(): boolean {
@@ -48,7 +48,7 @@ export abstract class MenuViewModel {
 
   protected validate(): void {
     if (!this.menu) {
-      throw "Could not find the menu element!"
+      throw "Could not find the menu element!";
     }
   }
 

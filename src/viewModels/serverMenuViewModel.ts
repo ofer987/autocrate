@@ -32,7 +32,9 @@ export class ServerMenuViewModel extends MenuViewModel {
     this.servers.map((server: Server) => {
       return this.createItem(index++, server.name, new URL(server.url));
     }).forEach((item: HTMLElement) => {
-      this.menu?.appendChild(item);
+      if (item) {
+        this.menu?.appendChild(item);
+      }
     });
 
     this.onKeyDown();
@@ -98,12 +100,6 @@ export class ServerMenuViewModel extends MenuViewModel {
         return;
       }
     }
-
-    // This is not an AEM page, so
-    // set to first Server
-    this._selectedIndex = 0;
-    const element = this.getServerElement(0);
-    element.classList.add(this.IS_SELECTED_CLASS);
   }
 
   protected setSelectedIndex(value: number) {
@@ -128,8 +124,7 @@ export class ServerMenuViewModel extends MenuViewModel {
   private createItem(id: number, name: string, url: URL): HTMLDivElement {
     const result = document.createElement('div');
 
-    const element = this.getServerElement(id);
-    result.id = element.id;
+    result.id = this.getServerElementId(id);
     result.textContent = name;
     result.className = this.ITEM_CLASS;
 
@@ -140,10 +135,12 @@ export class ServerMenuViewModel extends MenuViewModel {
     return result;
   }
 
-  private getServerElement(id: number): HTMLElement {
-    const elementId = `server-${this.menuId}-${id}`;
+  private getServerElementId(id: number): string {
+    return `server-${this.menuId}-${id}`;
+  }
 
-    return this.getElementById(elementId);
+  private getServerElement(id: number): HTMLElement {
+    return this.getElementById(this.getServerElementId(id));
   }
 
   private onKeyDown(): void {
