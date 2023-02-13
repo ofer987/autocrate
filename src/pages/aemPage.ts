@@ -52,10 +52,10 @@ export abstract class AemPage {
       case "Non AEM Page": return {
         pageType: "Non AEM Page",
         url: this.url
-      }
+      };
     }
 
-    throw `No page type for ${pageType}`
+    throw `No page type for ${pageType}`;
   }
 
   constructor(url: URL) {

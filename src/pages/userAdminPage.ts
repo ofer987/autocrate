@@ -16,14 +16,14 @@ export class UserAdminPage extends AemPage {
       return {
         pageType: "Disabled Page",
         url: this.url
-      }
+      };
   }
 
   get previewPage(): PageType {
       return {
         pageType: "Disabled Page",
         url: this.url
-      }
+      };
   }
 
   get crxDePage(): PageType {
@@ -32,7 +32,7 @@ export class UserAdminPage extends AemPage {
     return {
       pageType: "Editor",
       url: url
-    }
+    };
   }
 
   get crxPackMgrPage(): PageType {
@@ -41,14 +41,14 @@ export class UserAdminPage extends AemPage {
     return {
       pageType: "Editor",
       url: url
-    }
+    };
   }
 
   get userAdminPage(): PageType {
     return {
-      pageType: "User Admin",
+      pageType: "Disabled Page",
       url: this.url
-    }
+    };
   }
 
   get sitesPage(): PageType {
@@ -57,7 +57,7 @@ export class UserAdminPage extends AemPage {
     return {
       pageType: "Editor",
       url: url
-    }
+    };
   }
 
   get consolePage(): PageType {
@@ -66,7 +66,7 @@ export class UserAdminPage extends AemPage {
     return {
       pageType: "Editor",
       url: url
-    }
+    };
   }
 
   get loginPage(): PageType {
@@ -75,7 +75,7 @@ export class UserAdminPage extends AemPage {
     return {
       pageType: "Editor",
       url: url
-    }
+    };
   }
 
   get startPage(): PageType {
@@ -84,7 +84,7 @@ export class UserAdminPage extends AemPage {
     return {
       pageType: "Editor",
       url: url
-    }
+    };
   }
 
   get welcomePage(): PageType {
@@ -93,7 +93,7 @@ export class UserAdminPage extends AemPage {
     return {
       pageType: "Editor",
       url: url
-    }
+    };
   }
 
   constructor(url: URL) {

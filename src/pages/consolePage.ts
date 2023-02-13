@@ -16,14 +16,14 @@ export class ConsolePage extends AemPage {
     return {
       pageType: "Editor",
       url: this.url
-    }
+    };
   }
 
   get previewPage(): PageType {
     return {
       pageType: "Preview",
       url: this.url
-    }
+    };
   }
 
   get crxDePage(): PageType {
@@ -32,7 +32,7 @@ export class ConsolePage extends AemPage {
     return {
       pageType: "CRX / DE JCR Manager",
       url: url
-    }
+    };
   }
 
   get crxPackMgrPage(): PageType {
@@ -41,7 +41,7 @@ export class ConsolePage extends AemPage {
     return {
       pageType: "CRX / DE Package Manager",
       url: url
-    }
+    };
   }
 
   get userAdminPage(): PageType {
@@ -50,16 +50,14 @@ export class ConsolePage extends AemPage {
     return {
       pageType: "User Admin",
       url: url
-    }
+    };
   }
 
   get consolePage(): PageType {
-    const url = new URL(`${this.url.origin}/system/console`);
-
     return {
-      pageType: "Console",
-      url: url
-    }
+      pageType: "Disabled Page",
+      url: this.url
+    };
   }
 
   get sitesPage(): PageType {
@@ -68,7 +66,7 @@ export class ConsolePage extends AemPage {
     return {
       pageType: "Sites",
       url: url
-    }
+    };
   }
 
   get loginPage(): PageType {
@@ -77,7 +75,7 @@ export class ConsolePage extends AemPage {
     return {
       pageType: "Login",
       url: url
-    }
+    };
   }
 
   get startPage(): PageType {
@@ -86,7 +84,7 @@ export class ConsolePage extends AemPage {
     return {
       pageType: "Start",
       url: url
-    }
+    };
   }
 
   get welcomePage(): PageType {
@@ -95,7 +93,7 @@ export class ConsolePage extends AemPage {
     return {
       pageType: "Welcome",
       url: url
-    }
+    };
   }
 
   constructor(url: URL) {

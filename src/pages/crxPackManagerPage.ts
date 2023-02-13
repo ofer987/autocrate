@@ -17,14 +17,14 @@ export class CrxPackMgrPage extends AemPage {
       return {
         pageType: "Disabled Page",
         url: this.url
-      }
+      };
     }
 
     const url = new URL(`${this.url.origin}/editor.html${this.url.hash.substring(1)}.html`);
     return {
       pageType: "Editor",
       url: url
-    }
+    };
   }
 
   get previewPage(): PageType {
@@ -32,14 +32,14 @@ export class CrxPackMgrPage extends AemPage {
       return {
         pageType: "Disabled Page",
         url: this.url
-      }
+      };
     }
 
     const url = new URL(`${this.url.origin}${this.url.hash.substring(1)}.html?wcmmode=disabled`);
     return {
       pageType: "Preview",
       url: url
-    }
+    };
   }
 
   get crxDePage(): PageType {
@@ -49,14 +49,14 @@ export class CrxPackMgrPage extends AemPage {
     return {
       pageType: "CRX / DE JCR Manager",
       url: url
-    }
+    };
   }
 
   get crxPackMgrPage(): PageType {
     return {
-      pageType: "CRX / DE Package Manager",
+      pageType: "Disabled Page",
       url: this.url
-    }
+    };
   }
 
   get userAdminPage(): PageType {
@@ -65,7 +65,7 @@ export class CrxPackMgrPage extends AemPage {
     return {
       pageType: "User Admin",
       url: url
-    }
+    };
   }
 
   get sitesPage(): PageType {
@@ -73,14 +73,14 @@ export class CrxPackMgrPage extends AemPage {
       return {
         pageType: "Disabled Page",
         url: this.url
-      }
+      };
     }
 
     const url = new URL(`${this.url.origin}/sites.html${this.url.hash.substring(1)}`);
     return {
       pageType: "Sites",
       url: url
-    }
+    };
   }
 
   get consolePage(): PageType {
@@ -89,7 +89,7 @@ export class CrxPackMgrPage extends AemPage {
     return {
       pageType: "Console",
       url: url
-    }
+    };
   }
 
   get loginPage(): PageType {
@@ -98,7 +98,7 @@ export class CrxPackMgrPage extends AemPage {
     return {
       pageType: "Login",
       url: url
-    }
+    };
   }
 
   get startPage(): PageType {
@@ -107,7 +107,7 @@ export class CrxPackMgrPage extends AemPage {
     return {
       pageType: "Start",
       url: url
-    }
+    };
   }
 
   get welcomePage(): PageType {
@@ -116,7 +116,7 @@ export class CrxPackMgrPage extends AemPage {
     return {
       pageType: "Welcome",
       url: url
-    }
+    };
   }
 
   constructor(url: URL) {

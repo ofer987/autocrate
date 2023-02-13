@@ -1,9 +1,5 @@
 import { PageType, aemPageTypes } from "./pageType";
 import { AemPage } from "./aemPage";
-import { ConsolePage } from "./consolePage";
-import { LoginPage } from "./loginPage";
-import { StartPage } from "./startPage";
-import { WelcomePage } from "./welcomePage";
 
 export class DisabledPage extends AemPage {
   get getType(): aemPageTypes {
@@ -18,42 +14,42 @@ export class DisabledPage extends AemPage {
     return {
       pageType: "Disabled Page",
       url: this.url
-    }
+    };
   }
 
   get previewPage(): PageType {
     return {
       pageType: "Disabled Page",
       url: this.url
-    }
+    };
   }
 
   get crxDePage(): PageType {
     return {
       pageType: "Disabled Page",
       url: this.url
-    }
+    };
   }
 
   get crxPackMgrPage(): PageType {
     return {
       pageType: "Disabled Page",
       url: this.url
-    }
+    };
   }
 
   get userAdminPage(): PageType {
     return {
       pageType: "Disabled Page",
       url: this.url
-    }
+    };
   }
 
   get sitesPage(): PageType {
     return {
       pageType: "Disabled Page",
       url: this.url
-    }
+    };
   }
 
   get consolePage(): PageType {
@@ -62,7 +58,7 @@ export class DisabledPage extends AemPage {
     return {
       pageType: "Console",
       url: url
-    }
+    };
   }
 
   get loginPage(): PageType {
@@ -71,7 +67,7 @@ export class DisabledPage extends AemPage {
     return {
       pageType: "Login",
       url: url
-    }
+    };
   }
 
   get startPage(): PageType {
@@ -80,7 +76,7 @@ export class DisabledPage extends AemPage {
     return {
       pageType: "Start",
       url: url
-    }
+    };
   }
 
   get welcomePage(): PageType {
@@ -89,6 +85,6 @@ export class DisabledPage extends AemPage {
     return {
       pageType: "Welcome",
       url: url
-    }
+    };
   }
 }

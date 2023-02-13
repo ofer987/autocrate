@@ -2,7 +2,7 @@ import { PageType, aemPageTypes } from "./pageType";
 import { AemPage } from "./aemPage";
 
 export class WelcomePage extends AemPage {
-  static pathRegex = /^\/welcome$/;
+  static pathRegex = /^(\/libs\/cq\/core\/content)?\/welcome\.html$/;
 
   static isPage(url: URL) {
     return WelcomePage.pathRegex.test(url.pathname);
@@ -23,7 +23,7 @@ export class WelcomePage extends AemPage {
     return {
       pageType: "Disabled Page",
       url: this.url
-    }
+    };
   }
 
   get crxDePage(): PageType {
@@ -32,7 +32,7 @@ export class WelcomePage extends AemPage {
     return {
       pageType: "CRX / DE JCR Manager",
       url: url
-    }
+    };
   }
 
   get crxPackMgrPage(): PageType {
@@ -41,7 +41,7 @@ export class WelcomePage extends AemPage {
     return {
       pageType: "CRX / DE Package Manager",
       url: url
-    }
+    };
   }
 
   get userAdminPage(): PageType {
@@ -50,7 +50,7 @@ export class WelcomePage extends AemPage {
     return {
       pageType: "User Admin",
       url: url
-    }
+    };
   }
 
   get sitesPage(): PageType {
@@ -59,7 +59,7 @@ export class WelcomePage extends AemPage {
     return {
       pageType: "Sites",
       url: url
-    }
+    };
   }
 
   get consolePage(): PageType {
@@ -68,7 +68,7 @@ export class WelcomePage extends AemPage {
     return {
       pageType: "Console",
       url: url
-    }
+    };
   }
 
   get loginPage(): PageType {
@@ -77,7 +77,7 @@ export class WelcomePage extends AemPage {
     return {
       pageType: "Login",
       url: url
-    }
+    };
   }
 
   get startPage(): PageType {
@@ -86,14 +86,14 @@ export class WelcomePage extends AemPage {
     return {
       pageType: "Start",
       url: url
-    }
+    };
   }
 
   get welcomePage(): PageType {
     return {
-      pageType: "Welcome",
+      pageType: "Disabled Page",
       url: this.url
-    }
+    };
   }
 
   constructor(url: URL) {

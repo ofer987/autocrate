@@ -1,4 +1,4 @@
-import { PageType, aemPageTypes } from "./pageType";
+import { aemPageTypes } from "./pageType";
 import { AemPage } from "./aemPage";
 import { PreviewPage } from "./previewPage";
 import { EditorPage } from "./editorPage";

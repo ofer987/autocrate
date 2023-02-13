@@ -16,14 +16,14 @@ export class LoginPage extends AemPage {
     return {
       pageType: "Disabled Page",
       url: this.url
-    }
+    };
   }
 
   get previewPage(): PageType {
     return {
       pageType: "Disabled Page",
       url: this.url
-    }
+    };
   }
 
   get crxDePage(): PageType {
@@ -32,7 +32,7 @@ export class LoginPage extends AemPage {
     return {
       pageType: "CRX / DE JCR Manager",
       url: url
-    }
+    };
   }
 
   get crxPackMgrPage(): PageType {
@@ -41,7 +41,7 @@ export class LoginPage extends AemPage {
     return {
       pageType: "CRX / DE Package Manager",
       url: url
-    }
+    };
   }
 
   get userAdminPage(): PageType {
@@ -50,7 +50,7 @@ export class LoginPage extends AemPage {
     return {
       pageType: "User Admin",
       url: url
-    }
+    };
   }
 
   get sitesPage(): PageType {
@@ -59,7 +59,7 @@ export class LoginPage extends AemPage {
     return {
       pageType: "Sites",
       url: url
-    }
+    };
   }
 
   get consolePage(): PageType {
@@ -68,18 +68,14 @@ export class LoginPage extends AemPage {
     return {
       pageType: "Console",
       url: url
-    }
+    };
   }
 
   get loginPage(): PageType {
-    const url = new URL(
-      `${this.url.origin}/libs/granite/core/content/login.html`
-    );
-
     return {
-      pageType: "Login",
-      url: url
-    }
+      pageType: "Disabled Page",
+      url: this.url
+    };
   }
 
   get startPage(): PageType {
@@ -88,7 +84,7 @@ export class LoginPage extends AemPage {
     return {
       pageType: "Start",
       url: url
-    }
+    };
   }
 
   get welcomePage(): PageType {
@@ -97,7 +93,7 @@ export class LoginPage extends AemPage {
     return {
       pageType: "Welcome",
       url: url
-    }
+    };
   }
 
   constructor(url: URL) {
