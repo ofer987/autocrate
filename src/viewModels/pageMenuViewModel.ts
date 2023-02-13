@@ -41,6 +41,7 @@ export class PagesMenuViewModel extends MenuViewModel {
 
     this.menu = document.getElementById(this.MENU_CLASS);
     this.init();
+    this.validate();
   }
 
   private init(): void {
@@ -50,7 +51,7 @@ export class PagesMenuViewModel extends MenuViewModel {
       .map((page: Page) => {
         return this.createItem(page.isEnabled, index++, page.name, page.url);
       }).forEach((item: HTMLElement) => {
-        this.menu.appendChild(item);
+        this.menu?.appendChild(item);
       });
 
     this.onKeyDown();
@@ -68,16 +69,16 @@ export class PagesMenuViewModel extends MenuViewModel {
   display(): void {
     this.activate();
 
-    this.menu.classList.remove("hidden");
-    this.menu.classList.add("displayed");
+    this.menu?.classList.remove("hidden");
+    this.menu?.classList.add("displayed");
     this.setSelectedElementByUrl();
   }
 
   hide(): void {
     this.deactivate();
 
-    this.menu.classList.remove("displayed");
-    this.menu.classList.add("hidden");
+    this.menu?.classList.remove("displayed");
+    this.menu?.classList.add("hidden");
   }
 
   private createItem(isEnabled: boolean, id: number, name: string, url: URL): HTMLDivElement {
@@ -115,19 +116,17 @@ export class PagesMenuViewModel extends MenuViewModel {
       value = 0;
     }
 
-    const selectedElementId = this.getElementId(value);
-
     this._selectedIndex = value;
 
-    document.getElementById(selectedElementId).classList
-      .add(this.IS_SELECTED_CLASS);
+    const selectedElement = this.getElementById(this.getElementId(value));
+    selectedElement.classList.add(this.IS_SELECTED_CLASS);
   }
 
   protected navigateTo(url: URL): void {
     chrome.tabs.query({ active: true, currentWindow: true },
       (tabs: chrome.tabs.Tab[]) => {
-        const currentUrl = tabs[0].url;
-        chrome.tabs.update(tabs[0].id, { url: url.toString() }, () => {
+        const currentUrl = tabs[0].url ?? "";
+        chrome.tabs.update(tabs[0]?.id ?? 0, { url: url.toString() }, () => {
           chrome.history.addUrl({ url: currentUrl });
         });
       });
@@ -143,8 +142,7 @@ export class PagesMenuViewModel extends MenuViewModel {
       if (page.aemPageType === this.currentAemPage.getType) {
         this._selectedIndex = index;
         const elementId = this.getElementId(this._selectedIndex);
-        document.getElementById(elementId).classList
-          .add(this.IS_SELECTED_CLASS);
+        this.getElementById(elementId).classList.add(this.IS_SELECTED_CLASS);
 
         return;
       }
@@ -154,8 +152,7 @@ export class PagesMenuViewModel extends MenuViewModel {
     // set to first Server
     this._selectedIndex = 0;
     const elementId = this.getElementId(0);
-    document.getElementById(elementId).classList
-      .add(this.IS_SELECTED_CLASS);
+    this.getElementById(elementId).classList.add(this.IS_SELECTED_CLASS);
   }
 
   private getElementId(id: number): string {

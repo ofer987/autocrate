@@ -22,6 +22,8 @@ export class ServerMenuViewModel extends MenuViewModel {
     this.menu = document.getElementById(this.menuId);
 
     this.init();
+
+    this.validate();
   }
 
   private init(): void {
@@ -30,7 +32,7 @@ export class ServerMenuViewModel extends MenuViewModel {
     this.servers.map((server: Server) => {
       return this.createItem(index++, server.name, new URL(server.url));
     }).forEach((item: HTMLElement) => {
-      this.menu.appendChild(item);
+      this.menu?.appendChild(item);
     });
 
     this.onKeyDown();
@@ -68,16 +70,16 @@ export class ServerMenuViewModel extends MenuViewModel {
   display(): void {
     this.activate();
 
-    this.menu.classList.remove("hidden");
-    this.menu.classList.add("displayed");
+    this.menu?.classList.remove("hidden");
+    this.menu?.classList.add("displayed");
     this.setSelectedElementByUrl();
   }
 
   hide(): void {
     this.deactivate();
 
-    this.menu.classList.remove("displayed");
-    this.menu.classList.add("hidden");
+    this.menu?.classList.remove("displayed");
+    this.menu?.classList.add("hidden");
   }
 
   protected setSelectedElementByUrl(): void {
@@ -90,9 +92,8 @@ export class ServerMenuViewModel extends MenuViewModel {
 
       if (serverUrl.origin === this.url.origin) {
         this._selectedIndex = index;
-        const elementId = this.getServerElementId(this._selectedIndex);
-        document.getElementById(elementId).classList
-          .add(this.IS_SELECTED_CLASS);
+        const element = this.getServerElement(this._selectedIndex);
+        element.classList.add(this.IS_SELECTED_CLASS);
 
         return;
       }
@@ -101,14 +102,13 @@ export class ServerMenuViewModel extends MenuViewModel {
     // This is not an AEM page, so
     // set to first Server
     this._selectedIndex = 0;
-    const elementId = this.getServerElementId(0);
-    document.getElementById(elementId).classList
-      .add(this.IS_SELECTED_CLASS);
+    const element = this.getServerElement(0);
+    element.classList.add(this.IS_SELECTED_CLASS);
   }
 
   protected setSelectedIndex(value: number) {
-    const pages = this.menu.querySelectorAll(`.${this.ITEM_CLASS}`);
-    pages.forEach(item => item.classList.remove(this.IS_SELECTED_CLASS));
+    const pages = this.menu?.querySelectorAll(`.${this.ITEM_CLASS}`) ?? [];
+    pages.forEach((item: HTMLElement) => item.classList.remove(this.IS_SELECTED_CLASS));
 
     if (value < 0) {
       value = this.servers.length - 1;
@@ -118,19 +118,18 @@ export class ServerMenuViewModel extends MenuViewModel {
       value = 0;
     }
 
-    const selectedServerElementId = this.getServerElementId(value);
+    const selectedServerElement = this.getServerElement(value);
 
     this._selectedIndex = value;
 
-    document.getElementById(selectedServerElementId).classList
-      .add(this.IS_SELECTED_CLASS);
+    selectedServerElement.classList.add(this.IS_SELECTED_CLASS);
   }
 
   private createItem(id: number, name: string, url: URL): HTMLDivElement {
     const result = document.createElement('div');
 
-    const elementId = this.getServerElementId(id);
-    result.id = elementId;
+    const element = this.getServerElement(id);
+    result.id = element.id;
     result.textContent = name;
     result.className = this.ITEM_CLASS;
 
@@ -141,8 +140,10 @@ export class ServerMenuViewModel extends MenuViewModel {
     return result;
   }
 
-  private getServerElementId(id: number): string {
-    return `server-${this.menuId}-${id}`;
+  private getServerElement(id: number): HTMLElement {
+    const elementId = `server-${this.menuId}-${id}`;
+
+    return this.getElementById(elementId);
   }
 
   private onKeyDown(): void {

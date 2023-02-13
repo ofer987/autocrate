@@ -11,10 +11,6 @@ import { UserAdminPage } from "./userAdminPage";
 export class WelcomePage extends AemPage {
   static pathRegex = /^\/welcome$/;
 
-  get url() {
-    return this._url;
-  }
-
   static isPage(url: URL) {
     return WelcomePage.pathRegex.test(url.pathname);
   }
@@ -44,7 +40,7 @@ export class WelcomePage extends AemPage {
   }
 
   get userAdminPage(): AemPage {
-    const url = new URL(`${this._url.origin}/useradmin`);
+    const url = new URL(`${this.url.origin}/useradmin`);
 
     return new UserAdminPage(url);
   }
@@ -74,7 +70,7 @@ export class WelcomePage extends AemPage {
   }
 
   get welcomePage(): AemPage {
-    return new WelcomePage(this.url);
+    return this;
   }
 
   constructor(url: URL) {

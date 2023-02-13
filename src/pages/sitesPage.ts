@@ -21,31 +21,31 @@ export class SitesPage extends AemPage {
   }
 
   get editorPage(): AemPage {
-    const url = new URL(`${this._url.origin}/editor.html${this._url.pathname.match(SitesPage.pathRegex)[1]}.html`);
+    const url = new URL(`${this.url.origin}/editor.html${(this.url.pathname.match(SitesPage.pathRegex) ?? [])[1]}.html`);
 
     return new EditorPage(url);
   }
 
   get previewPage(): AemPage {
-    const url = new URL(`${this._url.origin}${this._url.pathname.match(SitesPage.pathRegex)[1]}.html?wcmmode=disabled`);
+    const url = new URL(`${this.url.origin}${(this.url.pathname.match(SitesPage.pathRegex) ?? [])[1]}.html?wcmmode=disabled`);
 
     return new PreviewPage(url);
   }
 
   get crxDePage(): AemPage {
-    const url = new URL(`${this._url.origin}/crx/de/index.jsp#${this._url.pathname.match(SitesPage.pathRegex)[1]}`);
+    const url = new URL(`${this.url.origin}/crx/de/index.jsp#${(this.url.pathname.match(SitesPage.pathRegex) ?? [])[1]}`);
 
     return new CrxDePage(url);
   }
 
   get crxPackMgrPage(): AemPage {
-    const url = new URL(`${this._url.origin}/crx/packmgr/index.jsp#${this._url.pathname.match(SitesPage.pathRegex)[1]}`);
+    const url = new URL(`${this.url.origin}/crx/packmgr/index.jsp#${(this.url.pathname.match(SitesPage.pathRegex) ?? [])[1]}`);
 
     return new CrxPackMgrPage(url);
   }
 
   get userAdminPage(): AemPage {
-    const url = new URL(`${this._url.origin}/useradmin`);
+    const url = new URL(`${this.url.origin}/useradmin`);
 
     return new UserAdminPage(url);
   }
@@ -80,5 +80,7 @@ export class SitesPage extends AemPage {
 
   constructor(url: URL) {
     super(url);
+
+    this.validate();
   }
 }

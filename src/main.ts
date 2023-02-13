@@ -27,7 +27,7 @@ export class Main {
   }
 
   private get menus(): MenuViewModel[] {
-    const results = [];
+    const results: MenuViewModel[] = [];
 
     results.push(this.pagesMenu);
     this.serverMenus.forEach(item => results.push(item));
@@ -66,7 +66,8 @@ export class Main {
   private init() {
     chrome.tabs.query({ active: true, currentWindow: true }, (tabs: chrome.tabs.Tab[]) => {
       const tab = tabs[0];
-      const url = new URL(tab.url);
+      const url = new URL(tab.url ?? "");
+      alert(`url is ${url} and is type of ${typeof url}`);
 
       this.serverMenus.push(new ServerMenuViewModel(url, this.authorDispatcherServers, "author-dispatchers"));
       this.serverMenus.push(new ServerMenuViewModel(url, this.authorServers, "authors"));

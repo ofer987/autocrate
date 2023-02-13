@@ -11,10 +11,6 @@ import { WelcomePage } from "./welcomePage";
 export class UserAdminPage extends AemPage {
   static pathRegex = /^\/useradmin$/;
 
-  get url() {
-    return this._url;
-  }
-
   static isPage(url: URL) {
     return UserAdminPage.pathRegex.test(url.pathname);
   }

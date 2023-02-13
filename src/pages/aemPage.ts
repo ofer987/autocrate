@@ -1,3 +1,5 @@
+import { NonAemPage } from "./nonAemPage";
+
 export type aemPageTypes = "Non AEM Page"
   | "Disabled Page"
   | "Editor"
@@ -12,7 +14,7 @@ export type aemPageTypes = "Non AEM Page"
   | "Welcome";
 
 export abstract class AemPage {
-  protected _url: URL;
+  private _url: URL;
 
   get url() {
     return this._url;
@@ -61,9 +63,17 @@ export abstract class AemPage {
       case "Start": return this.startPage;
       case "Welcome": return this.welcomePage;
     }
+
+    return new NonAemPage(new URL(window.location.toString()));
   }
 
   constructor(url: URL) {
     this._url = url;
+  }
+
+  protected validate(): void {
+    if (!this.url) {
+      throw "URL is null or undefined";
+    }
   }
 }

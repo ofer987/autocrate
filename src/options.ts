@@ -1,6 +1,6 @@
 import { random } from "lodash";
 
-import { Server } from "./models/server";
+import { Servers, Server } from "./models/server";
 
 import "./options.scss";
 
@@ -11,101 +11,101 @@ interface ServerOption extends Server {
 const authorDispatcherOptions: Server[] = [
   {
     name: "Localhost",
-    url: new URL("http://localhost:4502")
+    url: "http://localhost:4502"
   },
   {
     name: "Dev",
-    url: new URL("https://author-dev-ams.ewp.thomsonreuters.com")
+    url: "https://author-dev-ams.ewp.thomsonreuters.com"
   },
   {
     name: "QA",
-    url: new URL("https://author-qa-ams.ewp.thomsonreuters.com")
+    url: "https://author-qa-ams.ewp.thomsonreuters.com"
   },
   {
     name: "UAT",
-    url: new URL("https://author-uat-ams.ewp.thomsonreuters.com")
+    url: "https://author-uat-ams.ewp.thomsonreuters.com"
   },
   {
     name: "PPE / Stage",
-    url: new URL("https://author-ppe-ams.ewp.thomsonreuters.com")
+    url: "https://author-ppe-ams.ewp.thomsonreuters.com"
   },
   {
     name: "Production",
-    url: new URL("https://author-prod-ams.ewp.thomsonreuters.com")
+    url: "https://author-prod-ams.ewp.thomsonreuters.com"
   }
 ];
 
 const authorOptions: Server[] = [
   {
     name: "Localhost",
-    url: new URL("http://localhost:4502")
+    url: "http://localhost:4502"
   },
   {
     name: "Dev",
-    url: new URL("http://author1useast1-as.dev.ewp.thomsonreuters.com:4502")
+    url: "http://author1useast1-as.dev.ewp.thomsonreuters.com:4502"
   },
   {
     name: "QA",
-    url: new URL("http://author1useast1-as.qa.ewp.thomsonreuters.com:4502")
+    url: "http://author1useast1-as.qa.ewp.thomsonreuters.com:4502"
   },
   {
     name: "UAT",
-    url: new URL("http://author1useast1-as.uat.ewp.thomsonreuters.com:4502")
+    url: "http://author1useast1-as.uat.ewp.thomsonreuters.com:4502"
   },
   {
     name: "PPE / Stage",
-    url: new URL("http://author1useast1-as.ppe.ewp.thomsonreuters.com:4502")
+    url: "http://author1useast1-as.ppe.ewp.thomsonreuters.com:4502"
   },
   {
     name: "Production",
-    url: new URL("http://author1useast1-as.prod.ewp.thomsonreuters.com:4502")
+    url: "http://author1useast1-as.prod.ewp.thomsonreuters.com:4502"
   }
 ];
 
 const publisherOptions: Server[] = [
   {
     name: "Localhost Publish",
-    url: new URL("http://localhost:4503")
+    url: "http://localhost:4503"
   },
   {
     name: "QA Publish",
-    url: new URL("http://publish1useast1-as.qa.ewp.thomsonreuters.com:4503")
+    url: "http://publish1useast1-as.qa.ewp.thomsonreuters.com:4503"
   },
   {
     name: "UAT Publish",
-    url: new URL("http://publish1useast1-as.uat.ewp.thomsonreuters.com:4503")
+    url: "http://publish1useast1-as.uat.ewp.thomsonreuters.com:4503"
   },
   {
     name: "PPE Publish 1 US EAST 1",
-    url: new URL("http://publish1useast1-as.ppe.ewp.thomsonreuters.com:4503")
+    url: "http://publish1useast1-as.ppe.ewp.thomsonreuters.com:4503"
   },
   {
     name: "PPE Publish 2 US EAST 1",
-    url: new URL("http://publish2useast1-as.ppe.ewp.thomsonreuters.com:4503")
+    url: "http://publish2useast1-as.ppe.ewp.thomsonreuters.com:4503"
   },
   {
     name: "PPE Publish 1 US WEST 2",
-    url: new URL("http://publish1uswest2-as.ppe.ewp.thomsonreuters.com:4503")
+    url: "http://publish1uswest2-as.ppe.ewp.thomsonreuters.com:4503"
   },
   {
     name: "PPE Publish 2 US WEST 2",
-    url: new URL("http://publish2uswest2-as.ppe.ewp.thomsonreuters.com:4503")
+    url: "http://publish2uswest2-as.ppe.ewp.thomsonreuters.com:4503"
   },
   {
     name: "Prod Publish 1 US EAST 1",
-    url: new URL("http://publish1useast1-as.prod.ewp.thomsonreuters.com:4503")
+    url: "http://publish1useast1-as.prod.ewp.thomsonreuters.com:4503"
   },
   {
     name: "Prod Publish 2 US EAST 1",
-    url: new URL("http://publish2useast1-as.prod.ewp.thomsonreuters.com:4503")
+    url: "http://publish2useast1-as.prod.ewp.thomsonreuters.com:4503"
   },
   {
     name: "Prod Publish 1 US WEST 2",
-    url: new URL("http://publish1uswest2-as.prod.ewp.thomsonreuters.com:4503")
+    url: "http://publish1uswest2-as.prod.ewp.thomsonreuters.com:4503"
   },
   {
     name: "Prod Publish 2 US WEST 2",
-    url: new URL("http://publish2uswest2-as.prod.ewp.thomsonreuters.com:4503")
+    url: "http://publish2uswest2-as.prod.ewp.thomsonreuters.com:4503"
   },
 ];
 
@@ -176,7 +176,7 @@ class Options {
   private createNewOption(list: HTMLDivElement): void {
     const result = {
       name: "",
-      url: new URL("https://domain.com")
+      url: "https://domain.com"
     };
 
     this.createOption(list, result);
@@ -275,7 +275,7 @@ class Options {
   }
 
   private save(): void {
-    const servers = {
+    const servers: Servers = {
       authorDispatchers: [],
       authors: [],
       publishers: [],
@@ -318,7 +318,7 @@ class Options {
       const server: ServerOption = {
         id: element.id,
         name: (element.querySelector("input.name") as HTMLInputElement).value,
-        url: new URL((element.querySelector("input.url") as HTMLInputElement).value)
+        url: (element.querySelector("input.url") as HTMLInputElement).value
       };
 
       servers.push(server);
@@ -328,9 +328,14 @@ class Options {
   }
 
   private recreateList(list: HTMLDivElement, items: ServerOption[]): void {
-    for (const id of items.map(item => item.id)) {
-      document.getElementById(id).remove();
-    }
+    items
+      .map(item => item.id)
+      .map(item => document.getElementById(item))
+      .forEach(item => {
+        if (item) {
+          item.remove();
+        }
+      });
 
     items.forEach((server: Server) => {
       this.createOption(list, server);
@@ -339,7 +344,7 @@ class Options {
 
   private shiftServer(items: ServerOption[], idToShift: string): ServerOption[] {
     const shiftedList: ServerOption[] = [];
-    let shiftedServer: ServerOption = null;
+    let shiftedServer: ServerOption | null = null;
     for (const server of items) {
       if (server.id !== idToShift) {
         shiftedList.push(server);

@@ -22,20 +22,20 @@ export class CrxDePage extends AemPage {
   }
 
   get editorPage(): AemPage {
-    if (this._url.hash === "") {
+    if (this.url.hash === "") {
       return new DisabledPage(this.url);
     }
 
-    const url = new URL(`${this._url.origin}/editor.html${this._url.hash.substring(1)}.html`);
+    const url = new URL(`${this.url.origin}/editor.html${this.url.hash.substring(1)}.html`);
     return new EditorPage(url);
   }
 
   get previewPage(): AemPage {
-    if (this._url.hash === "") {
+    if (this.url.hash === "") {
       return new DisabledPage(this.url);
     }
 
-    const url = new URL(`${this._url.origin}${this._url.hash.substring(1)}.html?wcmmode=disabled`);
+    const url = new URL(`${this.url.origin}${this.url.hash.substring(1)}.html?wcmmode=disabled`);
     return new PreviewPage(url);
   }
 
@@ -44,20 +44,20 @@ export class CrxDePage extends AemPage {
   }
 
   get crxPackMgrPage(): AemPage {
-    const url = new URL(this._url.toString());
+    const url = new URL(this.url.toString());
     url.pathname = '/crx/packmgr/index.jsp';
 
     return new CrxPackMgrPage(url);
   }
 
   get userAdminPage(): AemPage {
-    const url = new URL(`${this._url.origin}/useradmin`);
+    const url = new URL(`${this.url.origin}/useradmin`);
 
     return new UserAdminPage(url);
   }
 
   get sitesPage(): AemPage {
-    const url = new URL(`${this._url.origin}/sites.html${this._url.hash.substring(1)}`);
+    const url = new URL(`${this.url.origin}/sites.html${this.url.hash.substring(1)}`);
 
     return new SitesPage(url);
   }

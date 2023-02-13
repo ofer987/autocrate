@@ -11,10 +11,6 @@ import { WelcomePage } from "./welcomePage";
 export class ConsolePage extends AemPage {
   static pathRegex = /^\/system\/console(\/bundles)?/;
 
-  get url() {
-    return this._url;
-  }
-
   static isPage(url: URL) {
     return ConsolePage.pathRegex.test(url.pathname);
   }
@@ -32,19 +28,19 @@ export class ConsolePage extends AemPage {
   }
 
   get crxDePage(): AemPage {
-    const url = new URL(`${this._url.origin}/crx/de/index.jsp`);
+    const url = new URL(`${this.url.origin}/crx/de/index.jsp`);
 
     return new CrxDePage(url);
   }
 
   get crxPackMgrPage(): AemPage {
-    const url = new URL(`${this._url.origin}/crx/packmgr/index.jsp`);
+    const url = new URL(`${this.url.origin}/crx/packmgr/index.jsp`);
 
     return new CrxPackMgrPage(url);
   }
 
   get userAdminPage(): AemPage {
-    const url = new URL(`${this._url.origin}/useradmin`);
+    const url = new URL(`${this.url.origin}/useradmin`);
 
     return new UserAdminPage(url);
   }
@@ -56,7 +52,7 @@ export class ConsolePage extends AemPage {
   }
 
   get sitesPage(): AemPage {
-    const url = new URL(`${this._url.origin}/sites.html/content`);
+    const url = new URL(`${this.url.origin}/sites.html/content`);
 
     return new SitesPage(url);
   }

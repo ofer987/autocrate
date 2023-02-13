@@ -3,6 +3,7 @@
     "sourceMap": true,
     "esModuleInterop": true,
     "allowSyntheticDefaultImports": true,
-    "target": "es5"
+    "target": "es5",
+    "strictNullChecks": true
   }
 }

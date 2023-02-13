@@ -11,10 +11,6 @@ import { WelcomePage } from "./welcomePage";
 export class LoginPage extends AemPage {
   static pathRegex = /^\/\/libs\/granite\/core\/content\/login\.html$/;
 
-  get url() {
-    return this._url;
-  }
-
   static isPage(url: URL) {
     return LoginPage.pathRegex.test(url.pathname);
   }
