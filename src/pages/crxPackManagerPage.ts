@@ -1,4 +1,5 @@
-import { AemPage, aemPageTypes } from "./aemPage";
+import { aemPageTypes } from "./pageType";
+import { AemPage } from "./aemPage";
 import { DisabledPage } from "./disabledPage";
 import { EditorPage } from "./editorPage";
 import { CrxDePage } from "./crxDePage";

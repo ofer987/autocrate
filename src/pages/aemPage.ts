@@ -1,17 +1,5 @@
 import { NonAemPage } from "./nonAemPage";
-
-export type aemPageTypes = "Non AEM Page"
-  | "Disabled Page"
-  | "Editor"
-  | "Preview"
-  | "CRX / DE JCR Manager"
-  | "CRX / DE Package Manager"
-  | "User Admin"
-  | "Sites"
-  | "Console"
-  | "Login"
-  | "Start"
-  | "Welcome";
+import { aemPageTypes } from "./pageType";
 
 export abstract class AemPage {
   private _url: URL;

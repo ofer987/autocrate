@@ -1,4 +1,5 @@
-import { AemPage, aemPageTypes } from "./aemPage";
+import { aemPageTypes } from "./pageType";
+import { AemPage } from "./aemPage";
 import { ConsolePage } from "./consolePage";
 import { LoginPage } from "./loginPage";
 import { StartPage } from "./startPage";

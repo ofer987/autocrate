@@ -1,5 +1,6 @@
 import { MenuViewModel } from "./menuViewModel";
-import { AemPage, aemPageTypes } from "../pages/aemPage";
+import { AemPage } from "../pages/aemPage";
+import { aemPageTypes } from "../pages/pageType";
 
 interface Page {
   isEnabled: boolean;

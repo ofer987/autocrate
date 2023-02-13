@@ -1,4 +1,5 @@
-import { AemPage, aemPageTypes } from "./aemPage";
+import { aemPageTypes } from "./pageType";
+import { AemPage } from "./aemPage";
 import { EditorPage } from "./editorPage";
 import { UserAdminPage } from "./userAdminPage";
 import { CrxDePage } from "./crxDePage";
