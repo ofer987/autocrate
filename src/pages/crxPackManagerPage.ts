@@ -1,14 +1,5 @@
-import { AemPage, aemPageTypes } from "./aemPage";
-import { DisabledPage } from "./disabledPage";
-import { EditorPage } from "./editorPage";
-import { CrxDePage } from "./crxDePage";
-import { UserAdminPage } from "./userAdminPage";
-import { SitesPage } from "./sitesPage";
-import { PreviewPage } from "./previewPage";
-import { ConsolePage } from "./consolePage";
-import { LoginPage } from "./loginPage";
-import { StartPage } from "./startPage";
-import { WelcomePage } from "./welcomePage";
+import { PageType, aemPageTypes } from "./pageType";
+import { AemPage } from "./aemPage";
 
 export class CrxPackMgrPage extends AemPage {
   static pathRegex = /^\/crx\/packmgr\/index\.jsp#?(.*)$/;
@@ -21,72 +12,111 @@ export class CrxPackMgrPage extends AemPage {
     return "CRX / DE Package Manager";
   }
 
-  get editorPage(): AemPage {
-    if (this._url.hash === "") {
-      return new DisabledPage(this.url);
+  get editorPage(): PageType {
+    if (this.url.hash === "") {
+      return {
+        pageType: "Disabled Page",
+        url: this.url
+      };
     }
 
-    const url = new URL(`${this._url.origin}/editor.html${this._url.hash.substring(1)}.html`);
-    return new EditorPage(url);
+    const url = new URL(`${this.url.origin}/editor.html${this.url.hash.substring(1)}.html`);
+    return {
+      pageType: "Editor",
+      url: url
+    };
   }
 
-  get previewPage(): AemPage {
-    if (this._url.hash === "") {
-      return new DisabledPage(this.url);
+  get previewPage(): PageType {
+    if (this.url.hash === "") {
+      return {
+        pageType: "Disabled Page",
+        url: this.url
+      };
     }
 
-    const url = new URL(`${this._url.origin}${this._url.hash.substring(1)}.html?wcmmode=disabled`);
-    return new PreviewPage(url);
+    const url = new URL(`${this.url.origin}${this.url.hash.substring(1)}.html?wcmmode=disabled`);
+    return {
+      pageType: "Preview",
+      url: url
+    };
   }
 
-  get crxDePage(): AemPage {
-    const url = new URL(this._url.toString());
+  get crxDePage(): PageType {
+    const url = new URL(this.url.toString());
     url.pathname = '/crx/de/index.jsp';
 
-    return new CrxDePage(url);
+    return {
+      pageType: "CRX / DE JCR Manager",
+      url: url
+    };
   }
 
-  get crxPackMgrPage(): AemPage {
-    return this;
+  get crxPackMgrPage(): PageType {
+    return {
+      pageType: "Disabled Page",
+      url: this.url
+    };
   }
 
-  get userAdminPage(): AemPage {
-    const url = new URL(`${this._url.origin}/useradmin`);
+  get userAdminPage(): PageType {
+    const url = new URL(`${this.url.origin}/useradmin`);
 
-    return new UserAdminPage(url);
+    return {
+      pageType: "User Admin",
+      url: url
+    };
   }
 
-  get sitesPage(): AemPage {
-    if (this._url.hash === "") {
-      return new DisabledPage(this.url);
+  get sitesPage(): PageType {
+    if (this.url.hash === "") {
+      return {
+        pageType: "Disabled Page",
+        url: this.url
+      };
     }
 
-    const url = new URL(`${this._url.origin}/sites.html${this._url.hash.substring(1)}`);
-    return new SitesPage(url);
+    const url = new URL(`${this.url.origin}/sites.html${this.url.hash.substring(1)}`);
+    return {
+      pageType: "Sites",
+      url: url
+    };
   }
 
-  get consolePage(): AemPage {
+  get consolePage(): PageType {
     const url = new URL(`${this.url.origin}/system/console`);
 
-    return new ConsolePage(url);
+    return {
+      pageType: "Console",
+      url: url
+    };
   }
 
-  get loginPage(): AemPage {
+  get loginPage(): PageType {
     const url = new URL(`${this.url.origin}/libs/granite/core/content/login.html`);
 
-    return new LoginPage(url);
+    return {
+      pageType: "Login",
+      url: url
+    };
   }
 
-  get startPage(): AemPage {
+  get startPage(): PageType {
     const url = new URL(`${this.url.origin}/aem/start`);
 
-    return new StartPage(url);
+    return {
+      pageType: "Start",
+      url: url
+    };
   }
 
-  get welcomePage(): AemPage {
+  get welcomePage(): PageType {
     const url = new URL(`${this.url.origin}/welcome`);
 
-    return new WelcomePage(url);
+    return {
+      pageType: "Welcome",
+      url: url
+    };
   }
 
   constructor(url: URL) {

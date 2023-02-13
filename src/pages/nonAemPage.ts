@@ -1,12 +1,5 @@
-import { AemPage, aemPageTypes } from "./aemPage";
-import { CrxDePage } from "./crxDePage";
-import { CrxPackMgrPage } from "./crxPackManagerPage";
-import { DisabledPage } from "./disabledPage";
-import { UserAdminPage } from "./userAdminPage";
-import { ConsolePage } from "./consolePage";
-import { LoginPage } from "./loginPage";
-import { StartPage } from "./startPage";
-import { WelcomePage } from "./welcomePage";
+import { PageType, aemPageTypes } from "./pageType";
+import { AemPage } from "./aemPage";
 
 export class NonAemPage extends AemPage {
   get getType(): aemPageTypes {
@@ -17,52 +10,86 @@ export class NonAemPage extends AemPage {
     return false;
   }
 
-  get editorPage(): AemPage {
-    return new DisabledPage(this.url);
+  get editorPage(): PageType {
+    return {
+      pageType: "Disabled Page",
+      url: this.url
+    };
   }
 
-  get previewPage(): AemPage {
-    return new DisabledPage(this.url);
+  get previewPage(): PageType {
+    return {
+      pageType: "Disabled Page",
+      url: this.url
+    };
   }
 
-  get crxDePage(): AemPage {
-    return new CrxDePage(new URL(`${this.url.origin}/crx/de/index.jsp`));
+  get crxDePage(): PageType {
+    const url = new URL(`${this.url.origin}/crx/de/index.jsp`);
+
+    return {
+      pageType: "CRX / DE JCR Manager",
+      url: url
+    };
   }
 
-  get crxPackMgrPage(): AemPage {
-    return new CrxPackMgrPage(new URL(`${this.url.origin}/crx/packmgr/index.jsp`));
+  get crxPackMgrPage(): PageType {
+    const url = new URL(`${this.url.origin}/crx/packmgr/index.jsp`);
+
+    return {
+      pageType: "CRX / DE Package Manager",
+      url: url
+    };
   }
 
-  get userAdminPage(): AemPage {
-    return new UserAdminPage(new URL(`${this.url.origin}/useradmin`));
+  get userAdminPage(): PageType {
+    return {
+      pageType: "User Admin",
+      url: this.url
+    };
   }
 
-  get sitesPage(): AemPage {
-    return new DisabledPage(this.url);
+  get sitesPage(): PageType {
+    return {
+      pageType: "Disabled Page",
+      url: this.url
+    };
   }
 
-  get consolePage(): AemPage {
+  get consolePage(): PageType {
     const url = new URL(`${this.url.origin}/system/console`);
 
-    return new ConsolePage(url);
+    return {
+      pageType: "Console",
+      url: url
+    };
   }
 
-  get loginPage(): AemPage {
+  get loginPage(): PageType {
     const url = new URL(`${this.url.origin}/libs/granite/core/content/login.html`);
 
-    return new LoginPage(url);
+    return {
+      pageType: "Login",
+      url: url
+    };
   }
 
-  get startPage(): AemPage {
+  get startPage(): PageType {
     const url = new URL(`${this.url.origin}/aem/start`);
 
-    return new StartPage(url);
+    return {
+      pageType: "Start",
+      url: url
+    };
   }
 
-  get welcomePage(): AemPage {
+  get welcomePage(): PageType {
     const url = new URL(`${this.url.origin}/welcome`);
 
-    return new WelcomePage(url);
+    return {
+      pageType: "Welcome",
+      url: url
+    };
   }
 
   constructor(url: URL) {

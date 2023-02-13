@@ -1,3 +1,4 @@
+import { aemPageTypes } from "./pageType";
 import { AemPage } from "./aemPage";
 import { PreviewPage } from "./previewPage";
 import { EditorPage } from "./editorPage";
@@ -10,6 +11,7 @@ import { ConsolePage } from "./consolePage";
 import { StartPage } from "./startPage";
 import { LoginPage } from "./loginPage";
 import { WelcomePage } from "./welcomePage";
+import { DisabledPage } from "./disabledPage";
 
 export class AemPages {
   static getAemPage(url: URL): AemPage {
@@ -25,5 +27,22 @@ export class AemPages {
     if (WelcomePage.isPage(url)) return new WelcomePage(url);
 
     return new NonAemPage(url);
+  }
+
+  static createAemPage(pageType: aemPageTypes, url: URL): AemPage {
+    switch (pageType) {
+      case "Non AEM Page": return new NonAemPage(url);
+      case "Disabled Page": return new DisabledPage(url);
+      case "Editor": return new EditorPage(url);
+      case "Preview": return new PreviewPage(url);
+      case "CRX / DE JCR Manager": return new CrxDePage(url);
+      case "CRX / DE Package Manager": return new CrxPackMgrPage(url);
+      case "User Admin": return new UserAdminPage(url);
+      case "Sites": return new SitesPage(url);
+      case "Console": return new ConsolePage(url);
+      case "Login": return new LoginPage(url);
+      case "Start": return new StartPage(url);
+      case "Welcome": return new WelcomePage(url);
+    }
   }
 }

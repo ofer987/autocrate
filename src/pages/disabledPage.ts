@@ -1,8 +1,5 @@
-import { AemPage, aemPageTypes } from "./aemPage";
-import { ConsolePage } from "./consolePage";
-import { LoginPage } from "./loginPage";
-import { StartPage } from "./startPage";
-import { WelcomePage } from "./welcomePage";
+import { PageType, aemPageTypes } from "./pageType";
+import { AemPage } from "./aemPage";
 
 export class DisabledPage extends AemPage {
   get getType(): aemPageTypes {
@@ -13,51 +10,81 @@ export class DisabledPage extends AemPage {
     return false;
   }
 
-  get editorPage(): AemPage {
-    return this;
+  get editorPage(): PageType {
+    return {
+      pageType: "Disabled Page",
+      url: this.url
+    };
   }
 
-  get previewPage(): AemPage {
-    return this;
+  get previewPage(): PageType {
+    return {
+      pageType: "Disabled Page",
+      url: this.url
+    };
   }
 
-  get crxDePage(): AemPage {
-    return this;
+  get crxDePage(): PageType {
+    return {
+      pageType: "Disabled Page",
+      url: this.url
+    };
   }
 
-  get crxPackMgrPage(): AemPage {
-    return this;
+  get crxPackMgrPage(): PageType {
+    return {
+      pageType: "Disabled Page",
+      url: this.url
+    };
   }
 
-  get userAdminPage(): AemPage {
-    return this;
+  get userAdminPage(): PageType {
+    return {
+      pageType: "Disabled Page",
+      url: this.url
+    };
   }
 
-  get sitesPage(): AemPage {
-    return this;
+  get sitesPage(): PageType {
+    return {
+      pageType: "Disabled Page",
+      url: this.url
+    };
   }
 
-  get consolePage(): AemPage {
+  get consolePage(): PageType {
     const url = new URL(`${this.url.origin}/system/console`);
 
-    return new ConsolePage(url);
+    return {
+      pageType: "Console",
+      url: url
+    };
   }
 
-  get loginPage(): AemPage {
+  get loginPage(): PageType {
     const url = new URL(`${this.url.origin}/libs/granite/core/content/login.html`);
 
-    return new LoginPage(url);
+    return {
+      pageType: "Login",
+      url: url
+    };
   }
 
-  get startPage(): AemPage {
+  get startPage(): PageType {
     const url = new URL(`${this.url.origin}/aem/start`);
 
-    return new StartPage(url);
+    return {
+      pageType: "Start",
+      url: url
+    };
   }
 
-  get welcomePage(): AemPage {
+  get welcomePage(): PageType {
     const url = new URL(`${this.url.origin}/welcome`);
 
-    return new WelcomePage(url);
+    return {
+      pageType: "Welcome",
+      url: url
+    };
   }
 }

@@ -1,13 +1,113 @@
 import { random } from "lodash";
 
-import { Servers } from "./models/server";
-import { Server } from "./models/server";
+import { Servers, Server } from "./models/server";
 
 import "./options.scss";
 
 interface ServerOption extends Server {
   id: string
 }
+
+const authorDispatcherOptions: Server[] = [
+  {
+    name: "Localhost",
+    url: "http://localhost:4502"
+  },
+  {
+    name: "Dev",
+    url: "https://author-dev-ams.ewp.thomsonreuters.com"
+  },
+  {
+    name: "QA",
+    url: "https://author-qa-ams.ewp.thomsonreuters.com"
+  },
+  {
+    name: "UAT",
+    url: "https://author-uat-ams.ewp.thomsonreuters.com"
+  },
+  {
+    name: "PPE / Stage",
+    url: "https://author-ppe-ams.ewp.thomsonreuters.com"
+  },
+  {
+    name: "Production",
+    url: "https://author-prod-ams.ewp.thomsonreuters.com"
+  }
+];
+
+const authorOptions: Server[] = [
+  {
+    name: "Localhost",
+    url: "http://localhost:4502"
+  },
+  {
+    name: "Dev",
+    url: "http://author1useast1-as.dev.ewp.thomsonreuters.com:4502"
+  },
+  {
+    name: "QA",
+    url: "http://author1useast1-as.qa.ewp.thomsonreuters.com:4502"
+  },
+  {
+    name: "UAT",
+    url: "http://author1useast1-as.uat.ewp.thomsonreuters.com:4502"
+  },
+  {
+    name: "PPE / Stage",
+    url: "http://author1useast1-as.ppe.ewp.thomsonreuters.com:4502"
+  },
+  {
+    name: "Production",
+    url: "http://author1useast1-as.prod.ewp.thomsonreuters.com:4502"
+  }
+];
+
+const publisherOptions: Server[] = [
+  {
+    name: "Localhost Publish",
+    url: "http://localhost:4503"
+  },
+  {
+    name: "QA Publish",
+    url: "http://publish1useast1-as.qa.ewp.thomsonreuters.com:4503"
+  },
+  {
+    name: "UAT Publish",
+    url: "http://publish1useast1-as.uat.ewp.thomsonreuters.com:4503"
+  },
+  {
+    name: "PPE Publish 1 US EAST 1",
+    url: "http://publish1useast1-as.ppe.ewp.thomsonreuters.com:4503"
+  },
+  {
+    name: "PPE Publish 2 US EAST 1",
+    url: "http://publish2useast1-as.ppe.ewp.thomsonreuters.com:4503"
+  },
+  {
+    name: "PPE Publish 1 US WEST 2",
+    url: "http://publish1uswest2-as.ppe.ewp.thomsonreuters.com:4503"
+  },
+  {
+    name: "PPE Publish 2 US WEST 2",
+    url: "http://publish2uswest2-as.ppe.ewp.thomsonreuters.com:4503"
+  },
+  {
+    name: "Prod Publish 1 US EAST 1",
+    url: "http://publish1useast1-as.prod.ewp.thomsonreuters.com:4503"
+  },
+  {
+    name: "Prod Publish 2 US EAST 1",
+    url: "http://publish2useast1-as.prod.ewp.thomsonreuters.com:4503"
+  },
+  {
+    name: "Prod Publish 1 US WEST 2",
+    url: "http://publish1uswest2-as.prod.ewp.thomsonreuters.com:4503"
+  },
+  {
+    name: "Prod Publish 2 US WEST 2",
+    url: "http://publish2uswest2-as.prod.ewp.thomsonreuters.com:4503"
+  },
+];
 
 class Options {
   private AUTHOR_DISPATCHERS_SELECTOR = "#servers #author-dispatchers .list";
@@ -46,25 +146,37 @@ class Options {
   }
 
   private restore(): void {
-    chrome.storage.sync.get(null, (savedValues: Servers) => {
-      savedValues.authorDispatchers.forEach((savedValue: Server) => {
-        this.createOption(this.authorDispatcherServersElement, savedValue);
-      });
+    // chrome.storage.sync.get(null, (savedValues: Servers) => {
+    //   savedValues.authorDispatchers.forEach((savedValue: Server) => {
+    //     this.createOption(this.authorDispatcherServersElement, savedValue);
+    //   });
+    //
+    //   savedValues.authors.forEach((savedValue: Server) => {
+    //     this.createOption(this.authorServersElement, savedValue);
+    //   });
+    //
+    //   savedValues.publishers.forEach((savedValue: Server) => {
+    //     this.createOption(this.publisherServersElement, savedValue);
+    //   });
+    // });
 
-      savedValues.authors.forEach((savedValue: Server) => {
-        this.createOption(this.authorServersElement, savedValue);
-      });
+    authorDispatcherOptions.forEach((savedValue: Server) => {
+      this.createOption(this.authorDispatcherServersElement, savedValue);
+    });
 
-      savedValues.publishers.forEach((savedValue: Server) => {
-        this.createOption(this.publisherServersElement, savedValue);
-      });
+    authorOptions.forEach((savedValue: Server) => {
+      this.createOption(this.authorServersElement, savedValue);
+    });
+
+    publisherOptions.forEach((savedValue: Server) => {
+      this.createOption(this.publisherServersElement, savedValue);
     });
   }
 
   private createNewOption(list: HTMLDivElement): void {
     const result = {
       name: "",
-      url: new URL("https://domain.com")
+      url: "https://domain.com"
     };
 
     this.createOption(list, result);
@@ -163,7 +275,7 @@ class Options {
   }
 
   private save(): void {
-    const servers = {
+    const servers: Servers = {
       authorDispatchers: [],
       authors: [],
       publishers: [],
@@ -206,7 +318,7 @@ class Options {
       const server: ServerOption = {
         id: element.id,
         name: (element.querySelector("input.name") as HTMLInputElement).value,
-        url: new URL((element.querySelector("input.url") as HTMLInputElement).value)
+        url: (element.querySelector("input.url") as HTMLInputElement).value
       };
 
       servers.push(server);
@@ -216,9 +328,14 @@ class Options {
   }
 
   private recreateList(list: HTMLDivElement, items: ServerOption[]): void {
-    for (const id of items.map(item => item.id)) {
-      document.getElementById(id).remove();
-    }
+    items
+      .map(item => item.id)
+      .map(item => document.getElementById(item))
+      .forEach(item => {
+        if (item) {
+          item.remove();
+        }
+      });
 
     items.forEach((server: Server) => {
       this.createOption(list, server);
@@ -227,7 +344,7 @@ class Options {
 
   private shiftServer(items: ServerOption[], idToShift: string): ServerOption[] {
     const shiftedList: ServerOption[] = [];
-    let shiftedServer: ServerOption = null;
+    let shiftedServer: ServerOption | null = null;
     for (const server of items) {
       if (server.id !== idToShift) {
         shiftedList.push(server);
