@@ -9,17 +9,27 @@ export class ServerMenuViewModel extends MenuViewModel {
   protected ITEM_CLASS = "server";
 
   private servers: Server[];
-  private isActive: boolean;
+  private isActive = false;
   private menuId: string;
+  private _menu: HTMLElement;
+  private _url: URL;
+
+  protected get menu(): HTMLElement {
+    return this._menu;
+  }
+
+  protected get url(): URL {
+    return this._url;
+  }
 
   constructor(currentUrl: URL, servers: Server[], menuId: string) {
     super();
 
-    this.url = currentUrl;
+    this._url = currentUrl;
     this.servers = servers;
 
     this.menuId = menuId;
-    this.menu = document.getElementById(this.menuId);
+    this._menu = this.getElementById(this.menuId);
 
     this.init();
 
@@ -113,7 +123,7 @@ export class ServerMenuViewModel extends MenuViewModel {
 
   protected setSelectedIndex(value: number) {
     const pages = this.menu?.querySelectorAll(`.${this.ITEM_CLASS}`) ?? [];
-    pages.forEach((item: HTMLElement) => item.classList.remove(this.IS_SELECTED_CLASS));
+    pages.forEach((item: Element) => item.classList.remove(this.IS_SELECTED_CLASS));
 
     if (value < 0) {
       value = this.servers.length - 1;

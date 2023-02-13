@@ -281,7 +281,7 @@ class Options {
       publishers: [],
     };
 
-    document.querySelectorAll(this.AUTHOR_DISPATCHER_SERVERS_SELECTOR).forEach((element: HTMLDivElement) => {
+    document.querySelectorAll(this.AUTHOR_DISPATCHER_SERVERS_SELECTOR).forEach((element: Element) => {
       const server = {
         name: (element.querySelector("input.name") as HTMLInputElement).value,
         url: (element.querySelector("input.url") as HTMLInputElement).value
@@ -290,7 +290,7 @@ class Options {
       servers.authorDispatchers.push(server);
     });
 
-    document.querySelectorAll(this.AUTHOR_SERVERS_SELECTOR).forEach((element: HTMLDivElement) => {
+    document.querySelectorAll(this.AUTHOR_SERVERS_SELECTOR).forEach((element: Element) => {
       const server = {
         name: (element.querySelector("input.name") as HTMLInputElement).value,
         url: (element.querySelector("input.url") as HTMLInputElement).value
@@ -299,7 +299,7 @@ class Options {
       servers.authors.push(server);
     });
 
-    document.querySelectorAll(this.PUBLISHER_SERVERS_SELECTOR).forEach((element: HTMLDivElement) => {
+    document.querySelectorAll(this.PUBLISHER_SERVERS_SELECTOR).forEach((element: Element) => {
       const server = {
         name: (element.querySelector("input.name") as HTMLInputElement).value,
         url: (element.querySelector("input.url") as HTMLInputElement).value
@@ -314,7 +314,7 @@ class Options {
   private serialiseServers(list: HTMLDivElement): ServerOption[] {
     const servers: ServerOption[] = [];
 
-    list.childNodes.forEach((element: HTMLDivElement) => {
+    for (const element of list.children) {
       const server: ServerOption = {
         id: element.id,
         name: (element.querySelector("input.name") as HTMLInputElement).value,
@@ -322,7 +322,7 @@ class Options {
       };
 
       servers.push(server);
-    });
+    }
 
     return servers;
   }

@@ -3,9 +3,9 @@ export abstract class MenuViewModel {
   protected abstract ITEM_CLASS: string;
   protected abstract MENU_CLASS: string;
 
-  protected url: URL;
   protected _selectedIndex = 0;
-  protected menu: HTMLElement | null;
+
+  protected abstract get menu(): HTMLElement;
 
   get isNull(): boolean {
     return false;

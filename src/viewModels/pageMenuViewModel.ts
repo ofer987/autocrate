@@ -18,7 +18,13 @@ export class PagesMenuViewModel extends MenuViewModel {
 
   private currentAemPage: AemPage;
   private pages: Page[];
-  private isActive: boolean;
+  private isActive = false;
+
+  private _menu: HTMLElement;
+
+  protected get menu(): HTMLElement {
+    return this._menu;
+  }
 
   protected get selectedElementId() {
     return this.getElementId(this._selectedIndex);
@@ -42,7 +48,7 @@ export class PagesMenuViewModel extends MenuViewModel {
         };
       });
 
-    this.menu = document.getElementById(this.MENU_CLASS);
+    this._menu = this.getElementById(this.MENU_CLASS);
     this.init();
     this.validate();
   }

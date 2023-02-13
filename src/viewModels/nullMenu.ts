@@ -5,6 +5,10 @@ export class NullMenu extends MenuViewModel {
   protected ITEM_CLASS = "page";
   protected MENU_CLASS = "pages";
 
+  get menu(): HTMLElement {
+    throw "NullMenu does not have a menu";
+  }
+
   get isNull(): boolean {
     return true;
   }

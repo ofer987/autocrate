@@ -1,13 +1,18 @@
 import { AemPages } from "./pages/aemPages";
 import { Servers, Server } from "./models/server";
 import { MenuViewModel } from "./viewModels/menuViewModel";
+import { NullMenu } from "./viewModels/nullMenu";
 import { ServerMenuViewModel } from "./viewModels/serverMenuViewModel";
 import { PagesMenuViewModel } from "./viewModels/pageMenuViewModel";
 
 export class Main {
-  private servers: Servers;
+  private servers: Servers = {
+    authorDispatchers: [],
+    authors: [],
+    publishers: []
+  };
   private serverMenus: ServerMenuViewModel[] = [];
-  private pagesMenu: PagesMenuViewModel;
+  private pagesMenu: MenuViewModel = new NullMenu();
   private menuIndex = 0;
 
   private get currentMenu(): MenuViewModel {
@@ -58,9 +63,9 @@ export class Main {
       savedValues.publishers.forEach((saved_value: Server) => {
         this.servers.publishers.push(saved_value);
       });
-
-      this.init();
     });
+
+    this.init();
   }
 
   private init() {
