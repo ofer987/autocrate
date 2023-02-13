@@ -1,6 +1,5 @@
 import { random } from "lodash";
 
-import { Servers } from "./models/server";
 import { Server } from "./models/server";
 
 import "./options.scss";
@@ -8,6 +7,107 @@ import "./options.scss";
 interface ServerOption extends Server {
   id: string
 }
+
+const authorDispatcherOptions: Server[] = [
+  {
+    name: "Localhost",
+    url: new URL("http://localhost:4502")
+  },
+  {
+    name: "Dev",
+    url: new URL("https://author-dev-ams.ewp.thomsonreuters.com")
+  },
+  {
+    name: "QA",
+    url: new URL("https://author-qa-ams.ewp.thomsonreuters.com")
+  },
+  {
+    name: "UAT",
+    url: new URL("https://author-uat-ams.ewp.thomsonreuters.com")
+  },
+  {
+    name: "PPE / Stage",
+    url: new URL("https://author-ppe-ams.ewp.thomsonreuters.com")
+  },
+  {
+    name: "Production",
+    url: new URL("https://author-prod-ams.ewp.thomsonreuters.com")
+  }
+];
+
+const authorOptions: Server[] = [
+  {
+    name: "Localhost",
+    url: new URL("http://localhost:4502")
+  },
+  {
+    name: "Dev",
+    url: new URL("http://author1useast1-as.dev.ewp.thomsonreuters.com:4502")
+  },
+  {
+    name: "QA",
+    url: new URL("http://author1useast1-as.qa.ewp.thomsonreuters.com:4502")
+  },
+  {
+    name: "UAT",
+    url: new URL("http://author1useast1-as.uat.ewp.thomsonreuters.com:4502")
+  },
+  {
+    name: "PPE / Stage",
+    url: new URL("http://author1useast1-as.ppe.ewp.thomsonreuters.com:4502")
+  },
+  {
+    name: "Production",
+    url: new URL("http://author1useast1-as.prod.ewp.thomsonreuters.com:4502")
+  }
+];
+
+const publisherOptions: Server[] = [
+  {
+    name: "Localhost Publish",
+    url: new URL("http://localhost:4503")
+  },
+  {
+    name: "QA Publish",
+    url: new URL("http://publish1useast1-as.qa.ewp.thomsonreuters.com:4503")
+  },
+  {
+    name: "UAT Publish",
+    url: new URL("http://publish1useast1-as.uat.ewp.thomsonreuters.com:4503")
+  },
+  {
+    name: "PPE Publish 1 US EAST 1",
+    url: new URL("http://publish1useast1-as.ppe.ewp.thomsonreuters.com:4503")
+  },
+  {
+    name: "PPE Publish 2 US EAST 1",
+    url: new URL("http://publish2useast1-as.ppe.ewp.thomsonreuters.com:4503")
+  },
+  {
+    name: "PPE Publish 1 US WEST 2",
+    url: new URL("http://publish1uswest2-as.ppe.ewp.thomsonreuters.com:4503")
+  },
+  {
+    name: "PPE Publish 2 US WEST 2",
+    url: new URL("http://publish2uswest2-as.ppe.ewp.thomsonreuters.com:4503")
+  },
+  {
+    name: "Prod Publish 1 US EAST 1",
+    url: new URL("http://publish1useast1-as.prod.ewp.thomsonreuters.com:4503")
+  },
+  {
+    name: "Prod Publish 2 US EAST 1",
+    url: new URL("http://publish2useast1-as.prod.ewp.thomsonreuters.com:4503")
+  },
+  {
+    name: "Prod Publish 1 US WEST 2",
+    url: new URL("http://publish1uswest2-as.prod.ewp.thomsonreuters.com:4503")
+  },
+  {
+    name: "Prod Publish 2 US WEST 2",
+    url: new URL("http://publish2uswest2-as.prod.ewp.thomsonreuters.com:4503")
+  },
+];
 
 class Options {
   private AUTHOR_DISPATCHERS_SELECTOR = "#servers #author-dispatchers .list";
@@ -46,18 +146,30 @@ class Options {
   }
 
   private restore(): void {
-    chrome.storage.sync.get(null, (savedValues: Servers) => {
-      savedValues.authorDispatchers.forEach((savedValue: Server) => {
-        this.createOption(this.authorDispatcherServersElement, savedValue);
-      });
+    // chrome.storage.sync.get(null, (savedValues: Servers) => {
+    //   savedValues.authorDispatchers.forEach((savedValue: Server) => {
+    //     this.createOption(this.authorDispatcherServersElement, savedValue);
+    //   });
+    //
+    //   savedValues.authors.forEach((savedValue: Server) => {
+    //     this.createOption(this.authorServersElement, savedValue);
+    //   });
+    //
+    //   savedValues.publishers.forEach((savedValue: Server) => {
+    //     this.createOption(this.publisherServersElement, savedValue);
+    //   });
+    // });
 
-      savedValues.authors.forEach((savedValue: Server) => {
-        this.createOption(this.authorServersElement, savedValue);
-      });
+    authorDispatcherOptions.forEach((savedValue: Server) => {
+      this.createOption(this.authorDispatcherServersElement, savedValue);
+    });
 
-      savedValues.publishers.forEach((savedValue: Server) => {
-        this.createOption(this.publisherServersElement, savedValue);
-      });
+    authorOptions.forEach((savedValue: Server) => {
+      this.createOption(this.authorServersElement, savedValue);
+    });
+
+    publisherOptions.forEach((savedValue: Server) => {
+      this.createOption(this.publisherServersElement, savedValue);
     });
   }
 
