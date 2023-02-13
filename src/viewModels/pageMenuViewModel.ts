@@ -32,7 +32,7 @@ export class PagesMenuViewModel extends MenuViewModel {
       .getPageTypes()
       .map((pageType: aemPageTypes) => {
         const pageType2 = this.currentAemPage.switchAemPage(pageType);
-        const aemPage = AemPages.createAemPage(pageType2.pageType, pageType2.url)
+        const aemPage = AemPages.createAemPage(pageType2.pageType, pageType2.url);
 
         return {
           isEnabled: aemPage.isEnabled,

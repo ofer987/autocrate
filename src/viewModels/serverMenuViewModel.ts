@@ -38,6 +38,11 @@ export class ServerMenuViewModel extends MenuViewModel {
     });
 
     this.onKeyDown();
+
+    // This is not an AEM page, so
+    // set to first Server
+    this._selectedIndex = 0;
+    this.getServerElement(0).classList.add(this.IS_SELECTED_CLASS);
   }
 
   moveUp(): number {
@@ -100,6 +105,10 @@ export class ServerMenuViewModel extends MenuViewModel {
         return;
       }
     }
+
+    // Select the first server as the default item
+    this._selectedIndex = 0;
+    this.getServerElement(0).classList.add(this.IS_SELECTED_CLASS);
   }
 
   protected setSelectedIndex(value: number) {
