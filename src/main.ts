@@ -51,7 +51,7 @@ export class Main {
       publishers: [],
     };
 
-    chrome.storage.sync.get(null, (savedValues: Servers) => {
+    chrome.storage.sync.get(null, (savedValues: { [key: string]: Server[] }) => {
       savedValues.authorDispatchers.forEach((saved_value: Server) => {
         this.servers.authorDispatchers.push(saved_value);
       });
