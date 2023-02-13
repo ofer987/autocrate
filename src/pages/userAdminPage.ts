@@ -1,13 +1,5 @@
 import { PageType, aemPageTypes } from "./pageType";
 import { AemPage } from "./aemPage";
-import { CrxDePage } from "./crxDePage";
-import { CrxPackMgrPage } from "./crxPackManagerPage";
-import { SitesPage } from "./sitesPage";
-import { DisabledPage } from "./disabledPage";
-import { ConsolePage } from "./consolePage";
-import { LoginPage } from "./loginPage";
-import { StartPage } from "./startPage";
-import { WelcomePage } from "./welcomePage";
 
 export class UserAdminPage extends AemPage {
   static pathRegex = /^\/useradmin$/;
@@ -21,57 +13,87 @@ export class UserAdminPage extends AemPage {
   }
 
   get editorPage(): PageType {
-    return new DisabledPage(this.url);
+      return {
+        pageType: "Disabled Page",
+        url: this.url
+      }
   }
 
   get previewPage(): PageType {
-    return new DisabledPage(this.url);
+      return {
+        pageType: "Disabled Page",
+        url: this.url
+      }
   }
 
   get crxDePage(): PageType {
     const url = new URL(`${this.url.origin}/crx/de/index.jsp`);
 
-    return new CrxDePage(url);
+    return {
+      pageType: "Editor",
+      url: url
+    }
   }
 
   get crxPackMgrPage(): PageType {
     const url = new URL(`${this.url.origin}/crx/packmgr/index.jsp`);
 
-    return new CrxPackMgrPage(url);
+    return {
+      pageType: "Editor",
+      url: url
+    }
   }
 
   get userAdminPage(): PageType {
-    return this;
+    return {
+      pageType: "User Admin",
+      url: this.url
+    }
   }
 
   get sitesPage(): PageType {
     const url = new URL(`${this.url.origin}/sites.html/content`);
 
-    return new SitesPage(url);
+    return {
+      pageType: "Editor",
+      url: url
+    }
   }
 
   get consolePage(): PageType {
     const url = new URL(`${this.url.origin}/system/console`);
 
-    return new ConsolePage(url);
+    return {
+      pageType: "Editor",
+      url: url
+    }
   }
 
   get loginPage(): PageType {
     const url = new URL(`${this.url.origin}/libs/granite/core/content/login.html`);
 
-    return new LoginPage(url);
+    return {
+      pageType: "Editor",
+      url: url
+    }
   }
 
   get startPage(): PageType {
     const url = new URL(`${this.url.origin}/aem/start`);
 
-    return new StartPage(url);
+    return {
+      pageType: "Editor",
+      url: url
+    }
   }
 
   get welcomePage(): PageType {
     const url = new URL(`${this.url.origin}/welcome`);
 
-    return new WelcomePage(url);
+    return {
+      pageType: "Editor",
+      url: url
+    }
   }
 
   constructor(url: URL) {

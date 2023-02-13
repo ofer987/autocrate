@@ -1,5 +1,6 @@
 import { MenuViewModel } from "./menuViewModel";
 import { AemPage } from "../pages/aemPage";
+import { AemPages } from "../pages/aemPages";
 import { aemPageTypes } from "../pages/pageType";
 
 interface Page {
@@ -30,7 +31,8 @@ export class PagesMenuViewModel extends MenuViewModel {
     this.pages = this
       .getPageTypes()
       .map((pageType: aemPageTypes) => {
-        const aemPage = this.currentAemPage.switchAemPage(pageType);
+        const pageType2 = this.currentAemPage.switchAemPage(pageType);
+        const aemPage = AemPages.createAemPage(pageType2.pageType, pageType2.url)
 
         return {
           isEnabled: aemPage.isEnabled,
