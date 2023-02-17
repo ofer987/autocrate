@@ -7,6 +7,9 @@
   "author": "Dan Jakob Ofer",
   "license": "TR-Licence",
   "private": true,
+  "engines": {
+    "node": "~18.14.0"
+  },
   "scripts": {
     "build-and-watch": "webpack --env mode=development",
     "build": "webpack --env mode=production",
