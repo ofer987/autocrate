@@ -68,6 +68,10 @@ const publisherOptions: Server[] = [
     url: "http://localhost:4503"
   },
   {
+    name: "DEV Publish",
+    url: "http://publish1useast1-as.dev.ewp.thomsonreuters.com:4503"
+  },
+  {
     name: "QA Publish",
     url: "http://publish1useast1-as.qa.ewp.thomsonreuters.com:4503"
   },
