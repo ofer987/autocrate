@@ -77,13 +77,17 @@ export class Main {
       this.serverMenus.push(new ServerMenuViewModel(url, this.authorServers, "authors"));
       this.serverMenus.push(new ServerMenuViewModel(url, this.publisherServers, "publishers"));
 
-      const aemPage = AemPages.getAemPage(url);
-      this.pagesMenu = new PagesMenuViewModel(aemPage);
+      try {
+        const aemPage = AemPages.getAemPage(url);
+        this.pagesMenu = new PagesMenuViewModel(aemPage);
 
-      if (aemPage.isAemPage) {
-        this.displayPageMenu();
-      } else {
-        this.displayServerMenu();
+        if (aemPage.isAemPage) {
+          this.displayPageMenu();
+        } else {
+          this.displayServerMenu();
+        }
+      } catch (error) {
+        alert(`Error! ${error}`);
       }
     });
 
