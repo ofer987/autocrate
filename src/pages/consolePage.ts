@@ -14,14 +14,14 @@ export class ConsolePage extends AemPage {
 
   get editorPage(): PageType {
     return {
-      pageType: "Editor",
+      pageType: "Disabled Page",
       url: this.url
     };
   }
 
   get previewPage(): PageType {
     return {
-      pageType: "Preview",
+      pageType: "Disabled Page",
       url: this.url
     };
   }
