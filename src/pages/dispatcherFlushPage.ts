@@ -1,27 +1,28 @@
 import { PageType, aemPageTypes } from "./pageType";
 import { AemPage } from "./aemPage";
 
-export class ConsolePage extends AemPage {
-  static pathRegex = /^\/system\/console(\/bundles)?/;
+export class DispatcherFlushPage extends AemPage {
+  static pathRegex = /^\/miscadmin/;
+  static hashRegex = /^#\/etc\/acs-commons\/dispatcher-flush/;
 
   static isPage(url: URL) {
-    return ConsolePage.pathRegex.test(url.pathname);
+    return DispatcherFlushPage.pathRegex.test(url.pathname) && DispatcherFlushPage.hashRegex.test(url.hash);
   }
 
   get getType(): aemPageTypes {
-    return "Console";
+    return "Dispatcher Flush";
   }
 
   get editorPage(): PageType {
     return {
-      pageType: "Editor",
+      pageType: "Disabled Page",
       url: this.url
     };
   }
 
   get previewPage(): PageType {
     return {
-      pageType: "Preview",
+      pageType: "Disabled Page",
       url: this.url
     };
   }
@@ -54,9 +55,11 @@ export class ConsolePage extends AemPage {
   }
 
   get consolePage(): PageType {
+    const url = new URL(`${this.url.origin}/system/console`);
+
     return {
-      pageType: "Disabled Page",
-      url: this.url
+      pageType: "Console",
+      url: url
     };
   }
 
@@ -97,11 +100,9 @@ export class ConsolePage extends AemPage {
   }
 
   get dispatcherFlushPage(): PageType {
-    const url = new URL(`${this.url.origin}/miscadmin#/etc/acs-commons/dispatcher-flush`);
-
     return {
-      pageType: "Dispatcher Flush",
-      url: url
+      pageType: "Disabled Page",
+      url: this.url
     };
   }
 

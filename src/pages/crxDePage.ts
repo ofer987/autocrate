@@ -114,6 +114,15 @@ export class CrxDePage extends AemPage {
     };
   }
 
+  get dispatcherFlushPage(): PageType {
+    const url = new URL(`${this.url.origin}/miscadmin#/etc/acs-commons/dispatcher-flush`);
+
+    return {
+      pageType: "Dispatcher Flush",
+      url: url
+    };
+  }
+
   constructor(url: URL) {
     super(url);
   }

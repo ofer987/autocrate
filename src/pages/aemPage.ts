@@ -33,6 +33,8 @@ export abstract class AemPage {
 
   abstract get welcomePage(): PageType;
 
+  abstract get dispatcherFlushPage(): PageType;
+
   get isAemPage(): boolean {
     return this.getType !== "Non AEM Page";
   }
@@ -45,6 +47,7 @@ export abstract class AemPage {
       case "CRX / DE Package Manager": return this.crxPackMgrPage;
       case "User Admin": return this.userAdminPage;
       case "Sites": return this.sitesPage;
+      case "Dispatcher Flush": return this.dispatcherFlushPage;
       case "Console": return this.consolePage;
       case "Login": return this.loginPage;
       case "Start": return this.startPage;

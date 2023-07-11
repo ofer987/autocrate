@@ -87,4 +87,13 @@ export class DisabledPage extends AemPage {
       url: url
     };
   }
+
+  get dispatcherFlushPage(): PageType {
+    const url = new URL(`${this.url.origin}/miscadmin#/etc/acs-commons/dispatcher-flush`);
+
+    return {
+      pageType: "Dispatcher Flush",
+      url: url
+    };
+  }
 }

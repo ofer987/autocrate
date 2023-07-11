@@ -225,8 +225,9 @@ export class PagesMenuViewModel extends MenuViewModel {
       "CRX / DE Package Manager",
       "User Admin",
       "Sites",
+      "Dispatcher Flush",
       "Console",
-      "Welcome"
+      "Welcome",
     ];
   }
 }

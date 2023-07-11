@@ -12,6 +12,7 @@ import { StartPage } from "./startPage";
 import { LoginPage } from "./loginPage";
 import { WelcomePage } from "./welcomePage";
 import { DisabledPage } from "./disabledPage";
+import { DispatcherFlushPage } from "./dispatcherFlushPage";
 
 export class AemPages {
   static getAemPage(url: URL): AemPage {
@@ -25,6 +26,7 @@ export class AemPages {
     if (StartPage.isPage(url)) return new StartPage(url);
     if (LoginPage.isPage(url)) return new LoginPage(url);
     if (WelcomePage.isPage(url)) return new WelcomePage(url);
+    if (DispatcherFlushPage.isPage(url)) return new DispatcherFlushPage(url);
 
     return new NonAemPage(url);
   }
@@ -39,6 +41,7 @@ export class AemPages {
       case "CRX / DE Package Manager": return new CrxPackMgrPage(url);
       case "User Admin": return new UserAdminPage(url);
       case "Sites": return new SitesPage(url);
+      case "Dispatcher Flush": return new DispatcherFlushPage(url);
       case "Console": return new ConsolePage(url);
       case "Login": return new LoginPage(url);
       case "Start": return new StartPage(url);
