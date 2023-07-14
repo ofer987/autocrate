@@ -1,20 +1,20 @@
 import { PageType, aemPageTypes } from "./pageType";
 import { AemPage } from "./aemPage";
 
-export class WelcomePage extends AemPage {
-  static pathRegex = /^(\/libs\/cq\/core\/content)?\/welcome\.html$/;
+export class RunModesPage extends AemPage {
+  static pathRegex = /^\/system\/console(\/bundles)?/;
 
   static isPage(url: URL) {
-    return WelcomePage.pathRegex.test(url.pathname);
+    return RunModesPage.pathRegex.test(url.pathname);
   }
 
   get getType(): aemPageTypes {
-    return "Welcome";
+    return "Run Modes";
   }
 
   get editorPage(): PageType {
     return {
-      pageType: "Editor",
+      pageType: "Disabled Page",
       url: this.url
     };
   }
@@ -53,20 +53,20 @@ export class WelcomePage extends AemPage {
     };
   }
 
-  get sitesPage(): PageType {
-    const url = new URL(`${this.url.origin}/sites.html/content`);
-
-    return {
-      pageType: "Sites",
-      url: url
-    };
-  }
-
   get consolePage(): PageType {
     const url = new URL(`${this.url.origin}/system/console`);
 
     return {
       pageType: "Console",
+      url: url
+    };
+  }
+
+  get sitesPage(): PageType {
+    const url = new URL(`${this.url.origin}/sites.html/content`);
+
+    return {
+      pageType: "Sites",
       url: url
     };
   }
@@ -90,9 +90,11 @@ export class WelcomePage extends AemPage {
   }
 
   get welcomePage(): PageType {
+    const url = new URL(`${this.url.origin}/welcome`);
+
     return {
-      pageType: "Disabled Page",
-      url: this.url
+      pageType: "Welcome",
+      url: url
     };
   }
 
@@ -106,11 +108,9 @@ export class WelcomePage extends AemPage {
   }
 
   get runModesPage(): PageType {
-    const url = new URL(`${this.url.origin}/system/console/status-slingsettings`);
-
     return {
-      pageType: "Run Modes",
-      url: url
+      pageType: "Disabled Page",
+      url: this.url
     };
   }
 

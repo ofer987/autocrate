@@ -105,6 +105,15 @@ export class LoginPage extends AemPage {
     };
   }
 
+  get runModesPage(): PageType {
+    const url = new URL(`${this.url.origin}/system/console/status-slingsettings`);
+
+    return {
+      pageType: "Run Modes",
+      url: url
+    };
+  }
+
   constructor(url: URL) {
     super(url);
   }

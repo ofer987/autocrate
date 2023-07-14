@@ -96,4 +96,13 @@ export class DisabledPage extends AemPage {
       url: url
     };
   }
+
+  get runModesPage(): PageType {
+    const url = new URL(`${this.url.origin}/system/console/status-slingsettings`);
+
+    return {
+      pageType: "Run Modes",
+      url: url
+    };
+  }
 }

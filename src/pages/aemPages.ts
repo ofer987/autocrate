@@ -13,6 +13,7 @@ import { LoginPage } from "./loginPage";
 import { WelcomePage } from "./welcomePage";
 import { DisabledPage } from "./disabledPage";
 import { DispatcherFlushPage } from "./dispatcherFlushPage";
+import { RunModesPage } from "./runModesPage";
 
 export class AemPages {
   static getAemPage(url: URL): AemPage {
@@ -27,6 +28,7 @@ export class AemPages {
     if (LoginPage.isPage(url)) return new LoginPage(url);
     if (WelcomePage.isPage(url)) return new WelcomePage(url);
     if (DispatcherFlushPage.isPage(url)) return new DispatcherFlushPage(url);
+    if (RunModesPage.isPage(url)) return new RunModesPage(url);
 
     return new NonAemPage(url);
   }
@@ -43,6 +45,7 @@ export class AemPages {
       case "Sites": return new SitesPage(url);
       case "Dispatcher Flush": return new DispatcherFlushPage(url);
       case "Console": return new ConsolePage(url);
+      case "Run Modes": return new RunModesPage(url);
       case "Login": return new LoginPage(url);
       case "Start": return new StartPage(url);
       case "Welcome": return new WelcomePage(url);

@@ -35,6 +35,8 @@ export abstract class AemPage {
 
   abstract get dispatcherFlushPage(): PageType;
 
+  abstract get runModesPage(): PageType;
+
   get isAemPage(): boolean {
     return this.getType !== "Non AEM Page";
   }
@@ -49,6 +51,7 @@ export abstract class AemPage {
       case "Sites": return this.sitesPage;
       case "Dispatcher Flush": return this.dispatcherFlushPage;
       case "Console": return this.consolePage;
+      case "Run Modes": return this.runModesPage;
       case "Login": return this.loginPage;
       case "Start": return this.startPage;
       case "Welcome": return this.welcomePage;

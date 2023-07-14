@@ -8,6 +8,7 @@ export type aemPageTypes = "Non AEM Page"
   | "Sites"
   | "Dispatcher Flush"
   | "Console"
+  | "Run Modes"
   | "Login"
   | "Start"
   | "Welcome";

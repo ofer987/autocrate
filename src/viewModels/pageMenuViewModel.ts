@@ -227,6 +227,7 @@ export class PagesMenuViewModel extends MenuViewModel {
       "Sites",
       "Dispatcher Flush",
       "Console",
+      "Run Modes",
       "Welcome",
     ];
   }
